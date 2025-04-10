@@ -1,0 +1,6 @@
+@Culturapp_HostAddress = http://localhost:5074
+
+GET {{Culturapp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
