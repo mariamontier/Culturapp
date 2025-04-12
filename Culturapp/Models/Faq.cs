@@ -1,8 +1,9 @@
-using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Culturapp.Models
 {
+  [Table("Faqs")]
   public class Faq
   {
     [Key]
