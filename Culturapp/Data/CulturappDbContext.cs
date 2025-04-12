@@ -5,13 +5,9 @@ namespace Culturapp.Data
 {
   public class CulturappDbContext : DbContext
   {
+    public CulturappDbContext(DbContextOptions<CulturappDbContext> options) : base(options) { }
 
-    public DbSet<Event> Events { get; set; } = null!;
-
-    public CulturappDbContext(DbContextOptions<CulturappDbContext> options) : base(options)
-    {
-    }
-
+    public DbSet<Event> Events { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,5 +15,6 @@ namespace Culturapp.Data
 
       modelBuilder.Entity<Event>().HasKey(e => e.Id);
     }
+
   }
 }
