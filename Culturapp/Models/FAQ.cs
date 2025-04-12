@@ -4,7 +4,7 @@
 // using System.ComponentModel.DataAnnotations.Schema;
 
 // [Table("FAQs")]
-// public class FAQ
+// public class Faq
 // {
 //     [Key]
 //     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
