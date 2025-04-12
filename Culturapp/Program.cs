@@ -1,4 +1,5 @@
 using Culturapp.Data;
+using Culturapp.Serves;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -11,6 +12,18 @@ builder.Services.AddDbContext<CulturappDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
+builder.Services.AddScoped<EventServe>();
+builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
+builder.Services.AddControllers();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -27,6 +40,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-app.UseHttpsRedirection();
+app.MapControllers();
+app.UseCors();
 
 app.Run();
