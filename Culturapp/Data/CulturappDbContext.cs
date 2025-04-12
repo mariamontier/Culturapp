@@ -16,5 +16,9 @@ namespace Culturapp.Data
       modelBuilder.Entity<Event>().HasKey(e => e.Id);
     }
 
+    internal bool EventExists(int id)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
