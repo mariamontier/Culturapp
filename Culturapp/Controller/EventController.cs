@@ -74,6 +74,7 @@ namespace Culturapp.Controllers
         Location = eventItem.Location,
         Price = eventItem.Price
 
+
       };
 
       eventExists = updatedEvent;
