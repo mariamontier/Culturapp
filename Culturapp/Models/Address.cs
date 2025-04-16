@@ -1,8 +1,7 @@
-namespace Culturapp.Models;
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Culturapp.Models;
 [Table("Addresses")]
 public class Address
 {
@@ -16,4 +15,10 @@ public class Address
   public string? City { get; set; }
   public string? State { get; set; }
   public string? ZipCode { get; set; }
+  public int? EventId { get; set; }
+  public Event? Event { get; set; }
+  public int? OrganizerId { get; set; }
+  public Organizer? Organizer { get; set; }
+  public int? CustomerId { get; set; }
+  public Customer? Customer { get; set; }
 }

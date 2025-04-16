@@ -10,7 +10,7 @@ namespace Culturapp.Data
     public DbSet<Event> Events { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Checking> Checkings { get; set; }
+    public DbSet<Checking> Checks { get; set; }
     public DbSet<Customer> Costumers { get; set; }
     public DbSet<EventLocation> EventLocations { get; set; }
     public DbSet<Faq> Faqs { get; set; }
@@ -21,15 +21,41 @@ namespace Culturapp.Data
     {
       base.OnModelCreating(modelBuilder);
 
-      modelBuilder.Entity<Event>().HasKey(e => e.Id);
-      modelBuilder.Entity<Address>().HasKey(e => e.Id);
-      modelBuilder.Entity<Category>().HasKey(e => e.Id);
-      modelBuilder.Entity<Checking>().HasKey(e => e.Id);
-      modelBuilder.Entity<Customer>().HasKey(e => e.Id);
-      modelBuilder.Entity<EventLocation>().HasKey(e => e.Id);
-      modelBuilder.Entity<Faq>().HasKey(e => e.Id);
-      modelBuilder.Entity<Organizer>().HasKey(e => e.Id);
-      modelBuilder.Entity<User>().HasKey(e => e.Id);
+      modelBuilder.Entity<Event>()
+        .HasOne(e => e.Address)
+        .WithOne(a => a.Event)
+        .HasForeignKey<Address>(a => a.EventId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+      modelBuilder.Entity<Event>()
+        .HasOne(c => c.Category)
+        .WithOne(e => e.Event)
+        .HasForeignKey<Category>(e => e.EventId)
+        .OnDelete(DeleteBehavior.SetNull);
+
+      modelBuilder.Entity<Event>()
+        .HasOne(e => e.Checking)
+        .WithOne(c => c.Event)
+        .HasForeignKey<Checking>(e => e.EventId)
+        .OnDelete(DeleteBehavior.SetNull);
+
+      modelBuilder.Entity<Organizer>()
+        .HasOne(o => o.Address)
+        .WithOne(a => a.Organizer)
+        .HasForeignKey<Address>(a => a.OrganizerId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+      modelBuilder.Entity<Customer>()
+        .HasOne(c => c.Address)
+        .WithOne(a => a.Customer)
+        .HasForeignKey<Address>(a => a.CustomerId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+      modelBuilder.Entity<Customer>()
+        .HasMany(c => c.Checks)
+        .WithOne(c => c.Customer)
+        .HasForeignKey(c => c.CustomerId)
+        .OnDelete(DeleteBehavior.Cascade);
 
 
     }

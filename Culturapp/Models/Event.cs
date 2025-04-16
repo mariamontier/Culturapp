@@ -1,8 +1,7 @@
-namespace Culturapp.Models;
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Culturapp.Models;
 [Table("Events")]
 public class Event
 {
@@ -18,11 +17,10 @@ public class Event
   public string? Status { get; set; }
   public string? Location { get; set; }
   public int? Price { get; set; }
-
-
-  // [ForeignKey("TheaterId")]
-  // public Theater Theater { get; set; }
-  // [ForeignKey("OrganizerId")]
-  // public Organizer Organizer { get; set; }
+  public EventLocation? EventLocation { get; set; }
+  public Organizer? Organizer { get; set; }
+  public Address? Address { get; set; }
+  public Category? Category { get; set; }
+  public Checking? Checking { get; set; }
 
 }
