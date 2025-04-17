@@ -14,7 +14,7 @@ namespace Culturapp.Data
     public DbSet<Customer> Costumers { get; set; }
     public DbSet<EventLocation> EventLocations { get; set; }
     public DbSet<Faq> Faqs { get; set; }
-    public DbSet<Organizer> Organizers { get; set; }
+    public DbSet<Company> Companies { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,10 +39,10 @@ namespace Culturapp.Data
         .HasForeignKey<Checking>(e => e.EventId)
         .OnDelete(DeleteBehavior.SetNull);
 
-      modelBuilder.Entity<Organizer>()
+      modelBuilder.Entity<Company>()
         .HasOne(o => o.Address)
-        .WithOne(a => a.Organizer)
-        .HasForeignKey<Address>(a => a.OrganizerId)
+        .WithOne(a => a.Company)
+        .HasForeignKey<Address>(a => a.CompanyId)
         .OnDelete(DeleteBehavior.Cascade);
 
       modelBuilder.Entity<Customer>()

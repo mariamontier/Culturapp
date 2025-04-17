@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Culturapp.Models
 {
-  [Table("Organizers")]
-  public class Organizer
+  [Table("Companies")]
+  public class Company
   {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
