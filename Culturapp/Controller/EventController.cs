@@ -10,25 +10,25 @@ namespace Culturapp.Controllers
   [ApiController]
   public class EventController : ControllerBase
   {
-    private readonly EventServe _context;
+    private readonly EventServe _eventServe;
 
-    public EventController(EventServe context)
+    public EventController(EventServe eventServe)
     {
-      _context = context;
+      _eventServe = eventServe;
     }
 
 
     [HttpGet("GetEvents")]
     public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
     {
-      var listEvent = await _context.GetAllEventsAsync();
+      var listEvent = await _eventServe.GetAllEventsAsync();
       return Ok(listEvent);
     }
 
     [HttpGet("GetEvent/{id}")]
     public async Task<ActionResult<Event>> GetEvent(int id)
     {
-      var eventItem = await _context.GetEventByIdAsync(id);
+      var eventItem = await _eventServe.GetEventByIdAsync(id);
 
       if (eventItem == null)
       {
@@ -42,7 +42,7 @@ namespace Culturapp.Controllers
     public async Task<ActionResult<Event>> PostEvent(EventRequest eventItem)
     {
 
-      await _context.AddEventAsync(eventItem);
+      await _eventServe.AddEventAsync(eventItem);
       if (eventItem == null)
       {
         return BadRequest();
@@ -55,7 +55,7 @@ namespace Culturapp.Controllers
     [HttpPut("PutEvent/{id}")]
     public async Task<IActionResult> PutEvent(int id, EventRequest eventItem)
     {
-      var eventExists = await _context.EventExists(id)!;
+      var eventExists = await _eventServe.EventExists(id)!;
 
       if (eventExists == null)
       {
@@ -80,7 +80,7 @@ namespace Culturapp.Controllers
       eventExists = updatedEvent;
       eventExists.Id = id;
 
-      await _context.UpdateEventAsync(updatedEvent);
+      await _eventServe.UpdateEventAsync(updatedEvent);
 
       return NoContent();
     }
@@ -88,13 +88,13 @@ namespace Culturapp.Controllers
     [HttpDelete("DeleteEvent/{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
-      var eventItem = await _context.EventExists(id)!;
+      var eventItem = await _eventServe.EventExists(id)!;
       if (eventItem == null)
       {
         return NotFound();
       }
 
-      await _context.DeleteEventAsync(id);
+      await _eventServe.DeleteEventAsync(id);
 
       return NoContent();
     }
