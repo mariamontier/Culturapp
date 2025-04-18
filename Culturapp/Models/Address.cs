@@ -17,8 +17,8 @@ public class Address
   public string? ZipCode { get; set; }
   public int? EventId { get; set; }
   public Event? Event { get; set; }
-  public int? OrganizerId { get; set; }
-  public Organizer? Organizer { get; set; }
+  public int? EnterpriseId { get; set; }
+  public Enterprise? Enterprise { get; set; }
   public int? CustomerId { get; set; }
   public Customer? Customer { get; set; }
 }

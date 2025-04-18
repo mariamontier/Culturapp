@@ -4,6 +4,7 @@ using Culturapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    partial class CulturappDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418001933_RenameOrganizerToEnterprise")]
+    partial class RenameOrganizerToEnterprise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,25 +268,6 @@ namespace Culturapp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Faqs");
-                });
-
-            modelBuilder.Entity("Culturapp.Models.Phone", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Number")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Phones");
                 });
 
             modelBuilder.Entity("Culturapp.Models.User", b =>

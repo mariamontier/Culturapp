@@ -18,7 +18,7 @@ public class Event
   public string? Location { get; set; }
   public int? Price { get; set; }
   public EventLocation? EventLocation { get; set; }
-  public Organizer? Organizer { get; set; }
+  public Enterprise? Enterprise { get; set; }
   public Address? Address { get; set; }
   public Category? Category { get; set; }
   public Checking? Checking { get; set; }
