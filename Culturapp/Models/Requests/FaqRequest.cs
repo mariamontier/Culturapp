@@ -1,0 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace Culturapp.Models.Requests
+{
+  public class FaqRequest
+  {
+    public string? Question { get; set; }
+    public string? Answer { get; set; }
+  }
+}
