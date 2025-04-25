@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Culturapp.Models.Requests
 {
-  public class CheckInRequest
+  public class CheckingRequest
   {
     public int CustomerId { get; set; }
     public int EventId { get; set; }

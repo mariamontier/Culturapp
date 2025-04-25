@@ -5,9 +5,8 @@ using Culturapp.Models.Responses;
 
 public class CulturappProfile : Profile
 {
-
-public CulturappProfile()
-{
+  public CulturappProfile()
+  {
     // Address
     CreateMap<Address, AddressResponse>();
     CreateMap<Address, AddressRequest>();
@@ -17,8 +16,8 @@ public CulturappProfile()
     CreateMap<Category, CategoryRequest>();
 
     // CheckIn
-    CreateMap<CheckIn, CheckInResponse>();
-    CreateMap<CheckIn, CheckInRequest>();
+    CreateMap<Checking, CheckingResponse>();
+    CreateMap<Checking, CheckingRequest>();
 
     // Customer
     CreateMap<Customer, CustomerResponse>();
@@ -36,16 +35,8 @@ public CulturappProfile()
     CreateMap<Faq, FaqResponse>();
     CreateMap<Faq, FaqRequest>();
 
-    // Organizer
-    CreateMap<Organizer, OrganizerResponse>();
-    CreateMap<Organizer, OrganizerRequest>();
-
-    // Theater
-    CreateMap<Theater, TheaterResponse>();
-    CreateMap<Theater, TheaterRequest>();
-
     // User
     CreateMap<User, UserResponse>();
     CreateMap<User, UserRequest>();
-}
+  }
 }
