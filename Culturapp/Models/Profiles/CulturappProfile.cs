@@ -1,42 +1,43 @@
 using AutoMapper;
-using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
+
+namespace Culturapp.Models.Profiles;
 
 public class CulturappProfile : Profile
 {
   public CulturappProfile()
   {
     // Address
-    CreateMap<Address, AddressResponse>();
-    CreateMap<Address, AddressRequest>();
+    CreateMap<Address, AddressResponse>().ReverseMap();
+    CreateMap<Address, AddressRequest>().ReverseMap();
 
     // Category
-    CreateMap<Category, CategoryResponse>();
-    CreateMap<Category, CategoryRequest>();
+    CreateMap<Category, CategoryResponse>().ReverseMap();
+    CreateMap<Category, CategoryRequest>().ReverseMap();
 
     // CheckIn
-    CreateMap<Checking, CheckingResponse>();
-    CreateMap<Checking, CheckingRequest>();
+    CreateMap<Checking, CheckingResponse>().ReverseMap();
+    CreateMap<Checking, CheckingRequest>().ReverseMap();
 
     // Customer
-    CreateMap<Customer, CustomerResponse>();
-    CreateMap<Customer, CustomerRequest>();
+    CreateMap<Customer, CustomerResponse>().ReverseMap();
+    CreateMap<Customer, CustomerRequest>().ReverseMap();
 
     // Event
-    CreateMap<Event, EventResponse>();
-    CreateMap<Event, EventRequest>();
+    CreateMap<Event, EventResponse>().ReverseMap();
+    CreateMap<Event, EventRequest>().ReverseMap();
 
     // EventLocation
-    CreateMap<EventLocation, EventLocationResponse>();
-    CreateMap<EventLocation, EventLocationRequest>();
+    CreateMap<EventLocation, EventLocationResponse>().ReverseMap();
+    CreateMap<EventLocation, EventLocationRequest>().ReverseMap();
 
     // Faq
-    CreateMap<Faq, FaqResponse>();
-    CreateMap<Faq, FaqRequest>();
+    CreateMap<Faq, FaqResponse>().ReverseMap();
+    CreateMap<Faq, FaqRequest>().ReverseMap();
 
     // User
-    CreateMap<User, UserResponse>();
-    CreateMap<User, UserRequest>();
+    CreateMap<User, UserResponse>().ReverseMap();
+    CreateMap<User, UserRequest>().ReverseMap();
   }
 }
