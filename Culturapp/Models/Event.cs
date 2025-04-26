@@ -21,6 +21,8 @@ public class Event
   public Status? Status { get; set; } // baseado nas datas e/ou na capacidade, ou cancelado pelo admin
   public Checking? Checking { get; set; } // apos a data de inicio e bloqueado depois da data de fim mais um dia.
   public FAQ? FAQ { get; set; }
+  public Enterprise? Enterprise { get; set; } // Empresa que está organizando o evento
+  public Category? Category { get; set; } // Categoria do evento, como teatro, show, etc.
   public ICollection<Phone?>? Phones { get; set; }
   public ICollection<User?>? Users { get; set; }
 }

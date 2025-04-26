@@ -10,5 +10,5 @@ public class Checking
     public int Id { get; set; }
     public DateTime? CheckInDate { get; set; }
     public Event? Event { get; set; }
-    public ICollection<User?>? User { get; set; }
+    public ICollection<User?>? Users { get; set; }
 }
