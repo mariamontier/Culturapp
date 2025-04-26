@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    [Migration("20250426232949_RefactoringDatabase")]
+    [Migration("20250426234432_RefactoringDatabase")]
     partial class RefactoringDatabase
     {
         /// <inheritdoc />
@@ -137,7 +137,7 @@ namespace Culturapp.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Enterprises ");
+                    b.ToTable("Enterprises");
                 });
 
             modelBuilder.Entity("Culturapp.Models.Event", b =>

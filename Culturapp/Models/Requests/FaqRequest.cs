@@ -6,6 +6,6 @@ namespace Culturapp.Models.Requests
   {
     public string Question { get; set; }
     public string Answer { get; set; }
-    public int EventId { get; set; }
+    public int? EventId { get; set; }
   }
 }
