@@ -11,9 +11,7 @@ namespace Culturapp.Data
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Checking> Checks { get; set; }
-    public DbSet<Customer> Costumers { get; set; }
-    public DbSet<EventLocation> EventLocations { get; set; }
-    public DbSet<Faq> Faqs { get; set; }
+    public DbSet<FAQ> FAQs { get; set; }
     public DbSet<Enterprise> Enterprises { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Phone> Phones { get; set; }
@@ -30,8 +28,8 @@ namespace Culturapp.Data
 
       modelBuilder.Entity<Event>()
         .HasOne(c => c.Category)
-        .WithOne(e => e.Event)
-        .HasForeignKey<Category>(e => e.EventId)
+        .WithMany(e => e.Events)
+        .HasForeignKey(e => e.CategoryId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Event>()
@@ -45,19 +43,6 @@ namespace Culturapp.Data
         .WithOne(a => a.Enterprise)
         .HasForeignKey<Address>(a => a.EnterpriseId)
         .OnDelete(DeleteBehavior.Cascade);
-
-      modelBuilder.Entity<Customer>()
-        .HasOne(c => c.Address)
-        .WithOne(a => a.Customer)
-        .HasForeignKey<Address>(a => a.CustomerId)
-        .OnDelete(DeleteBehavior.Cascade);
-
-      modelBuilder.Entity<Customer>()
-        .HasMany(c => c.Checks)
-        .WithOne(c => c.Customer)
-        .HasForeignKey(c => c.CustomerId)
-        .OnDelete(DeleteBehavior.Cascade);
-
 
     }
 
