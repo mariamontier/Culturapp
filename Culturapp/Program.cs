@@ -1,4 +1,5 @@
 using Culturapp.Data;
+using Culturapp.Models.Profiles;
 using Culturapp.Serves;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;

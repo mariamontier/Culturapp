@@ -15,6 +15,7 @@ namespace Culturapp.Models
     public string? Password { get; set; }
     public ICollection<Event?>? Events { get; set; }
     public ICollection<Phone?>? Phones { get; set; }
+    public int? AddressId { get; set; }
     public Address? Address { get; set; }
 
   }

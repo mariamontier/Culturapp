@@ -12,7 +12,9 @@ namespace Culturapp.Models
     public int Id { get; set; }
     public string? AreaCode { get; set; }  // Changed "DDD" to "AreaCode" for clarity
     public string? PhoneNumber { get; set; }
+    public int? EnterpriseId { get; set; }
     public Enterprise? Enterprise { get; set; }
+    public int? EventId { get; set; }
     public Event? Event { get; set; }
   }
 }

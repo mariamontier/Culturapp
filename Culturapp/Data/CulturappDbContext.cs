@@ -23,25 +23,25 @@ namespace Culturapp.Data
       modelBuilder.Entity<Event>()
         .HasOne(e => e.Checking)
         .WithOne(c => c.Event)
-        .HasForeignKey<Event>(e => e.Checking.Id)
+        .HasForeignKey<Event>(e => e.CheckingId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Event>()
         .HasOne(e => e.LocationAddress)
-        .WithOne(a => a.Event)
-        .HasForeignKey<Event>(e => e.LocationAddress.Id)
+        .WithOne(l => l.Event)
+        .HasForeignKey<Event>(e => e.LocationAddressId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Event>()
         .HasMany(e => e.Phones)
         .WithOne(p => p.Event)
-        .HasForeignKey(p => p.Event.Id)
+        .HasForeignKey(p => p.EventId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Event>()
         .HasOne(e => e.FAQ)
         .WithOne(f => f.Event)
-        .HasForeignKey<Event>(e => e.FAQ.Id)
+        .HasForeignKey<Event>(e => e.FAQId)
         .OnDelete(DeleteBehavior.Cascade);
 
       modelBuilder.Entity<Event>()
@@ -52,31 +52,31 @@ namespace Culturapp.Data
       modelBuilder.Entity<Event>()
         .HasOne(e => e.Status)
         .WithMany(s => s.Events)
-        .HasForeignKey(e => e.Status.Id)
+        .HasForeignKey(e => e.StatusId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Event>()
         .HasOne(e => e.Enterprise)
         .WithMany(ent => ent.Events)
-        .HasForeignKey(e => e.Enterprise.Id)
+        .HasForeignKey(e => e.EnterpriseId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Enterprise>()
         .HasOne(o => o.Address)
         .WithOne(a => a.Enterprise)
-        .HasForeignKey<Enterprise>(o => o.Address.Id)
+        .HasForeignKey<Enterprise>(o => o.AddressId)
         .OnDelete(DeleteBehavior.Cascade);
 
       modelBuilder.Entity<Enterprise>()
         .HasMany(e => e.Phones)
         .WithOne(p => p.Enterprise)
-        .HasForeignKey(p => p.Enterprise.Id)
+        .HasForeignKey(p => p.EnterpriseId)
         .OnDelete(DeleteBehavior.Cascade);
 
       modelBuilder.Entity<Category>()
         .HasMany(c => c.Events)
         .WithOne(e => e.Category)
-        .HasForeignKey(e => e.Category.Id)
+        .HasForeignKey(e => e.CategoryId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Checking>()
