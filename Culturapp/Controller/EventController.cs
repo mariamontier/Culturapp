@@ -64,17 +64,16 @@ namespace Culturapp.Controllers
 
       var updatedEvent = new Event
       {
+        Id = eventExists.Id,
         Name = eventItem.Name,
         Description = eventItem.Description,
-        Date = eventItem.Date,
-        ScoreValue = eventItem.ScoreValue,
-        TicketPrice = eventItem.TicketPrice,
-        Capacity = eventItem.Capacity,
-        Status = eventItem.Status,
-        Location = eventItem.Location,
-        Price = eventItem.Price
-
-
+        Category = eventItem.Category,
+        LocationAddress = eventItem.LocationAddress,
+        Phones = eventItem.Phones,
+        FAQ = eventItem.FAQ,
+        Checking = eventItem.Checking,
+        Status = eventExists.Status,
+        Enterprise = eventExists.Enterprise
       };
 
       eventExists = updatedEvent;
