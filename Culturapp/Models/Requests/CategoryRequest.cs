@@ -4,7 +4,7 @@ namespace Culturapp.Models.Requests
 {
   public class CategoryRequest
   {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public string? Name { get; set; }
+    public string? Description { get; set; }
   }
 }
