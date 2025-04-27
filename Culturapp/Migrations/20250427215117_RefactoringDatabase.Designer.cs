@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    [Migration("20250426234432_RefactoringDatabase")]
+    [Migration("20250427215117_RefactoringDatabase")]
     partial class RefactoringDatabase
     {
         /// <inheritdoc />
@@ -25,19 +25,34 @@ namespace Culturapp.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("CheckingUser", b =>
+            modelBuilder.Entity("CheckingClientUser", b =>
                 {
                     b.Property<int>("ChecksId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
+                    b.Property<int>("ClientUsersId")
                         .HasColumnType("int");
 
-                    b.HasKey("ChecksId", "UsersId");
+                    b.HasKey("ChecksId", "ClientUsersId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("ClientUsersId");
 
                     b.ToTable("CheckingsUsers", (string)null);
+                });
+
+            modelBuilder.Entity("ClientUserEvent", b =>
+                {
+                    b.Property<int>("ClientUsersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientUsersId", "EventsId");
+
+                    b.HasIndex("EventsId");
+
+                    b.ToTable("EventUsers", (string)null);
                 });
 
             modelBuilder.Entity("Culturapp.Models.Address", b =>
@@ -72,6 +87,79 @@ namespace Culturapp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("Culturapp.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccountType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CNPJ")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CPF")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Culturapp.Models.Category", b =>
@@ -109,7 +197,45 @@ namespace Culturapp.Migrations
                     b.ToTable("Checkings");
                 });
 
-            modelBuilder.Entity("Culturapp.Models.Enterprise", b =>
+            modelBuilder.Entity("Culturapp.Models.ClientUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CPF")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("PhoneId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("PhoneId");
+
+                    b.ToTable("ClientUsers");
+                });
+
+            modelBuilder.Entity("Culturapp.Models.EnterpriseUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,10 +252,10 @@ namespace Culturapp.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Password")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("UserName")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -137,7 +263,7 @@ namespace Culturapp.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Enterprises");
+                    b.ToTable("EnterpriseUsers");
                 });
 
             modelBuilder.Entity("Culturapp.Models.Event", b =>
@@ -277,7 +403,33 @@ namespace Culturapp.Migrations
                     b.ToTable("Statuses");
                 });
 
-            modelBuilder.Entity("Culturapp.Models.User", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,52 +437,105 @@ namespace Culturapp.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CPF")
+                    b.Property<string>("ClaimType")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("ClaimValue")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("PhoneId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("longtext");
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex("PhoneId");
-
-                    b.ToTable("Users");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("EventUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Property<int>("EventsId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.HasKey("EventsId", "UsersId");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("UsersId");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
 
-                    b.ToTable("EventUsers", (string)null);
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("CheckingUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("CheckingClientUser", b =>
                 {
                     b.HasOne("Culturapp.Models.Checking", null)
                         .WithMany()
@@ -338,18 +543,48 @@ namespace Culturapp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Culturapp.Models.User", null)
+                    b.HasOne("Culturapp.Models.ClientUser", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("ClientUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Culturapp.Models.Enterprise", b =>
+            modelBuilder.Entity("ClientUserEvent", b =>
+                {
+                    b.HasOne("Culturapp.Models.ClientUser", null)
+                        .WithMany()
+                        .HasForeignKey("ClientUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Culturapp.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Culturapp.Models.ClientUser", b =>
                 {
                     b.HasOne("Culturapp.Models.Address", "Address")
-                        .WithOne("Enterprise")
-                        .HasForeignKey("Culturapp.Models.Enterprise", "AddressId")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("Culturapp.Models.Phone", "Phone")
+                        .WithMany()
+                        .HasForeignKey("PhoneId");
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Phone");
+                });
+
+            modelBuilder.Entity("Culturapp.Models.EnterpriseUser", b =>
+                {
+                    b.HasOne("Culturapp.Models.Address", "Address")
+                        .WithOne("EnterpriseUser")
+                        .HasForeignKey("Culturapp.Models.EnterpriseUser", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Address");
@@ -367,7 +602,7 @@ namespace Culturapp.Migrations
                         .HasForeignKey("Culturapp.Models.Event", "CheckingId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Culturapp.Models.Enterprise", "Enterprise")
+                    b.HasOne("Culturapp.Models.EnterpriseUser", "Enterprise")
                         .WithMany("Events")
                         .HasForeignKey("EnterpriseId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -402,7 +637,7 @@ namespace Culturapp.Migrations
 
             modelBuilder.Entity("Culturapp.Models.Phone", b =>
                 {
-                    b.HasOne("Culturapp.Models.Enterprise", "Enterprise")
+                    b.HasOne("Culturapp.Models.EnterpriseUser", "EnterpriseUser")
                         .WithMany("Phones")
                         .HasForeignKey("EnterpriseId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -412,44 +647,65 @@ namespace Culturapp.Migrations
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Enterprise");
+                    b.Navigation("EnterpriseUser");
 
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("Culturapp.Models.User", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Culturapp.Models.Address", "Address")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.HasOne("Culturapp.Models.Phone", "Phone")
-                        .WithMany()
-                        .HasForeignKey("PhoneId");
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Phone");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("EventUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Culturapp.Models.Event", null)
+                    b.HasOne("Culturapp.Models.ApplicationUser", null)
                         .WithMany()
-                        .HasForeignKey("EventsId")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Culturapp.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Culturapp.Models.User", null)
+                    b.HasOne("Culturapp.Models.ApplicationUser", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Culturapp.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Culturapp.Models.Address", b =>
                 {
-                    b.Navigation("Enterprise");
+                    b.Navigation("EnterpriseUser");
 
                     b.Navigation("Event");
                 });
@@ -464,7 +720,7 @@ namespace Culturapp.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("Culturapp.Models.Enterprise", b =>
+            modelBuilder.Entity("Culturapp.Models.EnterpriseUser", b =>
                 {
                     b.Navigation("Events");
 

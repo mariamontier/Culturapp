@@ -8,6 +8,12 @@ namespace Culturapp.Models.Profiles
   {
     public CulturappProfile()
     {
+      // Register
+      CreateMap<ApplicationUser, RegisterRequest>().ReverseMap();
+
+      // Login
+      CreateMap<Login, LoginRequest>().ReverseMap();
+
       // Address
       CreateMap<Address, AddressResponse>().ReverseMap();
       CreateMap<Address, AddressRequest>().ReverseMap();
@@ -22,7 +28,6 @@ namespace Culturapp.Models.Profiles
       // Event
       CreateMap<Event, EventResponse>().ReverseMap();
       CreateMap<Event, EventRequest>().ReverseMap();
-
 
       // Faq
       CreateMap<FAQ, FaqResponse>().ReverseMap();
