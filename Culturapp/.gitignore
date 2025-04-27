@@ -229,6 +229,6 @@ appsettings.*.json
 .vscode-server/
 .vscode-remote/
 
-# appsettings.json
+appsettings.json
 
-#.vscode
+.vscode
