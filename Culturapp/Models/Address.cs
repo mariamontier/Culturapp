@@ -16,6 +16,6 @@ public class Address
   public string? State { get; set; }
   public string? ZipCode { get; set; }
   public Event? Event { get; set; }
-  public Enterprise? Enterprise { get; set; }
+  public EnterpriseUser? EnterpriseUser { get; set; }
 
 }

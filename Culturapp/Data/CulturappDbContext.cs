@@ -1,20 +1,24 @@
+
 using Culturapp.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Culturapp.Data
 {
-  public class CulturappDbContext : DbContext
+  public class CulturappDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
   {
     public CulturappDbContext(DbContextOptions<CulturappDbContext> options) : base(options) { }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Checking> Checks { get; set; }
-    public DbSet<Enterprise> Enterprises { get; set; }
+    public DbSet<EnterpriseUser> EnterpriseUsers { get; set; }
     public DbSet<Event> Events { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
     public DbSet<Phone> Phones { get; set; }
     public DbSet<Status> Statuses { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<ClientUser> ClientUsers { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,7 +49,7 @@ namespace Culturapp.Data
         .OnDelete(DeleteBehavior.Cascade);
 
       modelBuilder.Entity<Event>()
-        .HasMany(e => e.Users)
+        .HasMany(e => e.ClientUsers)
         .WithMany(u => u.Events)
         .UsingEntity(i => i.ToTable("EventUsers"));
 
@@ -61,15 +65,15 @@ namespace Culturapp.Data
         .HasForeignKey(e => e.EnterpriseId)
         .OnDelete(DeleteBehavior.SetNull);
 
-      modelBuilder.Entity<Enterprise>()
+      modelBuilder.Entity<EnterpriseUser>()
         .HasOne(o => o.Address)
-        .WithOne(a => a.Enterprise)
-        .HasForeignKey<Enterprise>(o => o.AddressId)
+        .WithOne(a => a.EnterpriseUser)
+        .HasForeignKey<EnterpriseUser>(o => o.AddressId)
         .OnDelete(DeleteBehavior.Cascade);
 
-      modelBuilder.Entity<Enterprise>()
+      modelBuilder.Entity<EnterpriseUser>()
         .HasMany(e => e.Phones)
-        .WithOne(p => p.Enterprise)
+        .WithOne(p => p.EnterpriseUser)
         .HasForeignKey(p => p.EnterpriseId)
         .OnDelete(DeleteBehavior.Cascade);
 
@@ -80,7 +84,7 @@ namespace Culturapp.Data
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Checking>()
-        .HasMany(u => u.Users)
+        .HasMany(u => u.ClientUsers)
         .WithMany(c => c.Checks)
         .UsingEntity(i => i.ToTable("CheckingsUsers"));
     }
