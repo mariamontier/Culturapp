@@ -8,6 +8,15 @@ namespace Culturapp.Models.Profiles
   {
     public CulturappProfile()
     {
+
+      // ClientUser
+      CreateMap<ClientUser, ClientUserRequest>().ReverseMap();
+      CreateMap<ClientUser, ClientUserResponse>().ReverseMap();
+
+      // EnterpriseUser
+      CreateMap<EnterpriseUser, EnterpriseUserRequest>().ReverseMap();
+      CreateMap<EnterpriseUser, EnterpriseUserResponse>().ReverseMap();
+
       // Register
       CreateMap<ApplicationUser, RegisterRequest>().ReverseMap();
 
