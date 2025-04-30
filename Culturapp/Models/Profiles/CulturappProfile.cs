@@ -4,46 +4,44 @@ using Culturapp.Models.Responses;
 
 namespace Culturapp.Models.Profiles
 {
-public CulturappProfile()
-{
-    // Address
-    CreateMap<Address, AddressResponse>();
-    CreateMap<Address, AddressRequest>();
+  public class CulturappProfile : Profile
+  {
+    public CulturappProfile()
+    {
 
-    // Category
-    CreateMap<Category, CategoryResponse>();
-    CreateMap<Category, CategoryRequest>();
+      // ClientUser
+      CreateMap<ClientUser, ClientUserRequest>().ReverseMap();
+      CreateMap<ClientUser, ClientUserResponse>().ReverseMap();
 
-    // CheckIn
-    CreateMap<CheckIn, CheckInResponse>();
-    CreateMap<CheckIn, CheckInRequest>();
+      // EnterpriseUser
+      CreateMap<EnterpriseUser, EnterpriseUserRequest>().ReverseMap();
+      CreateMap<EnterpriseUser, EnterpriseUserResponse>().ReverseMap();
 
-    // Customer
-    CreateMap<Customer, CustomerResponse>();
-    CreateMap<Customer, CustomerRequest>();
+      // Register
+      CreateMap<ApplicationUser, RegisterRequest>().ReverseMap();
 
-    // Event
-    CreateMap<Event, EventResponse>();
-    CreateMap<Event, EventRequest>();
+      // Login
+      CreateMap<Login, LoginRequest>().ReverseMap();
 
-    // EventLocation
-    CreateMap<EventLocation, EventLocationResponse>();
-    CreateMap<EventLocation, EventLocationRequest>();
+      // Address
+      CreateMap<Address, AddressResponse>().ReverseMap();
+      CreateMap<Address, AddressRequest>().ReverseMap();
 
-    // Faq
-    CreateMap<Faq, FaqResponse>();
-    CreateMap<Faq, FaqRequest>();
+      // Category
+      CreateMap<Category, CategoryResponse>().ReverseMap();
+      CreateMap<Category, CategoryRequest>().ReverseMap();
 
-    // Organizer
-    CreateMap<Organizer, OrganizerResponse>();
-    CreateMap<Organizer, OrganizerRequest>();
+      // CheckIn
+      CreateMap<Checking, CheckingResponse>().ReverseMap();
 
-    // Theater
-    CreateMap<Theater, TheaterResponse>();
-    CreateMap<Theater, TheaterRequest>();
+      // Event
+      CreateMap<Event, EventResponse>().ReverseMap();
+      CreateMap<Event, EventRequest>().ReverseMap();
 
-    // User
-    CreateMap<User, UserResponse>();
-    CreateMap<User, UserRequest>();
-}
+      // Faq
+      CreateMap<FAQ, FaqResponse>().ReverseMap();
+      CreateMap<FAQ, FaqRequest>().ReverseMap();
+
+    }
+  }
 }
