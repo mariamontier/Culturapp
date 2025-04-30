@@ -1,6 +1,13 @@
+using System.Text;
 using Culturapp.Data;
+using Culturapp.Models;
+using Culturapp.Models.Profiles;
 using Culturapp.Serves;
+using Culturapp.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,10 +19,38 @@ builder.Services.AddDbContext<CulturappDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
+// Configurar Identity para permitir múltiplos tipos de usuários
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<CulturappDbContext>()
+    .AddDefaultTokenProviders();
+
+// Configuração do JWT
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        // ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        // ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<EventServe>();
+
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
 builder.Services.AddControllers();
-
 
 builder.Services.AddCors(options =>
 {
@@ -25,10 +60,36 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 
+// Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Culturapp API", Version = "v1" });
+
+    // Definindo o esquema de segurança para o Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Type = SecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = ParameterLocation.Header
+    });
+
+    // Requerendo o esquema de segurança para todas as operações
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
 
 var app = builder.Build();
@@ -39,6 +100,13 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Culturapp API v1");
     c.RoutePrefix = string.Empty;
 });
+
+// Configuração de middlewares
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCors("AllowAllOrigins");
+app.UseHttpsRedirection();
+app.UseRouting();
 
 app.MapControllers();
 app.UseRouting();

@@ -1,9 +1,8 @@
 using AutoMapper;
-using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 
-public class CulturappProfile : Profile
+namespace Culturapp.Models.Profiles
 {
 public CulturappProfile()
 {
