@@ -1,12 +1,47 @@
 using AutoMapper;
-using Culturapp.Models;
 using Culturapp.Models.Requests;
+using Culturapp.Models.Responses;
 
-public class CulturappProfile : Profile
+namespace Culturapp.Models.Profiles
 {
-  public CulturappProfile()
+  public class CulturappProfile : Profile
   {
-    // Configurações de mapeamento
-    CreateMap<Event, EventRequest>().ReverseMap();
+    public CulturappProfile()
+    {
+
+      // ClientUser
+      CreateMap<ClientUser, ClientUserRequest>().ReverseMap();
+      CreateMap<ClientUser, ClientUserResponse>().ReverseMap();
+
+      // EnterpriseUser
+      CreateMap<EnterpriseUser, EnterpriseUserRequest>().ReverseMap();
+      CreateMap<EnterpriseUser, EnterpriseUserResponse>().ReverseMap();
+
+      // Register
+      CreateMap<ApplicationUser, RegisterRequest>().ReverseMap();
+
+      // Login
+      CreateMap<Login, LoginRequest>().ReverseMap();
+
+      // Address
+      CreateMap<Address, AddressResponse>().ReverseMap();
+      CreateMap<Address, AddressRequest>().ReverseMap();
+
+      // Category
+      CreateMap<Category, CategoryResponse>().ReverseMap();
+      CreateMap<Category, CategoryRequest>().ReverseMap();
+
+      // CheckIn
+      CreateMap<Checking, CheckingResponse>().ReverseMap();
+
+      // Event
+      CreateMap<Event, EventResponse>().ReverseMap();
+      CreateMap<Event, EventRequest>().ReverseMap();
+
+      // Faq
+      CreateMap<FAQ, FaqResponse>().ReverseMap();
+      CreateMap<FAQ, FaqRequest>().ReverseMap();
+
+    }
   }
 }

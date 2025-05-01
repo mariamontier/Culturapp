@@ -15,10 +15,7 @@ public class Address
   public string? City { get; set; }
   public string? State { get; set; }
   public string? ZipCode { get; set; }
-  public int? EventId { get; set; }
   public Event? Event { get; set; }
-  public int? CompanyId { get; set; }
-  public Company? Company { get; set; }
-  public int? CustomerId { get; set; }
-  public Customer? Customer { get; set; }
+  public EnterpriseUser? EnterpriseUser { get; set; }
+
 }
