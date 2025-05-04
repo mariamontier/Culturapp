@@ -5,13 +5,13 @@ using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.EntityFrameworkCore;
 
-namespace Culturapp.Serves
+namespace Culturapp.Services
 {
-  public class EventServer
+  public class EventService
   {
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
-    public EventServer(CulturappDbContext context, IMapper mapper)
+    public EventService(CulturappDbContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;

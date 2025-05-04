@@ -6,15 +6,15 @@ using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
-namespace Culturapp.Servers
+namespace Culturapp.Services
 {
-  public class EnterpriseUserServer
+  public class EnterpriseUserService
   {
 
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
 
-    public EnterpriseUserServer(CulturappDbContext context, IMapper mapper)
+    public EnterpriseUserService(CulturappDbContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;

@@ -1,6 +1,6 @@
 using Culturapp.Models;
 using Culturapp.Models.Requests;
-using Culturapp.Serves;
+using Culturapp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Culturapp.Controllers
@@ -10,25 +10,25 @@ namespace Culturapp.Controllers
   [ApiController]
   public class EventController : ControllerBase
   {
-    private readonly EventServer _eventServe;
+    private readonly EventService _eventService;
 
-    public EventController(EventServer eventServe)
+    public EventController(EventService eventService)
     {
-      _eventServe = eventServe;
+      _eventService = eventService;
     }
 
 
     [HttpGet("GetEvents")]
     public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
     {
-      var listEvent = await _eventServe.GetAllEventsAsync();
+      var listEvent = await _eventService.GetAllEventsAsync();
       return Ok(listEvent);
     }
 
     [HttpGet("GetEvent/{id}")]
     public async Task<ActionResult<Event>> GetEvent(int id)
     {
-      var eventItem = await _eventServe.GetEventByIdAsync(id);
+      var eventItem = await _eventService.GetEventByIdAsync(id);
 
       if (eventItem == null)
       {
@@ -42,7 +42,7 @@ namespace Culturapp.Controllers
     public async Task<ActionResult<Event>> PostEvent(EventRequest eventItem)
     {
 
-      await _eventServe.AddEventAsync(eventItem);
+      await _eventService.AddEventAsync(eventItem);
       if (eventItem == null)
       {
         return BadRequest();
@@ -55,7 +55,7 @@ namespace Culturapp.Controllers
     [HttpPut("PutEvent/{id}")]
     public async Task<IActionResult> PutEvent(int id, EventRequest eventItem)
     {
-      var eventExists = await _eventServe.EventExists(id)!;
+      var eventExists = await _eventService.EventExists(id)!;
 
       if (eventExists == null)
       {
@@ -79,7 +79,7 @@ namespace Culturapp.Controllers
       eventExists = updatedEvent;
       eventExists.Id = id;
 
-      await _eventServe.UpdateEventAsync(updatedEvent);
+      await _eventService.UpdateEventAsync(updatedEvent);
 
       return NoContent();
     }
@@ -87,13 +87,13 @@ namespace Culturapp.Controllers
     [HttpDelete("DeleteEvent/{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
-      var eventItem = await _eventServe.EventExists(id)!;
+      var eventItem = await _eventService.EventExists(id)!;
       if (eventItem == null)
       {
         return NotFound();
       }
 
-      await _eventServe.DeleteEventAsync(id);
+      await _eventService.DeleteEventAsync(id);
 
       return NoContent();
     }
