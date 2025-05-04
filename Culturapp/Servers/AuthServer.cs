@@ -10,16 +10,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Culturapp.Services
+namespace Culturapp.Servers
 {
-  public class AuthService
+  public class AuthServer
   {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
-    public AuthService(
+    public AuthServer(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IConfiguration configuration,
@@ -54,17 +54,16 @@ namespace Culturapp.Services
 
       if (user != null)
       {
-        var result = await _signInManager.PasswordSignInAsync(user.UserName, loginRequest.Password, false, false);
+        var result = await _signInManager.PasswordSignInAsync(user.UserName!, loginRequest.Password, false, false);
 
         if (result.Succeeded)
         {
-          var token = GenerateToken(user.UserName, user.AccountType.ToString());
+          var token = GenerateToken(user.UserName!, user.AccountType.ToString());
           return new LoginResponse
           {
             Token = token,
             Username = user.UserName,
-            AccountType = user.AccountType.ToString(),
-            Expiration = DateTime.UtcNow.AddHours(3)
+            AccountType = user.AccountType.ToString()
           };
         }
       }
@@ -88,7 +87,7 @@ namespace Culturapp.Services
       var token = new JwtSecurityToken(
           issuer: _configuration["Jwt:Issuer"],
           audience: _configuration["Jwt:Audience"],
-          expires: DateTime.UtcNow.AddHours(3),
+          expires: DateTime.UtcNow.AddHours(1),
           claims: authClaims,
           signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
       );

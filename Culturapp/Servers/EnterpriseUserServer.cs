@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Culturapp.Servers
 {
-  public class EnterpriseUserService
+  public class EnterpriseUserServer
   {
 
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
 
-    public EnterpriseUserService(CulturappDbContext context, IMapper mapper)
+    public EnterpriseUserServer(CulturappDbContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;

@@ -3,14 +3,15 @@ using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.EntityFrameworkCore;
+
 namespace Culturapp.Servers
 {
-  public class ClientUserService
+  public class ClientUserServer
   {
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
 
-    public ClientUserService(CulturappDbContext context, IMapper mapper)
+    public ClientUserServer(CulturappDbContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;

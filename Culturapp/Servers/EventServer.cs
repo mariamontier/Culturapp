@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Culturapp.Serves
 {
-  public class EventServe
+  public class EventServer
   {
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
-    public EventServe(CulturappDbContext context, IMapper mapper)
+    public EventServer(CulturappDbContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;

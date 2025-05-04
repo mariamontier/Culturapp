@@ -10,9 +10,9 @@ namespace Culturapp.Controllers
   [ApiController]
   public class EventController : ControllerBase
   {
-    private readonly EventServe _eventServe;
+    private readonly EventServer _eventServe;
 
-    public EventController(EventServe eventServe)
+    public EventController(EventServer eventServe)
     {
       _eventServe = eventServe;
     }
