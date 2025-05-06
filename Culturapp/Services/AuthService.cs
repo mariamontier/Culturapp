@@ -33,24 +33,19 @@ namespace Culturapp.Services
 
     public async Task<IdentityResult> RegisterAsync(RegisterRequest registerRequest)
     {
-      if (string.IsNullOrEmpty(registerRequest.Password))
-      {
-        throw new ArgumentException("Password cannot be null or empty.");
-      }
-
       var user = _mapper.Map<ApplicationUser>(registerRequest);
 
-      return await _userManager.CreateAsync(user, registerRequest.Password);
+      return await _userManager.CreateAsync(user, registerRequest.Password!);
     }
 
     public async Task<LoginResponse?> LoginAsync(LoginRequest loginRequest)
     {
       if (string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
       {
-        throw new ArgumentException("Identifier and Password cannot be null or empty.");
+        throw new ArgumentException("Email and Password cannot be null or empty.");
       }
 
-      var user = await _userManager.Users.FirstOrDefaultAsync(u => u.CPF == loginRequest.Email || u.Email == loginRequest.Email);
+      var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
 
       if (user != null)
       {
@@ -58,11 +53,11 @@ namespace Culturapp.Services
 
         if (result.Succeeded)
         {
-          var token = GenerateToken(user.UserName!, user.AccountType.ToString());
+          var token = GenerateToken(user);
           return new LoginResponse
           {
             Token = token,
-            Username = user.UserName,
+            Identifier = user.CPF ?? user.CNPJ,
             AccountType = user.AccountType.ToString()
           };
         }
@@ -71,12 +66,15 @@ namespace Culturapp.Services
       return null;
     }
 
-    private string GenerateToken(string username, string accountType)
+    private string GenerateToken(ApplicationUser? user)
     {
       var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, username),
-                new Claim("AccountType", accountType),
+                new Claim(ClaimTypes.Name, user?.UserName!),
+                new Claim(ClaimTypes.Email, user?.Email!),
+                new Claim("AccountType", user?.AccountType.ToString()!),
+                new Claim(ClaimTypes.NameIdentifier, user?.Id!),
+                new Claim(JwtRegisteredClaimNames.Sub, user?.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -92,12 +90,12 @@ namespace Culturapp.Services
           signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
       );
 
-      return new JwtSecurityTokenHandler().WriteToken(token);
+      var tokenHandler = new JwtSecurityTokenHandler();
+      string tokenString = tokenHandler.WriteToken(token);
+
+      return tokenString;
+
     }
 
-    public async Task LogoutAsync()
-    {
-      await _signInManager.SignOutAsync();
-    }
   }
 }

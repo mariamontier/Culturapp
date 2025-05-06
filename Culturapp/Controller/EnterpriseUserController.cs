@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Culturapp.Services;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Culturapp.Controller
 {
+  [Authorize]
   [ApiController]
   [Route("api/[controller]")]
   public class EnterpriseUserController : ControllerBase

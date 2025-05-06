@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    [Migration("20250501232308_InicialDb")]
-    partial class InicialDb
+    [Migration("20250506215117_InicialMigration")]
+    partial class InicialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

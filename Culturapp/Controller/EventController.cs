@@ -1,11 +1,12 @@
 using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Culturapp.Controllers
 {
-
+  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class EventController : ControllerBase

@@ -1,8 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Profiles;
-using Culturapp.Serves;
 using Culturapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -29,25 +29,27 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        ValidateIssuer = true,
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        // ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        // ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 });
+
 
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<EventServe>();
+builder.Services.AddScoped<EventService>();
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
 builder.Services.AddControllers();
@@ -101,15 +103,10 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-// Configuração de middlewares
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseCors("AllowAllOrigins");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
-app.UseRouting();
-app.UseCors();
-
 app.Run();
