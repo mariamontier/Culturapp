@@ -1,0 +1,18 @@
+<div class="container mt-5">
+  <h2>Cadastro</h2>
+  <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+    <div class="mb-3">
+      <label>Nome Completo</label>
+      <input class="form-control" formControlName="nome">
+    </div>
+    <div class="mb-3">
+      <label>E-mail</label>
+      <input class="form-control" type="email" formControlName="email">
+    </div>
+    <div class="mb-3">
+      <label>Senha</label>
+      <input class="form-control" type="password" formControlName="senha">
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Cadastrar</button>
+  </form>
+</div>
