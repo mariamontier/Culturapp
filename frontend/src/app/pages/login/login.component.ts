@@ -22,13 +22,16 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: [''],
-      senha: ['']
+      password: ['']
     });
   }
 
   login() {
-    this.authService.login(this.loginForm.value).subscribe(() => {
-      this.router.navigate(['/pesquisa']);
+    var credenciais = this.loginForm.value;
+    console.log(credenciais);
+    debugger;
+    this.authService.login(credenciais).subscribe(() => {
+      this.router.navigate(['/eventpage']);
     });
   }
 }
