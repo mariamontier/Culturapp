@@ -35,7 +35,9 @@ namespace Culturapp.Services
     {
       var user = _mapper.Map<ApplicationUser>(registerRequest);
 
-      return await _userManager.CreateAsync(user, registerRequest.Password!);
+      var createUser = await _userManager.CreateAsync(user, registerRequest.Password!);
+
+      return createUser;
     }
 
     public async Task<LoginResponse?> LoginAsync(LoginRequest loginRequest)
