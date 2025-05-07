@@ -10,10 +10,10 @@ namespace Culturapp.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string? UserName { get; set; }
+    public string? UserName { get; set; } // this is the fantasy name of the enterprise
+    public string? FullName { get; set; } // this is the name of the enterprise
     public string? CNPJ { get; set; }
     public string? Email { get; set; }
-    public string? Password { get; set; }
     public ICollection<Event?>? Events { get; set; }
     public ICollection<Phone?>? Phones { get; set; }
     public int? AddressId { get; set; }

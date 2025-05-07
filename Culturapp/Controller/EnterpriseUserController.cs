@@ -19,6 +19,13 @@ namespace Culturapp.Controller
       _enterpriseUserService = enterpriseUserService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetEnterpriseUsers()
+    {
+      var users = await _enterpriseUserService.GetEnterpriseUsersAsync();
+      return Ok(users);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEnterpriseUserById(int id)
     {
@@ -38,7 +45,7 @@ namespace Culturapp.Controller
         return BadRequest(ModelState);
       }
 
-      await _enterpriseUserService.AddEnterpriseUserAsync(enterpriseUserRequest);
+      await _enterpriseUserService.CreateEnterpriseUserAsync(enterpriseUserRequest);
       return NoContent();
     }
 
