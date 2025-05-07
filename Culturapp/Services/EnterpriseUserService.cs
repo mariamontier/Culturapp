@@ -6,7 +6,7 @@ using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
-namespace Culturapp.Servers
+namespace Culturapp.Services
 {
   public class EnterpriseUserService
   {
@@ -51,14 +51,15 @@ namespace Culturapp.Servers
       }
     }
 
-    public async Task UpdateEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
+    public async Task<EnterpriseUser?> UpdateEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
     {
       var enterpriseUser = _mapper.Map<EnterpriseUser>(enterpriseUserRequest);
       _context.EnterpriseUsers.Update(enterpriseUser);
       await _context.SaveChangesAsync();
+      return enterpriseUser;
     }
 
-    public async Task DeleteEnterpriseUserAsync(int id)
+    public async Task<EnterpriseUser?> DeleteEnterpriseUserAsync(int id)
     {
       var userEnterprise = await _context.EnterpriseUsers.FindAsync(id);
       if (userEnterprise != null)
@@ -66,6 +67,7 @@ namespace Culturapp.Servers
         _context.EnterpriseUsers.Remove(userEnterprise);
         await _context.SaveChangesAsync();
       }
+      return userEnterprise;
     }
 
   }

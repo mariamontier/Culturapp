@@ -4,6 +4,7 @@ using Culturapp.Models;
 using Culturapp.Services;
 using System.Threading.Tasks;
 using Culturapp.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Culturapp.Controllers
 {
@@ -38,14 +39,6 @@ namespace Culturapp.Controllers
         return Unauthorized();
       }
       return Ok(loginResponse);
-    }
-
-
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-      await _authService.LogoutAsync();
-      return Ok(new { Message = "Logged out successfully" });
     }
 
   }

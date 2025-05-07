@@ -3,7 +3,8 @@ using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.EntityFrameworkCore;
-namespace Culturapp.Servers
+
+namespace Culturapp.Services
 {
   public class ClientUserService
   {
@@ -46,14 +47,15 @@ namespace Culturapp.Servers
 
     }
 
-    public async Task UpdateClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUser?> UpdateClientUserAsync(ClientUserRequest clientUserRequest)
     {
       var clientUser = _mapper.Map<ClientUser>(clientUserRequest);
       _context.ClientUsers.Update(clientUser);
       await _context.SaveChangesAsync();
+      return clientUser;
     }
 
-    public async Task DeleteClientUserAsync(int id)
+    public async Task<ClientUser?> DeleteClientUserAsync(int id)
     {
       var user = await _context.ClientUsers.FindAsync(id);
       if (user != null)
@@ -61,6 +63,8 @@ namespace Culturapp.Servers
         _context.ClientUsers.Remove(user);
         await _context.SaveChangesAsync();
       }
+
+      return user;
     }
 
   }
