@@ -30,7 +30,7 @@ namespace Culturapp.Services
       return clientUserResponse;
     }
 
-    public async Task<ClientUser?> AddClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUser?> CreateClientUserAsync(ClientUserRequest clientUserRequest)
     {
       var userClient = _mapper.Map<ClientUser>(clientUserRequest);
       var existingUser = await _context.ClientUsers.FirstOrDefaultAsync(u => u.CPF == userClient.CPF || u.Email == userClient.Email);

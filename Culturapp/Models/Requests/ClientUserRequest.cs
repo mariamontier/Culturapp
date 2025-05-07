@@ -6,10 +6,8 @@ namespace Culturapp.Models.Requests
     public string? Password { get; set; }
     public string? Email { get; set; }
     public string? FullName { get; set; }
-    public Phone? Phone { get; set; }
+    public int? PhoneId { get; set; }
     public string? CPF { get; set; }
-    public Address? Address { get; set; }
-    public ICollection<Event?>? Events { get; set; }
-    public ICollection<Checking?>? Checks { get; set; }
+    public int? AddressId { get; set; }
   }
 }

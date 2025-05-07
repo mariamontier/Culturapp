@@ -42,7 +42,7 @@ namespace Culturapp.Controller
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var createdUser = await _clientUserService.AddClientUserAsync(clientUserRequest);
+      var createdUser = await _clientUserService.CreateClientUserAsync(clientUserRequest);
       return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
     }
 
