@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    [Migration("20250506215117_InicialMigration")]
-    partial class InicialMigration
+    [Migration("20250507134808_DbInicial")]
+    partial class DbInicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,9 @@ namespace Culturapp.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AddressNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("City")
                         .HasColumnType("longtext");
 
@@ -70,9 +73,6 @@ namespace Culturapp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Neighborhood")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Number")
                         .HasColumnType("longtext");
 
                     b.Property<string>("State")

@@ -60,6 +60,9 @@ namespace Culturapp.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AddressNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("City")
                         .HasColumnType("longtext");
 
@@ -67,9 +70,6 @@ namespace Culturapp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Neighborhood")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Number")
                         .HasColumnType("longtext");
 
                     b.Property<string>("State")
