@@ -82,16 +82,18 @@ namespace Culturapp.Services
           Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured."))
       );
 
-      var token = new JwtSecurityToken(
-          issuer: _configuration["Jwt:Issuer"],
-          audience: _configuration["Jwt:Audience"],
-          expires: DateTime.UtcNow.AddHours(1),
-          claims: authClaims,
-          signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-      );
+      var tokenDescriptor = new SecurityTokenDescriptor
+      {
+        Subject = new ClaimsIdentity(authClaims),
+        Expires = DateTime.UtcNow.AddHours(1),
+        Issuer = _configuration["Jwt:Issuer"],
+        Audience = _configuration["Jwt:Audience"],
+        SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+      };
 
       var tokenHandler = new JwtSecurityTokenHandler();
-      string tokenString = tokenHandler.WriteToken(token);
+      var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+      string tokenString = tokenHandler.WriteToken(securityToken);
 
       return tokenString;
 
