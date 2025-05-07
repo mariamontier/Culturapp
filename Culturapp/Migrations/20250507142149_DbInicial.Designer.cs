@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    [Migration("20250507134808_DbInicial")]
+    [Migration("20250507142149_DbInicial")]
     partial class DbInicial
     {
         /// <inheritdoc />
@@ -117,6 +117,9 @@ namespace Culturapp.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -215,9 +218,6 @@ namespace Culturapp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Password")
                         .HasColumnType("longtext");
 
                     b.Property<int?>("PhoneId")

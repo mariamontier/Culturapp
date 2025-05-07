@@ -99,5 +99,11 @@ namespace Culturapp.Services
 
     }
 
+    public async Task<ApplicationUser?> FindUser(string email)
+    {
+      var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+      return user;
+    }
+
   }
 }
