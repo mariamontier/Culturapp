@@ -249,7 +249,7 @@ namespace Culturapp.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("FullName")
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserName")

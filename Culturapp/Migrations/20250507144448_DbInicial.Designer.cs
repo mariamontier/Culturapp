@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Culturapp.Migrations
 {
     [DbContext(typeof(CulturappDbContext))]
-    [Migration("20250507142149_DbInicial")]
+    [Migration("20250507144448_DbInicial")]
     partial class DbInicial
     {
         /// <inheritdoc />
@@ -252,7 +252,7 @@ namespace Culturapp.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("FullName")
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserName")
