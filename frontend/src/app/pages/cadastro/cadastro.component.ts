@@ -21,15 +21,21 @@ export class CadastroComponent {
     private router: Router
   ) {
     this.cadastroForm = this.fb.group({
-      nome: [''],
-      email: [''],
-      senha: ['']
+      userName: [''],          // Nome de usuário
+      userFullName: [''],      // Nome completo
+      email: [''],             // E-mail
+      password: [''],          // Senha
+      cpf: [''],               // CPF
+      cnpj: [''],              // CNPJ
+      accountType: [0],        // Tipo de conta, default 0 (Pessoa Física)
     });
   }
 
   cadastrar() {
-    this.authService.cadastrar(this.cadastroForm.value).subscribe(() => {
-      this.router.navigate(['/login']);
-    });
+    if (this.cadastroForm.valid) {
+      this.authService.cadastrar(this.cadastroForm.value).subscribe(() => {
+        this.router.navigate(['/login']);
+      });
+    }
   }
 }
