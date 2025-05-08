@@ -10,12 +10,15 @@ namespace Culturapp.Services
   {
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
+    private readonly AuthService _authService;
 
-    public ClientUserService(CulturappDbContext context, IMapper mapper)
+    public ClientUserService(CulturappDbContext context, IMapper mapper, AuthService authService)
     {
       _context = context;
       _mapper = mapper;
+      _authService = authService;
     }
+
     public async Task<List<ClientUserResponse>> GetClientUsersAsync()
     {
       var clientList = await _context.ClientUsers.ToListAsync();
@@ -30,9 +33,16 @@ namespace Culturapp.Services
       return clientUserResponse;
     }
 
-    public async Task<ClientUser?> AddClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUser?> CreateClientUserAsync(ClientUserRequest clientUserRequest)
     {
+      var user = await _authService.FindUser(clientUserRequest.Email!);
+
       var userClient = _mapper.Map<ClientUser>(clientUserRequest);
+
+      userClient.CPF = user!.CPF;
+      userClient.FullName = user.FullName;
+      userClient.UserName = user.UserName;
+
       var existingUser = await _context.ClientUsers.FirstOrDefaultAsync(u => u.CPF == userClient.CPF || u.Email == userClient.Email);
       if (existingUser != null)
       {

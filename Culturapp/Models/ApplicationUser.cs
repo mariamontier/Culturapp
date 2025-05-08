@@ -6,6 +6,7 @@ namespace Culturapp.Models
   public class ApplicationUser : IdentityUser
   {
     public AccountType AccountType { get; set; }
+    public string? FullName { get; set; }
     public string? CNPJ { get; set; }
     public string? CPF { get; set; }
   }

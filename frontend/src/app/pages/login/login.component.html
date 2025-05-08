@@ -1,0 +1,14 @@
+<div class="container mt-5">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="mb-3">
+      <label>E-mail</label>
+      <input class="form-control" type="email" formControlName="email">
+    </div>
+    <div class="mb-3">
+      <label>Senha</label>
+      <input class="form-control" type="password" formControlName="password">
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Entrar</button>
+  </form>
+</div>

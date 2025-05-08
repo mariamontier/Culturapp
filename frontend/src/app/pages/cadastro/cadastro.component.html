@@ -1,0 +1,37 @@
+<div class="container mt-5">
+  <h2>Cadastro</h2>
+  <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+    <div class="mb-3">
+      <label>Nome Completo</label>
+      <input class="form-control" formControlName="userFullName">
+    </div>
+    <div class="mb-3">
+      <label>Nome de Usuário</label>
+      <input class="form-control" formControlName="userName">
+    </div>
+    <div class="mb-3">
+      <label>E-mail</label>
+      <input class="form-control" type="email" formControlName="email">
+    </div>
+    <div class="mb-3">
+      <label>Senha</label>
+      <input class="form-control" type="password" formControlName="password">
+    </div>
+    <div class="mb-3">
+      <label>CPF</label>
+      <input class="form-control" formControlName="cpf">
+    </div>
+    <div class="mb-3">
+      <label>CNPJ</label>
+      <input class="form-control" formControlName="cnpj">
+    </div>
+    <div class="mb-3">
+      <label>Tipo de Conta</label>
+      <select class="form-control" formControlName="accountType">
+        <option value="0">Pessoa Física</option>
+        <option value="1">Pessoa Jurídica</option>
+      </select>
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Cadastrar</button>
+  </form>
+</div>

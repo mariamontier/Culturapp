@@ -13,11 +13,13 @@ namespace Culturapp.Services
 
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
+    private readonly AuthService _authService;
 
-    public EnterpriseUserService(CulturappDbContext context, IMapper mapper)
+    public EnterpriseUserService(CulturappDbContext context, IMapper mapper, AuthService authService)
     {
       _context = context;
       _mapper = mapper;
+      _authService = authService;
     }
 
     public async Task<List<EnterpriseUserResponse>> GetEnterpriseUsersAsync()
@@ -34,19 +36,28 @@ namespace Culturapp.Services
       return enterpriseUserResponse;
     }
 
-    public async Task<EnterpriseUserResponse?> AddEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
+    public async Task<EnterpriseUserResponse?> CreateEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
     {
+
+      var user = await _authService.FindUser(enterpriseUserRequest.Email!);
+
       var userEnterprise = _mapper.Map<EnterpriseUser>(enterpriseUserRequest);
+
+      userEnterprise.CNPJ = user!.CNPJ;
+      userEnterprise.UserName = user.UserName;
+      userEnterprise.FullName = user.FullName;
+
       var existingUser = await _context.EnterpriseUsers.FirstOrDefaultAsync(u => u.CNPJ == userEnterprise.CNPJ || u.Email == userEnterprise.Email);
+
       if (existingUser != null)
       {
         return null;
       }
       else
       {
-        _context.EnterpriseUsers.Add(existingUser);
+        _context.EnterpriseUsers.Add(userEnterprise);
         await _context.SaveChangesAsync();
-        var userEnterpriseResponse = _mapper.Map<EnterpriseUserResponse>(existingUser);
+        var userEnterpriseResponse = _mapper.Map<EnterpriseUserResponse>(userEnterprise);
         return userEnterpriseResponse;
       }
     }
