@@ -56,31 +56,7 @@ namespace Culturapp.Controllers
     [HttpPut("PutEvent/{id}")]
     public async Task<IActionResult> PutEvent(int id, EventRequest eventItem)
     {
-      var eventExists = await _eventService.EventExists(id)!;
-
-      if (eventExists == null)
-      {
-        return NotFound();
-      }
-
-      var updatedEvent = new Event
-      {
-        Id = eventExists.Id,
-        Name = eventItem.Name,
-        Description = eventItem.Description,
-        Category = eventItem.Category,
-        LocationAddress = eventItem.LocationAddress,
-        Phones = eventItem.Phones,
-        FAQ = eventItem.FAQ,
-        Checking = eventItem.Checking,
-        Status = eventExists.Status,
-        Enterprise = eventExists.Enterprise
-      };
-
-      eventExists = updatedEvent;
-      eventExists.Id = id;
-
-      await _eventService.UpdateEventAsync(updatedEvent);
+      await _eventService.UpdateEventAsync(id, eventItem);
 
       return NoContent();
     }
@@ -88,7 +64,7 @@ namespace Culturapp.Controllers
     [HttpDelete("DeleteEvent/{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
-      var eventItem = await _eventService.EventExists(id)!;
+      var eventItem = await _eventService.GetEventByIdAsync(id)!;
       if (eventItem == null)
       {
         return NotFound();
