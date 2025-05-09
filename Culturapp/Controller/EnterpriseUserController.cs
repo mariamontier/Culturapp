@@ -37,18 +37,6 @@ namespace Culturapp.Controller
       return Ok(user);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateEnterpriseUser([FromBody] EnterpriseUserRequest enterpriseUserRequest)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      await _enterpriseUserService.CreateEnterpriseUserAsync(enterpriseUserRequest);
-      return NoContent();
-    }
-
     [HttpPut()]
     public async Task<IActionResult> UpdateEnterpriseUser([FromBody] EnterpriseUserRequest enterpriseUserRequest)
     {
