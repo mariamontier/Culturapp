@@ -6,7 +6,7 @@ using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
-namespace Culturapp.Servers
+namespace Culturapp.Services
 {
   public class EnterpriseUserService
   {
@@ -34,9 +34,16 @@ namespace Culturapp.Servers
       return enterpriseUserResponse;
     }
 
-    public async Task<EnterpriseUserResponse?> AddEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
+    public async Task<EnterpriseUserResponse?> CreateEnterpriseUserAsync(ApplicationUser user)
     {
-      var userEnterprise = _mapper.Map<EnterpriseUser>(enterpriseUserRequest);
+      var userEnterprise = new EnterpriseUser
+      {
+        Email = user!.Email,
+        CNPJ = user.CNPJ,
+        FullName = user.FullName,
+        UserName = user.UserName
+      };
+
       var existingUser = await _context.EnterpriseUsers.FirstOrDefaultAsync(u => u.CNPJ == userEnterprise.CNPJ || u.Email == userEnterprise.Email);
       if (existingUser != null)
       {
@@ -44,21 +51,22 @@ namespace Culturapp.Servers
       }
       else
       {
-        _context.EnterpriseUsers.Add(existingUser);
+        _context.EnterpriseUsers.Add(userEnterprise);
         await _context.SaveChangesAsync();
-        var userEnterpriseResponse = _mapper.Map<EnterpriseUserResponse>(existingUser);
+        var userEnterpriseResponse = _mapper.Map<EnterpriseUserResponse>(userEnterprise);
         return userEnterpriseResponse;
       }
     }
 
-    public async Task UpdateEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
+    public async Task<EnterpriseUser?> UpdateEnterpriseUserAsync(EnterpriseUserRequest enterpriseUserRequest)
     {
       var enterpriseUser = _mapper.Map<EnterpriseUser>(enterpriseUserRequest);
       _context.EnterpriseUsers.Update(enterpriseUser);
       await _context.SaveChangesAsync();
+      return enterpriseUser;
     }
 
-    public async Task DeleteEnterpriseUserAsync(int id)
+    public async Task<EnterpriseUser?> DeleteEnterpriseUserAsync(int id)
     {
       var userEnterprise = await _context.EnterpriseUsers.FindAsync(id);
       if (userEnterprise != null)
@@ -66,6 +74,7 @@ namespace Culturapp.Servers
         _context.EnterpriseUsers.Remove(userEnterprise);
         await _context.SaveChangesAsync();
       }
+      return userEnterprise;
     }
 
   }

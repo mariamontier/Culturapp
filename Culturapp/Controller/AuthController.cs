@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Culturapp.Models;
 using Culturapp.Services;
-using System.Threading.Tasks;
 using Culturapp.Models.Requests;
 
 namespace Culturapp.Controllers
@@ -24,7 +21,7 @@ namespace Culturapp.Controllers
       var result = await _authService.RegisterAsync(registerRequest);
       if (result.Succeeded)
       {
-        return Ok(new { Message = "User created successfully" });
+        return Created();
       }
       return BadRequest(result.Errors);
     }
@@ -38,14 +35,6 @@ namespace Culturapp.Controllers
         return Unauthorized();
       }
       return Ok(loginResponse);
-    }
-
-
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-      await _authService.LogoutAsync();
-      return Ok(new { Message = "Logged out successfully" });
     }
 
   }
