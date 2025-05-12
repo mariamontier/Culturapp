@@ -60,6 +60,9 @@ namespace Culturapp.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AddressNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("City")
                         .HasColumnType("longtext");
 
@@ -67,9 +70,6 @@ namespace Culturapp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Neighborhood")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Number")
                         .HasColumnType("longtext");
 
                     b.Property<string>("State")
@@ -113,6 +113,9 @@ namespace Culturapp.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -214,9 +217,6 @@ namespace Culturapp.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("PhoneId")
                         .HasColumnType("int");
 
@@ -249,7 +249,7 @@ namespace Culturapp.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("FullName")
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserName")

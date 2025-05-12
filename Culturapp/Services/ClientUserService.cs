@@ -3,7 +3,8 @@ using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.EntityFrameworkCore;
-namespace Culturapp.Servers
+
+namespace Culturapp.Services
 {
   public class ClientUserService
   {
@@ -15,6 +16,7 @@ namespace Culturapp.Servers
       _context = context;
       _mapper = mapper;
     }
+
     public async Task<List<ClientUserResponse>> GetClientUsersAsync()
     {
       var clientList = await _context.ClientUsers.ToListAsync();
@@ -29,9 +31,17 @@ namespace Culturapp.Servers
       return clientUserResponse;
     }
 
-    public async Task<ClientUser?> AddClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUserResponse?> CreateClientUserAsync(ApplicationUser user)
     {
-      var userClient = _mapper.Map<ClientUser>(clientUserRequest);
+
+      var userClient = new ClientUser
+      {
+        Email = user!.Email,
+        CPF = user.CPF,
+        FullName = user.FullName,
+        UserName = user.UserName
+      };
+
       var existingUser = await _context.ClientUsers.FirstOrDefaultAsync(u => u.CPF == userClient.CPF || u.Email == userClient.Email);
       if (existingUser != null)
       {
@@ -41,19 +51,21 @@ namespace Culturapp.Servers
       {
         _context.ClientUsers.Add(userClient);
         await _context.SaveChangesAsync();
-        return userClient;
+        var userClientResponse = _mapper.Map<ClientUserResponse>(userClient);
+        return userClientResponse;
       }
 
     }
 
-    public async Task UpdateClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUser?> UpdateClientUserAsync(ClientUserRequest clientUserRequest)
     {
       var clientUser = _mapper.Map<ClientUser>(clientUserRequest);
       _context.ClientUsers.Update(clientUser);
       await _context.SaveChangesAsync();
+      return clientUser;
     }
 
-    public async Task DeleteClientUserAsync(int id)
+    public async Task<ClientUser?> DeleteClientUserAsync(int id)
     {
       var user = await _context.ClientUsers.FindAsync(id);
       if (user != null)
@@ -61,6 +73,8 @@ namespace Culturapp.Servers
         _context.ClientUsers.Remove(user);
         await _context.SaveChangesAsync();
       }
+
+      return user;
     }
 
   }
