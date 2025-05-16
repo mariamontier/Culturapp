@@ -34,58 +34,22 @@ namespace Culturapp.Services
 
     public async Task CreateEventAsync(EventRequest newEventRequest)
     {
-      var mapperEvent = _mapper.Map<Event>(newEventRequest);
-      _context.Events.Add(mapperEvent);
+      var eventNew = new Event();
+      eventNew = await MakeEventRelationshipMapper(eventNew, newEventRequest);
+      _context.Events.Add(eventNew);
       await _context.SaveChangesAsync();
     }
 
-    public async Task<Event?> UpdateEventAsync(int id, EventRequest eventRequest)
+    public async Task<Event?> UpdateEventAsync(int id, EventRequest? eventRequest)
     {
       var eventUpdate = await _context.Events.FindAsync(id);
 
-      if (eventUpdate == null)
+      if (eventUpdate == null || eventRequest == null)
       {
         return null;
       }
 
-      eventUpdate.Name = eventRequest.Name;
-      eventUpdate.StartDate = eventRequest.StartDate;
-      eventUpdate.EndDate = eventRequest.EndDate;
-      eventUpdate.Description = eventRequest.Description;
-      var locationAddress = await _context.Addresses.FindAsync(eventRequest.LocationAddressId);
-      eventUpdate.LocationAddress = locationAddress;
-      eventUpdate.Capacity = eventRequest.Capacity;
-      eventUpdate.TicketPrice = eventRequest.TicketPrice;
-      eventUpdate.SalesStartDate = eventRequest.SalesStartDate;
-      eventUpdate.SalesEndDate = eventRequest.SalesEndDate;
-      eventUpdate.ScoreValue = eventRequest.ScoreValue;
-      var status = await _context.Statuses.FindAsync(eventRequest.StatusId);
-      eventUpdate.Status = status;
-      var checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
-      eventUpdate.Checking = checking;
-      var faq = await _context.FAQs.FindAsync(eventRequest.FAQInt);
-      eventUpdate.FAQ = faq;
-      var enterprise = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
-      eventUpdate.Enterprise = enterprise;
-      var category = await _context.Categories.FindAsync(eventRequest.CategoryId);
-      eventUpdate.Category = category;
-      var phones = new List<Phone>();
-      if (eventRequest.PhonesId == null)
-      {
-        eventUpdate.Phones = phones!;
-      }
-      else
-      {
-        foreach (var phone in eventRequest.PhonesId!)
-        {
-          var phoneEntity = await _context.Phones.FindAsync(phone);
-          if (phoneEntity != null)
-          {
-            phones.Add(phoneEntity);
-          }
-        }
-        eventUpdate.Phones = phones!;
-      }
+      eventUpdate = await MakeEventRelationshipMapper(eventUpdate, eventRequest);
 
       _context.Events.Update(eventUpdate);
       await _context.SaveChangesAsync();
@@ -95,13 +59,90 @@ namespace Culturapp.Services
 
     public async Task DeleteEventAsync(int id)
     {
-      var eventResponse = await GetEventByIdAsync(id);
-      if (eventResponse != null)
+      var eventDelete = await _context.Events.FindAsync(id);
+      if (eventDelete != null)
       {
-        var eventToDelete = _mapper.Map<Event>(eventResponse);
+        var eventToDelete = _mapper.Map<Event>(eventDelete);
         _context.Events.Remove(eventToDelete);
         await _context.SaveChangesAsync();
       }
+    }
+
+    public async Task<Event> MakeEventRelationshipMapper(Event? bestEvent, EventRequest? eventRequest)
+    {
+      bestEvent!.Name = eventRequest!.Name;
+      bestEvent.StartDate = eventRequest.StartDate;
+      bestEvent.EndDate = eventRequest.EndDate;
+      bestEvent.Description = eventRequest.Description;
+      var locationAddress = await _context.Addresses.FindAsync(eventRequest.LocationAddressId);
+      bestEvent.LocationAddress = locationAddress;
+      bestEvent.Capacity = eventRequest.Capacity;
+      bestEvent.TicketPrice = eventRequest.TicketPrice;
+      bestEvent.SalesStartDate = eventRequest.SalesStartDate;
+      bestEvent.SalesEndDate = eventRequest.SalesEndDate;
+      bestEvent.ScoreValue = eventRequest.ScoreValue;
+      var status = await _context.Statuses.FindAsync(eventRequest.StatusId);
+      bestEvent.Status = status;
+      var checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
+      bestEvent.Checking = checking;
+      var faq = await _context.FAQs.FindAsync(eventRequest.FAQInt);
+      bestEvent.FAQ = faq;
+      var enterprise = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
+      bestEvent.Enterprise = enterprise;
+      var category = await _context.Categories.FindAsync(eventRequest.CategoryId);
+      bestEvent.Category = category;
+
+      var eventCheck = await _context.Events.FindAsync(bestEvent.Id)!;
+
+      ICollection<Phone?> phones = new List<Phone?>();
+      ICollection<ClientUser?> clientUsers = new List<ClientUser?>();
+
+      if (eventCheck!.Phones! != null)
+      {
+        phones = eventCheck!.Phones!;
+      }
+
+      if (eventCheck.ClientUsers != null)
+      {
+        clientUsers = eventCheck.ClientUsers;
+      }
+
+      if (eventRequest.PhonesId == null)
+      {
+        bestEvent.Phones = phones!;
+      }
+      else
+      {
+        foreach (var phone in eventRequest.PhonesId!)
+        {
+          var phoneEntity = await _context.Phones.FindAsync(phone);
+          if (phoneEntity != null)
+          {
+            phones!.Add(phoneEntity);
+          }
+        }
+        bestEvent.Phones = phones!;
+      }
+
+
+      if (eventRequest.ClientUsersId == null)
+      {
+        bestEvent.ClientUsers = clientUsers!;
+      }
+      else
+      {
+        foreach (var clientUserId in eventRequest.ClientUsersId!)
+        {
+          var clientUserEntity = await _context.ClientUsers.FindAsync(clientUserId);
+          if (clientUserEntity != null)
+          {
+            clientUsers.Add(clientUserEntity);
+          }
+        }
+        bestEvent.ClientUsers = clientUsers!; // check a error when add a clientUser
+      }
+
+      return bestEvent;
     }
 
   }
