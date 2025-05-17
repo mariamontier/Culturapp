@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using Culturapp.Data;
 using Culturapp.Models;
@@ -70,80 +69,60 @@ namespace Culturapp.Services
 
     public async Task<Event> MakeEventRelationshipMapper(Event? bestEvent, EventRequest? eventRequest)
     {
-      bestEvent!.Name = eventRequest!.Name;
+      if (bestEvent == null || eventRequest == null) return null!;
+
+      bestEvent.Name = eventRequest.Name;
       bestEvent.StartDate = eventRequest.StartDate;
       bestEvent.EndDate = eventRequest.EndDate;
       bestEvent.Description = eventRequest.Description;
-      var locationAddress = await _context.Addresses.FindAsync(eventRequest.LocationAddressId);
-      bestEvent.LocationAddress = locationAddress;
+
+      bestEvent.LocationAddress = await _context.Addresses.FindAsync(eventRequest.LocationAddressId);
       bestEvent.Capacity = eventRequest.Capacity;
       bestEvent.TicketPrice = eventRequest.TicketPrice;
       bestEvent.SalesStartDate = eventRequest.SalesStartDate;
       bestEvent.SalesEndDate = eventRequest.SalesEndDate;
       bestEvent.ScoreValue = eventRequest.ScoreValue;
-      var status = await _context.Statuses.FindAsync(eventRequest.StatusId);
-      bestEvent.Status = status;
-      var checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
-      bestEvent.Checking = checking;
-      var faq = await _context.FAQs.FindAsync(eventRequest.FAQInt);
-      bestEvent.FAQ = faq;
-      var enterprise = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
-      bestEvent.Enterprise = enterprise;
-      var category = await _context.Categories.FindAsync(eventRequest.CategoryId);
-      bestEvent.Category = category;
+      bestEvent.Status = await _context.Statuses.FindAsync(eventRequest.StatusId);
+      bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
+      bestEvent.FAQ = await _context.FAQs.FindAsync(eventRequest.FAQInt);
+      bestEvent.Enterprise = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
+      bestEvent.Category = await _context.Categories.FindAsync(eventRequest.CategoryId);
 
-      var eventCheck = await _context.Events.FindAsync(bestEvent.Id)!;
-
-      ICollection<Phone?> phones = new List<Phone?>();
-      ICollection<ClientUser?> clientUsers = new List<ClientUser?>();
-
-      if (eventCheck!.Phones! != null)
+      // Phones
+      if (eventRequest.PhonesId != null && eventRequest.PhonesId.Any())
       {
-        phones = eventCheck!.Phones!;
-      }
-
-      if (eventCheck.ClientUsers != null)
-      {
-        clientUsers = eventCheck.ClientUsers;
-      }
-
-      if (eventRequest.PhonesId == null)
-      {
-        bestEvent.Phones = phones!;
-      }
-      else
-      {
-        foreach (var phone in eventRequest.PhonesId!)
+        var phones = new List<Phone>();
+        foreach (var phoneId in eventRequest.PhonesId)
         {
-          var phoneEntity = await _context.Phones.FindAsync(phone);
+          var phoneEntity = await _context.Phones.FindAsync(phoneId);
           if (phoneEntity != null)
           {
-            phones!.Add(phoneEntity);
+            phones.Add(phoneEntity);
           }
         }
-        bestEvent.Phones = phones!;
+        bestEvent.Phones = phones;
       }
 
-
-      if (eventRequest.ClientUsersId == null)
+      // ClientUsers
+      if (eventRequest.ClientUsersId != null && eventRequest.ClientUsersId.Any())
       {
-        bestEvent.ClientUsers = clientUsers!;
-      }
-      else
-      {
-        foreach (var clientUserId in eventRequest.ClientUsersId!)
+        var clientUsersList = new List<ClientUser>();
+        foreach (var clientUserId in eventRequest.ClientUsersId)
         {
+          if (clientUserId == null) continue;
+
           var clientUserEntity = await _context.ClientUsers.FindAsync(clientUserId);
           if (clientUserEntity != null)
           {
-            clientUsers.Add(clientUserEntity);
+            clientUsersList.Add(clientUserEntity);
           }
         }
-        bestEvent.ClientUsers = clientUsers!; // check a error when add a clientUser
+        bestEvent.ClientUsers = clientUsersList;
       }
 
       return bestEvent;
     }
+
 
   }
 }
