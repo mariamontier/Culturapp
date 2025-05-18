@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Culturapp.Models;
+
 [Table("Events")]
 public class Event
 {
@@ -27,7 +28,7 @@ public class Event
   public FAQ? FAQ { get; set; }
   public int? EnterpriseId { get; set; }
   public EnterpriseUser? Enterprise { get; set; } // Empresa que está organizando o evento
-  public int? CategoryId { get; set; }
+  public Guid? CategoryId { get; set; }
   public Category? Category { get; set; } // Categoria do evento, como teatro, show, etc.
   public ICollection<Phone?>? Phones { get; set; }
   public ICollection<ClientUser?>? ClientUsers { get; set; }

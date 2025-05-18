@@ -55,6 +55,9 @@ builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<ClientUserService>();
 builder.Services.AddScoped<EnterpriseUserService>();
 builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<EventService>();
+
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
 builder.Services.AddControllers();
@@ -66,6 +69,8 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
+
+
 
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();

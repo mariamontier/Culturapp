@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Culturapp.Controllers
 {
-  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class EventController : ControllerBase
@@ -39,6 +38,7 @@ namespace Culturapp.Controllers
       return Ok(eventItem);
     }
 
+    [Authorize]
     [HttpPost("PostEvent")]
     public async Task<ActionResult<Event>> PostEvent(EventRequest eventItem)
     {
@@ -53,6 +53,7 @@ namespace Culturapp.Controllers
 
     }
 
+    [Authorize]
     [HttpPut("PutEvent/{id}")]
     public async Task<IActionResult> PutEvent(int id, EventRequest eventItem)
     {
@@ -61,6 +62,7 @@ namespace Culturapp.Controllers
       return NoContent();
     }
 
+    [Authorize]
     [HttpDelete("DeleteEvent/{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
