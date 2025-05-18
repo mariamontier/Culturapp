@@ -47,7 +47,6 @@ namespace Culturapp.Controllers
 
       var createdCategory = await _categoryService.CreateAsync(categoryRequest);
 
-      // Retorna 201 Created com o local do recurso criado
       return CreatedAtAction(nameof(GetCategory), new { id = createdCategory.Id }, createdCategory);
     }
 

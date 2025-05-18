@@ -35,6 +35,7 @@ namespace Culturapp.Services
     {
       var eventNew = new Event();
       eventNew = await MakeEventRelationshipMapper(eventNew, newEventRequest);
+      eventNew.ScoreValue = eventNew.TicketPrice * 0.10;
       _context.Events.Add(eventNew);
       await _context.SaveChangesAsync();
     }
@@ -48,8 +49,14 @@ namespace Culturapp.Services
         return null;
       }
 
+      bool ticketPriceChanged = eventRequest.TicketPrice != eventUpdate.TicketPrice;
+
       eventUpdate = await MakeEventRelationshipMapper(eventUpdate, eventRequest);
 
+      if (ticketPriceChanged)
+      {
+        eventUpdate.ScoreValue = eventUpdate.TicketPrice * 0.10;
+      }
       _context.Events.Update(eventUpdate);
       await _context.SaveChangesAsync();
 

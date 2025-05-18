@@ -45,12 +45,10 @@ public class CategoryService
 
     var categoryInDb = await _context.Categories.FindAsync(categoryRequest.Id);
     if (categoryInDb == null)
-      return null; // Ou lance exceção ou trate o caso de não encontrado
+      return null; 
 
-    // Atualiza as propriedades da entidade existente, pode ser manualmente ou com AutoMapper:
     _mapper.Map(categoryRequest, categoryInDb);
 
-    // O EF já sabe que categoryInDb foi alterada, então só salvar:
     await _context.SaveChangesAsync();
 
     return categoryInDb;
