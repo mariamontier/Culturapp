@@ -34,12 +34,13 @@ namespace Culturapp.Controllers
       return Ok(category);
     }
 
+    [Authorize]
     [HttpPost("PostCategory")]
     public async Task<ActionResult<CategoryResponse>> PostCategory([FromBody] CategoryRequest categoryRequest)
     {
       if (categoryRequest == null)
       {
-        return BadRequest("A requisição está vazia.");
+        return BadRequest();
       }
 
       var createdCategory = await _categoryService.CreateAsync(categoryRequest);
