@@ -1,4 +1,3 @@
-using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -6,9 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Culturapp.Controllers
 {
-
-  [Route("api/[controller]")]
   [ApiController]
+  [Route("api/[controller]")]
   public class CategoryController : ControllerBase
   {
     private readonly CategoryService _categoryService;
@@ -26,7 +24,7 @@ namespace Culturapp.Controllers
     }
 
     [HttpGet("GetCategory/{id}")]
-    public async Task<ActionResult<CategoryResponse>> GetCategory(Guid id)
+    public async Task<ActionResult<CategoryResponse>> GetCategory(int id)
     {
       var category = await _categoryService.GetByIdAsync(id);
       if (category == null)
@@ -36,7 +34,6 @@ namespace Culturapp.Controllers
       return Ok(category);
     }
 
-    [Authorize]
     [HttpPost("PostCategory")]
     public async Task<ActionResult<CategoryResponse>> PostCategory([FromBody] CategoryRequest categoryRequest)
     {
@@ -53,12 +50,12 @@ namespace Culturapp.Controllers
 
     [Authorize]
     [HttpPut("PutCategory/{id}")]
-    public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryRequest model)
+    public async Task<IActionResult> PutCategory(int? id, [FromBody] CategoryRequest model)
     {
-      if (id != model.Id)
+      if (id == null)
         return BadRequest();
 
-      var updatedCategory = await _categoryService.UpdateAsync(model);
+      var updatedCategory = await _categoryService.UpdateAsync(id, model);
       if (updatedCategory == null)
         return NotFound();
 
@@ -67,7 +64,7 @@ namespace Culturapp.Controllers
 
     [Authorize]
     [HttpDelete("DeleteCategory/{id}")]
-    public async Task<IActionResult> DeleteCategory(Guid id)
+    public async Task<IActionResult> DeleteCategory(int id)
     {
       var deleted = await _categoryService.DeleteAsync(id);
       if (!deleted)
@@ -78,7 +75,7 @@ namespace Culturapp.Controllers
     }
 
     [HttpGet("GetEventsByCategory/{categoryId}")]
-    public async Task<ActionResult<List<EventResponse>>> GetEventsByCategory(Guid categoryId)
+    public async Task<ActionResult<List<EventResponse>>> GetEventsByCategory(int? categoryId)
     {
       var events = await _categoryService.GetEventsByCategoryIdAsync(categoryId);
       if (events == null)

@@ -82,7 +82,6 @@ namespace Culturapp.Services
       bestEvent.StartDate = eventRequest.StartDate;
       bestEvent.EndDate = eventRequest.EndDate;
       bestEvent.Description = eventRequest.Description;
-
       bestEvent.LocationAddress = await _context.Addresses.FindAsync(eventRequest.LocationAddressId);
       bestEvent.Capacity = eventRequest.Capacity;
       bestEvent.TicketPrice = eventRequest.TicketPrice;
@@ -124,7 +123,7 @@ namespace Culturapp.Services
             clientUsersList.Add(clientUserEntity);
           }
         }
-        bestEvent.ClientUsers = clientUsersList;
+        bestEvent.ClientUsers = clientUsersList!;
       }
 
       return bestEvent;
