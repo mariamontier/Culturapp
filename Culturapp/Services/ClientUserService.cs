@@ -16,6 +16,7 @@ namespace Culturapp.Services
       _context = context;
       _mapper = mapper;
     }
+
     public async Task<List<ClientUserResponse>> GetClientUsersAsync()
     {
       var clientList = await _context.ClientUsers.ToListAsync();
@@ -30,9 +31,17 @@ namespace Culturapp.Services
       return clientUserResponse;
     }
 
-    public async Task<ClientUser?> AddClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUserResponse?> CreateClientUserAsync(ApplicationUser user)
     {
-      var userClient = _mapper.Map<ClientUser>(clientUserRequest);
+
+      var userClient = new ClientUser
+      {
+        Email = user!.Email,
+        CPF = user.CPF,
+        FullName = user.FullName,
+        UserName = user.UserName
+      };
+
       var existingUser = await _context.ClientUsers.FirstOrDefaultAsync(u => u.CPF == userClient.CPF || u.Email == userClient.Email);
       if (existingUser != null)
       {
@@ -42,7 +51,8 @@ namespace Culturapp.Services
       {
         _context.ClientUsers.Add(userClient);
         await _context.SaveChangesAsync();
-        return userClient;
+        var userClientResponse = _mapper.Map<ClientUserResponse>(userClient);
+        return userClientResponse;
       }
 
     }

@@ -18,24 +18,54 @@ namespace Culturapp.Services
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
+    private readonly ClientUserService _clientUserService;
+    private readonly EnterpriseUserService _enterpriseUserService;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IConfiguration configuration,
-        IMapper mapper)
+        IMapper mapper, ClientUserService clientUserService, EnterpriseUserService enterpriseUserService
+    )
     {
       _userManager = userManager;
       _signInManager = signInManager;
       _configuration = configuration;
       _mapper = mapper;
+      _clientUserService = clientUserService;
+      _enterpriseUserService = enterpriseUserService;
     }
 
-    public async Task<IdentityResult> RegisterAsync(RegisterRequest registerRequest)
+    public async Task<IdentityResult?> RegisterAsync(RegisterRequest registerRequest)
     {
       var user = _mapper.Map<ApplicationUser>(registerRequest);
 
-      return await _userManager.CreateAsync(user, registerRequest.Password!);
+      var createUser = await _userManager.CreateAsync(user, registerRequest.Password!);
+
+      var userClient = new ClientUserResponse();
+      var userEnterprise = new EnterpriseUserResponse();
+
+      switch (user.AccountType)
+      {
+        case 0:
+          userClient = await _clientUserService.CreateClientUserAsync(user);
+          break;
+        case (Models.Enum.AccountType)1:
+          userEnterprise = await _enterpriseUserService.CreateEnterpriseUserAsync(user);
+          break;
+        default:
+          throw new ArgumentException("Invalid AccountType.");
+      }
+
+      if (userClient != null || userEnterprise != null)
+      {
+        return createUser;
+      }
+      else
+      {
+        return null;
+      }
+
     }
 
     public async Task<LoginResponse?> LoginAsync(LoginRequest loginRequest)
@@ -57,7 +87,6 @@ namespace Culturapp.Services
           return new LoginResponse
           {
             Token = token,
-            Identifier = user.CPF ?? user.CNPJ,
             AccountType = user.AccountType.ToString()
           };
         }
@@ -82,16 +111,18 @@ namespace Culturapp.Services
           Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured."))
       );
 
-      var token = new JwtSecurityToken(
-          issuer: _configuration["Jwt:Issuer"],
-          audience: _configuration["Jwt:Audience"],
-          expires: DateTime.UtcNow.AddHours(1),
-          claims: authClaims,
-          signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-      );
+      var tokenDescriptor = new SecurityTokenDescriptor
+      {
+        Subject = new ClaimsIdentity(authClaims),
+        Expires = DateTime.UtcNow.AddHours(1),
+        Issuer = _configuration["Jwt:Issuer"],
+        Audience = _configuration["Jwt:Audience"],
+        SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+      };
 
       var tokenHandler = new JwtSecurityTokenHandler();
-      string tokenString = tokenHandler.WriteToken(token);
+      var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+      string tokenString = tokenHandler.WriteToken(securityToken);
 
       return tokenString;
 
