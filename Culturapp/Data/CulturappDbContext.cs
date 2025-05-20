@@ -80,6 +80,7 @@ namespace Culturapp.Data
         .HasMany(c => c.Events)
         .WithOne(e => e.Category)
         .HasForeignKey(e => e.CategoryId)
+        .IsRequired()
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Checking>()
