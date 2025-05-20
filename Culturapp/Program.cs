@@ -51,12 +51,11 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<ClientUserService>();
 builder.Services.AddScoped<EnterpriseUserService>();
-builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<StatusService>();
 
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);

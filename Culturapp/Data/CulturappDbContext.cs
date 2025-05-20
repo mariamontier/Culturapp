@@ -86,6 +86,12 @@ namespace Culturapp.Data
         .HasMany(u => u.ClientUsers)
         .WithMany(c => c.Checks)
         .UsingEntity(i => i.ToTable("CheckingsUsers"));
+
+      modelBuilder.Entity<Status>()
+        .HasMany(s => s.Events)
+        .WithOne(e => e!.Status)
+        .HasForeignKey(e => e!.StatusId)
+        .OnDelete(DeleteBehavior.SetNull);
     }
 
   }
