@@ -29,10 +29,10 @@ public class StatusService
     return _mapper.Map<StatusResponse>(status);
   }
 
-  public async Task<bool?> CreateStatusAsync(StatusRequest newStatus)
+  public async Task<bool> CreateStatusAsync(StatusRequest newStatus)
   {
     if (newStatus == null || string.IsNullOrWhiteSpace(newStatus.StatusName))
-      return null;
+      return false;
 
     var statusExistsAny = await _context.Statuses.AnyAsync();
 
@@ -56,7 +56,7 @@ public class StatusService
                                .AnyAsync(s => s.StatusName == newStatus.StatusName);
     if (exists)
     {
-      return null;
+      return false;
     }
 
     var statusNew = _mapper.Map<Status>(newStatus);
@@ -65,7 +65,7 @@ public class StatusService
     return true;
   }
 
-  public async Task<bool> UpdateStatusAsync(int id, StatusResponse updatedStatus)
+  public async Task<bool> UpdateStatusAsync(int? id, StatusRequest? updatedStatus)
   {
     var status = await _context.Statuses.FindAsync(id);
     if (status == null)
