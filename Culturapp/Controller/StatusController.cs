@@ -67,5 +67,16 @@ namespace Culturapp.Controller
       }
       return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteStatus(int id)
+    {
+      var result = await _statusService.DeleteStatusAsync(id);
+      if (!result)
+      {
+        return NotFound();
+      }
+      return NoContent();
+    }
   }
 }
