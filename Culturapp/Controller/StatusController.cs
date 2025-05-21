@@ -18,10 +18,6 @@ namespace Culturapp.Controller
     public async Task<IActionResult> GetStatuses()
     {
       var statuses = await _statusService.GetStatusesAsync();
-      if (statuses == null || !statuses.Any())
-      {
-        return NotFound();
-      }
       return Ok(statuses);
     }
 
@@ -45,6 +41,7 @@ namespace Culturapp.Controller
       }
 
       var result = await _statusService.CreateStatusAsync(newStatus);
+
       if (!result)
       {
         return BadRequest();

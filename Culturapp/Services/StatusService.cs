@@ -18,21 +18,19 @@ public class StatusService
 
   public async Task<ICollection<StatusResponse>> GetStatusesAsync()
   {
-    var statuses = await _context.Statuses.ToListAsync();
+    var statuses = await _context.Statuses.Include(s => s.Events).ToListAsync();
     return _mapper.Map<ICollection<StatusResponse>>(statuses);
   }
 
   public async Task<StatusResponse?> GetStatusByIdAsync(int id)
   {
-    var status = await _context.Statuses.FindAsync(id);
+    var status = await _context.Statuses.Include(s => s.Events).FirstOrDefaultAsync(s => s.Id == id);
     if (status == null) return null;
     return _mapper.Map<StatusResponse>(status);
   }
 
   public async Task<bool> CreateStatusAsync(StatusRequest newStatus)
   {
-    if (newStatus == null || string.IsNullOrWhiteSpace(newStatus.StatusName))
-      return false;
 
     var statusExistsAny = await _context.Statuses.AnyAsync();
 
@@ -51,6 +49,9 @@ public class StatusService
       await _context.SaveChangesAsync();
       return true;
     }
+
+    if (newStatus == null)
+      return false;
 
     var exists = await _context.Statuses
                                .AnyAsync(s => s.StatusName == newStatus.StatusName);
