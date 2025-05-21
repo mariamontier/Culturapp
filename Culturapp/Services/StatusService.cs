@@ -1,61 +1,89 @@
 using AutoMapper;
 using Culturapp.Data;
 using Culturapp.Models;
+using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
-namespace Culturapp.Services
+public class StatusService
 {
-  public class StatusService
+  private readonly CulturappDbContext _context;
+  private readonly IMapper _mapper;
+
+  public StatusService(CulturappDbContext context, IMapper mapper)
   {
-    private readonly CulturappDbContext _context;
-    private readonly IMapper _mapper;
+    _context = context;
+    _mapper = mapper;
+  }
 
-    public StatusService(CulturappDbContext context, IMapper mapper)
-    {
-      _context = context;
-      _mapper = mapper;
-    }
+  public async Task<ICollection<StatusResponse>> GetStatusesAsync()
+  {
+    var statuses = await _context.Statuses.ToListAsync();
+    return _mapper.Map<ICollection<StatusResponse>>(statuses);
+  }
 
-    public async Task<ICollection<StatusResponse>> GetStatusesAsync()
-    {
-      var status = await _context.Statuses.ToListAsync();
-      var statusResponse = _mapper.Map<ICollection<StatusResponse>>(status);
-      return statusResponse;
-    }
+  public async Task<StatusResponse?> GetStatusByIdAsync(int id)
+  {
+    var status = await _context.Statuses.FindAsync(id);
+    if (status == null) return null;
+    return _mapper.Map<StatusResponse>(status);
+  }
 
-    public async Task<StatusResponse?> GetStatusByIdAsync(int id)
-    {
-      var status = await _context.Statuses.FindAsync(id);
-      var statusResponse = _mapper.Map<StatusResponse>(status);
-      return statusResponse;
-    }
+  public async Task<bool?> CreateStatusAsync(StatusRequest newStatus)
+  {
+    if (newStatus == null || string.IsNullOrWhiteSpace(newStatus.StatusName))
+      return null;
 
-    public async Task CreateStatusAsync(StatusResponse newStatus)
+    var statusExistsAny = await _context.Statuses.AnyAsync();
+
+    if (!statusExistsAny)
     {
-      var statusNew = _mapper.Map<Status>(newStatus);
-      _context.Statuses.Add(statusNew);
+      var defaultStatuses = new List<Status>
+      {
+        new Status { StatusName = "Cancelled" },
+        new Status { StatusName = "Postponed" },
+        new Status { StatusName = "SoldOut" },
+        new Status { StatusName = "Finished" },
+        new Status { StatusName = "Preparing" }
+      };
+
+      _context.Statuses.AddRange(defaultStatuses);
       await _context.SaveChangesAsync();
+      return true;
     }
 
-    public async Task UpdateStatusAsync(int id, StatusResponse updatedStatus)
+    var exists = await _context.Statuses
+                               .AnyAsync(s => s.StatusName == newStatus.StatusName);
+    if (exists)
     {
-      var status = await _context.Statuses.FindAsync(id);
-      if (status != null)
-      {
-        _mapper.Map(updatedStatus, status);
-        await _context.SaveChangesAsync();
-      }
+      return null;
     }
 
-    public async Task Delete(int id)
-    {
-      var status = await _context.Statuses.FindAsync(id);
-      if (status != null)
-      {
-        _context.Statuses.Remove(status);
-        await _context.SaveChangesAsync();
-      }
-    }
+    var statusNew = _mapper.Map<Status>(newStatus);
+    _context.Statuses.Add(statusNew);
+    await _context.SaveChangesAsync();
+    return true;
+  }
+
+  public async Task<bool> UpdateStatusAsync(int id, StatusResponse updatedStatus)
+  {
+    var status = await _context.Statuses.FindAsync(id);
+    if (status == null)
+      return false;
+
+    _mapper.Map(updatedStatus, status);
+    await _context.SaveChangesAsync();
+    return true;
+  }
+
+  public async Task<bool> DeleteStatusAsync(int id)
+  {
+    var status = await _context.Statuses.FindAsync(id);
+    if (status == null)
+      return false;
+
+    _context.Statuses.Remove(status);
+    await _context.SaveChangesAsync();
+    return true;
   }
 }

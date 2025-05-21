@@ -11,7 +11,7 @@ public class Status
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
-  public StatusType? StatusName { get; set; } // Ativo, cancelado, etc.
+  public string? StatusName { get; set; } // Ativo, cancelado, etc.
   public ICollection<Event?>? Events { get; set; } // Eventos que estão com esse status
 }
 

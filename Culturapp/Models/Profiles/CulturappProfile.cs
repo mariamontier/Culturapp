@@ -43,6 +43,7 @@ namespace Culturapp.Models.Profiles
       CreateMap<FAQ, FaqRequest>().ReverseMap();
 
       // Status
+      CreateMap<Status, StatusRequest>().ReverseMap();
       CreateMap<Status, StatusResponse>().ReverseMap();
 
     }
