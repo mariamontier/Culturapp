@@ -55,6 +55,7 @@ builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<ClientUserService>();
 builder.Services.AddScoped<EnterpriseUserService>();
 builder.Services.AddScoped<AddressService>();
+builder.Services.AddScoped<PhoneService>();
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
 builder.Services.AddControllers();
