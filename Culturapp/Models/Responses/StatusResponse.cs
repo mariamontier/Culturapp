@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Culturapp.Models.Responses
 {
   public class StatusResponse

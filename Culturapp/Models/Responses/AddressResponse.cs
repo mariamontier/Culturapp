@@ -2,7 +2,6 @@ namespace Culturapp.Models.Responses
 {
   public class AddressResponse
   {
-
     public string? Street { get; set; }
     public string? Number { get; set; }
     public string? Neighborhood { get; set; }

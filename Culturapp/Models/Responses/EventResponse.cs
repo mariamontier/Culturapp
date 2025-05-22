@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Culturapp.Models.Requests;
 
 namespace Culturapp.Models.Responses
@@ -45,8 +46,10 @@ namespace Culturapp.Models.Responses
     public int? CategoryId { get; set; }
     public string? CategoryName { get; set; }
 
-    // Telefones e Participantes (usando DTOs mais leves)
+    // Telefones
     public List<PhoneResponse>? Phones { get; set; }
+
+    // Clientes
     public List<ClientUserResponse>? ClientUsers { get; set; }
   }
 }
