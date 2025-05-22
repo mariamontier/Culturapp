@@ -26,7 +26,7 @@ namespace Culturapp.Services
 
     public async Task<EventResponse?> GetEventByIdAsync(int id)
     {
-      var @event = await _context.Events
+      var eventGet = await _context.Events
           .Include(e => e.LocationAddress)
           .Include(e => e.Phones)
           .Include(e => e.ClientUsers)
@@ -40,10 +40,10 @@ namespace Culturapp.Services
               .ThenInclude(ent => ent!.Phones)
           .FirstOrDefaultAsync(e => e.Id == id);
 
-      if (@event == null)
+      if (eventGet == null)
         return null;
 
-      var eventResponse = _mapper.Map<EventResponse>(@event);
+      var eventResponse = _mapper.Map<EventResponse>(eventGet);
       return eventResponse;
     }
 

@@ -1,5 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Json.Serialization;
 using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Profiles;
@@ -59,7 +59,13 @@ builder.Services.AddScoped<StatusService>();
 
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
 
 builder.Services.AddCors(options =>
 {

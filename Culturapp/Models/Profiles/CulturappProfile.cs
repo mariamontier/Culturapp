@@ -37,10 +37,10 @@ namespace Culturapp.Models.Profiles
       // Event
       CreateMap<Event, EventRequest>().ReverseMap();
       CreateMap<Event, EventResponse>()
-    .ForMember(dest => dest.EnterpriseName, opt => opt.MapFrom(src => src.EnterpriseUser.FullName))
-    .ForMember(dest => dest.LocationAddressId, opt => opt.MapFrom(src => src.LocationAddress.Street))
-    .ForMember(dest => dest.Phones, opt => opt.MapFrom(src => src.Phones))
-    .ForMember(dest => dest.ClientUsers, opt => opt.MapFrom(src => src.ClientUsers));
+        .ForMember(dest => dest.EnterpriseName, opt => opt.MapFrom(src => src.EnterpriseUser!.FullName))
+        .ForMember(dest => dest.LocationAddressId, opt => opt.MapFrom(src => src.LocationAddress!.Street))
+        .ForMember(dest => dest.Phones, opt => opt.MapFrom(src => src.Phones))
+        .ForMember(dest => dest.ClientUsers, opt => opt.MapFrom(src => src.ClientUsers));
 
 
       // Faq
