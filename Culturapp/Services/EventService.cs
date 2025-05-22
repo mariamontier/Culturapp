@@ -19,15 +19,15 @@ namespace Culturapp.Services
 
     public async Task<ICollection<EventResponse>> GetAllEventsAsync()
     {
-      var events = await _context.Events.ToListAsync();
+      var events = await _context.Events.Include(e => e.Status).Include(e => e.Category).Include(e => e.LocationAddress).Include(e => e.Phones).Include(e => e.Checking).Include(e => e.EnterpriseUser).Include(e => e.FAQ).Include(e => e.ClientUsers).ToListAsync();
       var eventResponse = _mapper.Map<ICollection<EventResponse>>(events);
       return eventResponse;
     }
 
     public async Task<EventResponse?> GetEventByIdAsync(int id)
     {
-      var events = await _context.Events.Include(e => e.Status).Include(e => e.Category).FirstOrDefaultAsync(e => e.Id == id);
-      var eventResponse = _mapper.Map<EventResponse>(events);
+      var eventId = await _context.Events.Include(e => e.Status).Include(e => e.Category).Include(e => e.LocationAddress).Include(e => e.Phones).Include(e => e.Checking).Include(e => e.EnterpriseUser).Include(e => e.FAQ).Include(e => e.ClientUsers).FirstOrDefaultAsync(e => e.Id == id);
+      var eventResponse = _mapper.Map<EventResponse>(eventId);
       return eventResponse;
     }
 
@@ -91,7 +91,7 @@ namespace Culturapp.Services
       bestEvent.Status = await _context.Statuses.FindAsync(eventRequest.StatusId);
       bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
       bestEvent.FAQ = await _context.FAQs.FindAsync(eventRequest.FAQInt);
-      bestEvent.Enterprise = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
+      bestEvent.EnterpriseUser = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
       bestEvent.Category = await _context.Categories.FindAsync(eventRequest.CategoryId);
 
       // Phones

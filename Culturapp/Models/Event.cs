@@ -27,7 +27,7 @@ public class Event
   public int? FAQId { get; set; }
   public FAQ? FAQ { get; set; }
   public int? EnterpriseId { get; set; }
-  public EnterpriseUser? Enterprise { get; set; } // Empresa que está organizando o evento
+  public EnterpriseUser? EnterpriseUser { get; set; } // Empresa que está organizando o evento
 
   // public Guid? CategoryId { get; set; }
   public int? CategoryId { get; set; }
