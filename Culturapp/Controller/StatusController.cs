@@ -32,8 +32,8 @@ namespace Culturapp.Controller
       return Ok(status);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateStatus([FromBody] StatusRequest newStatus)
+    [HttpPost("PostStatus")]
+    public async Task<IActionResult> PostStatus([FromBody] StatusRequest newStatus)
     {
       if (newStatus == null)
       {
@@ -49,7 +49,7 @@ namespace Culturapp.Controller
       return Created();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("PutStatus/{id}")]
     public async Task<IActionResult> PutStatus(int id, [FromBody] StatusRequest? updatedStatus)
     {
       if (updatedStatus == null)
@@ -65,7 +65,7 @@ namespace Culturapp.Controller
       return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("DeleteStatus/{id}")]
     public async Task<IActionResult> DeleteStatus(int id)
     {
       var result = await _statusService.DeleteStatusAsync(id);

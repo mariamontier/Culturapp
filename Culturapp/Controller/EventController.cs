@@ -49,7 +49,7 @@ namespace Culturapp.Controllers
         return BadRequest();
       }
 
-      return NoContent();
+      return Created();
 
     }
 

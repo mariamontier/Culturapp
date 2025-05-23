@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Culturapp.Services;
-using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 

@@ -45,7 +45,7 @@ namespace Culturapp.Controllers
 
       var createdCategory = await _categoryService.CreateAsync(categoryRequest);
 
-      return CreatedAtAction(nameof(GetCategory), new { id = createdCategory.Id }, createdCategory);
+      return Created();
     }
 
 
