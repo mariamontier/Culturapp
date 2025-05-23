@@ -10,7 +10,7 @@ namespace Culturapp.Models.Responses
 
     // Local
     public int? LocationAddressId { get; set; }
-    public string? LocationStreet { get; set; }
+    public AddressResponse? AddressResponse { get; set; }
 
     // Capacidade e preço
     public int? Capacity { get; set; }
@@ -25,7 +25,7 @@ namespace Culturapp.Models.Responses
 
     // Status
     public int? StatusId { get; set; }
-    public string? StatusName { get; set; }
+    public StatusResponse? StatusResponse { get; set; }
 
     // Check-in
     public int? CheckingId { get; set; }
@@ -33,20 +33,20 @@ namespace Culturapp.Models.Responses
 
     // FAQ
     public int? FAQId { get; set; }
-    public string? FAQTitle { get; set; }
+    public FaqResponse? FaqResponse { get; set; }
 
     // Empresa organizadora
     public int? EnterpriseId { get; set; }
-    public string? EnterpriseName { get; set; }
+    public EnterpriseUserResponse? EnterpriseUserResponse { get; set; }
 
     // Categoria
     public int? CategoryId { get; set; }
-    public string? CategoryName { get; set; }
+    public CategoryResponse? CategoryResponse { get; set; }
 
     // Telefones
-    public List<PhoneResponse>? Phones { get; set; }
+    public List<PhoneResponse>? PhoneResponses { get; set; }
 
     // Clientes
-    public List<ClientUserResponse>? ClientUsers { get; set; }
+    public List<ClientUserResponse>? ClientUserResponses { get; set; }
   }
 }

@@ -1,10 +1,13 @@
 using System.Text.Json.Serialization;
+using Culturapp.Models.Responses;
 
-namespace Culturapp.Models.Responses
+namespace Culturapp.Models.Responses;
+
+public class StatusResponse
 {
-  public class StatusResponse
-  {
-    public string? StatusName { get; set; } // Ativo, cancelado, etc.
-    public ICollection<Event?>? Events { get; set; } // Eventos que estão com esse status
-  }
+  public int? Id { get; set; }
+  public string? StatusName { get; set; }
+
+  [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+  public ICollection<EventResponse>? Events { get; set; }
 }

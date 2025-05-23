@@ -37,11 +37,14 @@ namespace Culturapp.Models.Profiles
       // Event
       CreateMap<Event, EventRequest>().ReverseMap();
       CreateMap<Event, EventResponse>()
-        .ForMember(dest => dest.EnterpriseName, opt => opt.MapFrom(src => src.EnterpriseUser!.FullName))
-        .ForMember(dest => dest.LocationAddressId, opt => opt.MapFrom(src => src.LocationAddress!.Street))
-        .ForMember(dest => dest.Phones, opt => opt.MapFrom(src => src.Phones))
-        .ForMember(dest => dest.ClientUsers, opt => opt.MapFrom(src => src.ClientUsers));
-
+        .ForMember(dest => dest.EnterpriseUserResponse, opt => opt.MapFrom(src => src.EnterpriseUser))
+        .ForMember(dest => dest.AddressResponse, opt => opt.MapFrom(src => src.LocationAddress))
+        .ForMember(dest => dest.StatusResponse, opt => opt.MapFrom(src => src.Status))
+        .ForMember(dest => dest.CategoryResponse, opt => opt.MapFrom(src => src.Category))
+        .ForMember(dest => dest.FaqResponse, opt => opt.MapFrom(src => src.FAQ))
+        .ForMember(dest => dest.Checking, opt => opt.MapFrom(src => src.Checking))
+        .ForMember(dest => dest.PhoneResponses, opt => opt.MapFrom(src => src.Phones))
+        .ForMember(dest => dest.ClientUserResponses, opt => opt.MapFrom(src => src.ClientUsers));
 
       // Faq
       CreateMap<FAQ, FaqResponse>().ReverseMap();
