@@ -1,6 +1,3 @@
-using System.Text.Json.Serialization;
-using Culturapp.Models.Requests;
-
 namespace Culturapp.Models.Responses
 {
   public class EventResponse
@@ -32,7 +29,7 @@ namespace Culturapp.Models.Responses
 
     // Check-in
     public int? CheckingId { get; set; }
-    public bool HasCheckIn { get; set; }
+    public CheckingResponse? Checking { get; set; }
 
     // FAQ
     public int? FAQId { get; set; }

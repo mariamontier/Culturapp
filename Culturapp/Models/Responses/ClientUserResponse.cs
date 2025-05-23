@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Culturapp.Models.Requests
+namespace Culturapp.Models.Responses
 {
   public class ClientUserResponse
   {

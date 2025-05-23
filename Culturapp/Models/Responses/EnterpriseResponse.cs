@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Culturapp.Models
+namespace Culturapp.Models.Responses
 {
   public class EnterpriseResponse
   {
