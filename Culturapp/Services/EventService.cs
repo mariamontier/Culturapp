@@ -19,8 +19,20 @@ namespace Culturapp.Services
 
     public async Task<ICollection<EventResponse>> GetAllEventsAsync()
     {
-      var events = await _context.Events.Include(e => e.Status).Include(e => e.Category).Include(e => e.LocationAddress).Include(e => e.Phones).Include(e => e.Checking).Include(e => e.EnterpriseUser).Include(e => e.FAQ).Include(e => e.ClientUsers).ToListAsync();
-      var eventResponse = _mapper.Map<ICollection<EventResponse>>(events);
+      var eventGet = await _context.Events
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .ToListAsync();
+      var eventResponse = _mapper.Map<ICollection<EventResponse>>(eventGet);
       return eventResponse;
     }
 
@@ -104,14 +116,13 @@ namespace Culturapp.Services
       bestEvent.TicketPrice = eventRequest.TicketPrice;
       bestEvent.SalesStartDate = eventRequest.SalesStartDate;
       bestEvent.SalesEndDate = eventRequest.SalesEndDate;
-      bestEvent.ScoreValue = eventRequest.ScoreValue;
       bestEvent.Status = await _context.Statuses.FindAsync(eventRequest.StatusId);
       bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
       bestEvent.FAQ = await _context.FAQs.FindAsync(eventRequest.FAQInt);
       bestEvent.EnterpriseUser = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
       bestEvent.Category = await _context.Categories.FindAsync(eventRequest.CategoryId);
 
-      // Phones
+      // Phones - substitui todos os anteriores
       if (eventRequest.PhonesId != null && eventRequest.PhonesId.Any())
       {
         var phones = new List<Phone>();
@@ -126,25 +137,44 @@ namespace Culturapp.Services
         bestEvent.Phones = phones;
       }
 
-      // ClientUsers
       if (eventRequest.ClientUsersId != null && eventRequest.ClientUsersId.Any())
       {
-        var clientUsersList = new List<ClientUser>();
+        // Carrega o evento atual com os usuários
+        var currentEvent = await _context.Events
+            .Include(e => e.ClientUsers)
+            .FirstOrDefaultAsync(e => e.Id == bestEvent.Id);
+
+        var existingUserIds = currentEvent?.ClientUsers?.Select(u => u.Id).ToHashSet() ?? new HashSet<int>();
+        var newClientUsers = new List<ClientUser>();
+
         foreach (var clientUserId in eventRequest.ClientUsersId)
         {
-          if (clientUserId == null) continue;
+          if (clientUserId == null || existingUserIds.Contains(clientUserId.Value))
+            continue;
 
           var clientUserEntity = await _context.ClientUsers.FindAsync(clientUserId);
           if (clientUserEntity != null)
           {
-            clientUsersList.Add(clientUserEntity);
+            newClientUsers.Add(clientUserEntity);
           }
         }
-        bestEvent.ClientUsers = clientUsersList!;
+
+        if (bestEvent.ClientUsers == null || !bestEvent.ClientUsers.Any())
+        {
+          bestEvent.ClientUsers = newClientUsers;
+        }
+        else
+        {
+          foreach (var client in newClientUsers)
+          {
+            bestEvent.ClientUsers.Add(client);
+          }
+        }
       }
 
       return bestEvent;
     }
+
 
 
   }

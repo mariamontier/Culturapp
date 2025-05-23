@@ -34,6 +34,18 @@ namespace Culturapp.Models.Profiles
       // CheckIn
       CreateMap<Checking, CheckingResponse>().ReverseMap();
 
+      // Faq
+      CreateMap<FAQ, FaqResponse>().ReverseMap();
+      CreateMap<FAQ, FaqRequest>().ReverseMap();
+
+      // Status
+      CreateMap<Status, StatusRequest>().ReverseMap();
+      CreateMap<Status, StatusResponse>().ReverseMap();
+
+      // Phone
+      CreateMap<Phone, PhoneRequest>().ReverseMap();
+      CreateMap<Phone, PhoneResponse>().ReverseMap();
+
       // Event
       CreateMap<Event, EventRequest>().ReverseMap();
       CreateMap<Event, EventResponse>()
@@ -45,14 +57,6 @@ namespace Culturapp.Models.Profiles
         .ForMember(dest => dest.Checking, opt => opt.MapFrom(src => src.Checking))
         .ForMember(dest => dest.PhoneResponses, opt => opt.MapFrom(src => src.Phones))
         .ForMember(dest => dest.ClientUserResponses, opt => opt.MapFrom(src => src.ClientUsers));
-
-      // Faq
-      CreateMap<FAQ, FaqResponse>().ReverseMap();
-      CreateMap<FAQ, FaqRequest>().ReverseMap();
-
-      // Status
-      CreateMap<Status, StatusRequest>().ReverseMap();
-      CreateMap<Status, StatusResponse>().ReverseMap();
 
     }
   }
