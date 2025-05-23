@@ -121,6 +121,7 @@ namespace Culturapp.Services
       bestEvent.FAQ = await _context.FAQs.FindAsync(eventRequest.FAQInt);
       bestEvent.EnterpriseUser = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
       bestEvent.Category = await _context.Categories.FindAsync(eventRequest.CategoryId);
+      bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
 
       // Phones - substitui todos os anteriores
       if (eventRequest.PhonesId != null && eventRequest.PhonesId.Any())
@@ -134,7 +135,7 @@ namespace Culturapp.Services
             phones.Add(phoneEntity);
           }
         }
-        bestEvent.Phones = phones;
+        bestEvent.Phones = phones!;
       }
 
       if (eventRequest.ClientUsersId != null && eventRequest.ClientUsersId.Any())
@@ -144,7 +145,7 @@ namespace Culturapp.Services
             .Include(e => e.ClientUsers)
             .FirstOrDefaultAsync(e => e.Id == bestEvent.Id);
 
-        var existingUserIds = currentEvent?.ClientUsers?.Select(u => u.Id).ToHashSet() ?? new HashSet<int>();
+        var existingUserIds = currentEvent?.ClientUsers?.Select(u => u!.Id).ToHashSet() ?? new HashSet<int>();
         var newClientUsers = new List<ClientUser>();
 
         foreach (var clientUserId in eventRequest.ClientUsersId)
@@ -161,7 +162,7 @@ namespace Culturapp.Services
 
         if (bestEvent.ClientUsers == null || !bestEvent.ClientUsers.Any())
         {
-          bestEvent.ClientUsers = newClientUsers;
+          bestEvent.ClientUsers = newClientUsers!;
         }
         else
         {
@@ -175,7 +176,52 @@ namespace Culturapp.Services
       return bestEvent;
     }
 
+    public async Task<List<EventResponse>?> GetEventByNameAsync(string name)
+    {
+      var eventGet = await _context.Events
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .Where(e => EF.Functions.Like(e.Name, $"%{name}%"))
+          .OrderByDescending(e => e.StartDate)
+          .ToListAsync();
+      if (eventGet == null || !eventGet.Any())
+        return null;
 
+      var eventResponse = _mapper.Map<List<EventResponse>>(eventGet);
+      return eventResponse;
+    }
+
+    public async Task<List<EventResponse?>?> GetEventByEnterpriseIdAsync(int id)
+    {
+      var eventGet = await _context.Events
+          .Where(e => e.EnterpriseId == id)
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .ToListAsync();
+      if (eventGet == null || !eventGet.Any())
+        return null;
+
+      var eventResponse = _mapper.Map<List<EventResponse>>(eventGet);
+      return eventResponse!;
+    }
 
   }
 }
