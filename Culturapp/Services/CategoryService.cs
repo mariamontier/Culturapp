@@ -39,19 +39,23 @@ public class CategoryService
     return categoryResponse;
   }
 
-  public async Task<Category?> UpdateAsync(CategoryRequest categoryRequest)
+  public async Task<Category?> UpdateAsync(int? id, CategoryRequest categoryRequest)
   {
-
     if (categoryRequest == null) return null;
 
-    var category = _mapper.Map<Category>(categoryRequest);
-    var categoryUpdate = await _context.Categories.FindAsync(category.Id);
-    _context.Categories.Update(categoryUpdate!);
+    var categoryIdDb = await _context.Categories.FindAsync(id);
+    if (categoryIdDb == null)
+      return null;
+
+    _mapper.Map(categoryRequest, categoryIdDb);
+
     await _context.SaveChangesAsync();
-    return category;
+
+    return categoryIdDb;
   }
 
-  public async Task<bool> DeleteAsync(int id)
+
+  public async Task<bool> DeleteAsync(int? id)
   {
     var category = await _context.Categories.FindAsync(id);
     if (category == null)
@@ -61,4 +65,20 @@ public class CategoryService
     await _context.SaveChangesAsync();
     return true;
   }
+
+  public async Task<List<EventResponse>?> GetEventsByCategoryIdAsync(int? categoryId)
+  {
+    var category = await _context.Categories
+                                 .Include(c => c.Events)
+                                 .FirstOrDefaultAsync(c => c.Id == categoryId);
+
+    if (category == null || category.Events == null || !category.Events.Any())
+    {
+      return null;
+    }
+
+    var eventsResponse = _mapper.Map<List<EventResponse>>(category.Events);
+    return eventsResponse;
+  }
+
 }

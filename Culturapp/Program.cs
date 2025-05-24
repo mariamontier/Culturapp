@@ -1,5 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Json.Serialization;
 using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Profiles;
@@ -51,14 +51,23 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<ClientUserService>();
 builder.Services.AddScoped<EnterpriseUserService>();
 builder.Services.AddScoped<AddressService>();
 builder.Services.AddScoped<PhoneService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<StatusService>();
+
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
 
 builder.Services.AddCors(options =>
 {
@@ -67,6 +76,8 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
+
+
 
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Culturapp.Services;
-using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 
@@ -19,15 +17,15 @@ namespace Culturapp.Controller
       _clientUserService = clientUserService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("GetClientUsers")]
+    public async Task<IActionResult> GetClientUsers()
     {
       var users = await _clientUserService.GetClientUsersAsync();
       return Ok(users);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("GetClientUserById/{id}")]
+    public async Task<IActionResult> GetClientUserById(int id)
     {
       var user = await _clientUserService.GetClientUserByIdAsync(id);
       if (user == null)
@@ -36,8 +34,8 @@ namespace Culturapp.Controller
       return Ok(user);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] ClientUserRequest clientUserRequest)
+    [HttpPut("PutClientUser/{id}")]
+    public async Task<IActionResult> PutClientUser(int id, [FromBody] ClientUserRequest clientUserRequest)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
@@ -49,7 +47,7 @@ namespace Culturapp.Controller
       return Ok(updatedUser);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("Delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
       var deleted = await _clientUserService.DeleteClientUserAsync(id);

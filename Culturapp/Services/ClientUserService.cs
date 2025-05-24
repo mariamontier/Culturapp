@@ -2,6 +2,7 @@ using AutoMapper;
 using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
+using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Culturapp.Services
