@@ -77,8 +77,6 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 
-
-
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

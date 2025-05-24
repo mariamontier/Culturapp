@@ -8,7 +8,7 @@ namespace Culturapp.Models.Responses
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyName("EventsJson")]
     public List<EventResponse>? Events { get; set; }
   }

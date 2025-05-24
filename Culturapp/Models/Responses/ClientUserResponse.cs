@@ -13,11 +13,11 @@ namespace Culturapp.Models.Responses
     public PhoneResponse? PhoneResponse { get; set; }
     public AddressResponse? AddressResponse { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyName("EventsJson")]
     public ICollection<EventResponse?>? EventResponse { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyName("ChecksJson")]
     public ICollection<CheckingResponse?>? CheckingResponse { get; set; }
   }
