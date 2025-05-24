@@ -11,8 +11,8 @@ namespace Culturapp.Models.Responses
 
     public int? FAQId { get; set; }
 
-    public ICollection<Phone?>? Phones { get; set; }
+    public ICollection<PhoneResponse?>? PhoneResponse { get; set; }
     public int? AddressId { get; set; }
-    public Address? Address { get; set; }
+    public AddressResponse? AddressResponse { get; set; }
   }
 }

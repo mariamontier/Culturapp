@@ -10,13 +10,15 @@ namespace Culturapp.Models.Responses
     public string? FullName { get; set; }
     public string? CPF { get; set; }
 
-    public PhoneResponse? Phone { get; set; }
-    public AddressResponse? Address { get; set; }
+    public PhoneResponse? PhoneResponse { get; set; }
+    public AddressResponse? AddressResponse { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ICollection<EventResponse?>? Events { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+    [JsonPropertyName("EventsJson")]
+    public ICollection<EventResponse?>? EventResponse { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ICollection<CheckingResponse?>? Checks { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+    [JsonPropertyName("ChecksJson")]
+    public ICollection<CheckingResponse?>? CheckingResponse { get; set; }
   }
 }

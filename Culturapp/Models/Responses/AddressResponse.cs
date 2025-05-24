@@ -11,7 +11,7 @@ namespace Culturapp.Models.Responses
     public string? State { get; set; }
     public string? ZipCode { get; set; }
 
-    public int? EnterpriseUserId { get; set; } // Renomeado por clareza
+    public int? EnterpriseUserId { get; set; }
     public int? EventId { get; set; }
   }
 }

@@ -8,6 +8,7 @@ public class StatusResponse
   public int? Id { get; set; }
   public string? StatusName { get; set; }
 
-  [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+  [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+  [JsonPropertyName("EventsJson")]
   public ICollection<EventResponse>? Events { get; set; }
 }

@@ -8,8 +8,8 @@ namespace Culturapp.Models.Responses
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    // Retorna os eventos associados à categoria, se existirem
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull | JsonIgnoreCondition.WhenWritingDefault)]
+    [JsonPropertyName("EventsJson")]
     public List<EventResponse>? Events { get; set; }
   }
 }
