@@ -53,6 +53,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ClientUserService>();
 builder.Services.AddScoped<EnterpriseUserService>();
+builder.Services.AddScoped<AddressService>();
+builder.Services.AddScoped<PhoneService>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<StatusService>();
