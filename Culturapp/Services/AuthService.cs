@@ -18,26 +18,54 @@ namespace Culturapp.Services
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
+    private readonly ClientUserService _clientUserService;
+    private readonly EnterpriseUserService _enterpriseUserService;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IConfiguration configuration,
-        IMapper mapper)
+        IMapper mapper, ClientUserService clientUserService, EnterpriseUserService enterpriseUserService
+    )
     {
       _userManager = userManager;
       _signInManager = signInManager;
       _configuration = configuration;
       _mapper = mapper;
+      _clientUserService = clientUserService;
+      _enterpriseUserService = enterpriseUserService;
     }
 
-    public async Task<IdentityResult> RegisterAsync(RegisterRequest registerRequest)
+    public async Task<IdentityResult?> RegisterAsync(RegisterRequest registerRequest)
     {
       var user = _mapper.Map<ApplicationUser>(registerRequest);
 
       var createUser = await _userManager.CreateAsync(user, registerRequest.Password!);
 
-      return createUser;
+      var userClient = new ClientUserResponse();
+      var userEnterprise = new EnterpriseUserResponse();
+
+      switch (user.AccountType)
+      {
+        case 0:
+          userClient = await _clientUserService.CreateClientUserAsync(user);
+          break;
+        case (Models.Enum.AccountType)1:
+          userEnterprise = await _enterpriseUserService.CreateEnterpriseUserAsync(user);
+          break;
+        default:
+          throw new ArgumentException("Invalid AccountType.");
+      }
+
+      if (userClient != null || userEnterprise != null)
+      {
+        return createUser;
+      }
+      else
+      {
+        return null;
+      }
+
     }
 
     public async Task<LoginResponse?> LoginAsync(LoginRequest loginRequest)
@@ -59,7 +87,6 @@ namespace Culturapp.Services
           return new LoginResponse
           {
             Token = token,
-            Identifier = user.CPF ?? user.CNPJ,
             AccountType = user.AccountType.ToString()
           };
         }
@@ -99,12 +126,6 @@ namespace Culturapp.Services
 
       return tokenString;
 
-    }
-
-    public async Task<ApplicationUser?> FindUser(string email)
-    {
-      var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
-      return user;
     }
 
   }
