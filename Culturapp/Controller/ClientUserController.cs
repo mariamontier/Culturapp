@@ -36,16 +36,6 @@ namespace Culturapp.Controller
       return Ok(user);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ClientUserRequest clientUserRequest)
-    {
-      if (!ModelState.IsValid)
-        return BadRequest(ModelState);
-
-      var createdUser = await _clientUserService.CreateClientUserAsync(clientUserRequest);
-      return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
-    }
-
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] ClientUserRequest clientUserRequest)
     {
