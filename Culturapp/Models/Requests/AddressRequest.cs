@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Culturapp.Models.Requests
 {
   public class AddressRequest

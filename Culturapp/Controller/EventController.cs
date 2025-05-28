@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Culturapp.Controllers
 {
-  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class EventController : ControllerBase
@@ -39,56 +38,35 @@ namespace Culturapp.Controllers
       return Ok(eventItem);
     }
 
+    [Authorize]
     [HttpPost("PostEvent")]
     public async Task<ActionResult<Event>> PostEvent(EventRequest eventItem)
     {
 
-      await _eventService.AddEventAsync(eventItem);
+      await _eventService.CreateEventAsync(eventItem);
       if (eventItem == null)
       {
         return BadRequest();
       }
 
-      return NoContent();
+      return Created();
 
     }
 
+    [Authorize]
     [HttpPut("PutEvent/{id}")]
     public async Task<IActionResult> PutEvent(int id, EventRequest eventItem)
     {
-      var eventExists = await _eventService.EventExists(id)!;
-
-      if (eventExists == null)
-      {
-        return NotFound();
-      }
-
-      var updatedEvent = new Event
-      {
-        Id = eventExists.Id,
-        Name = eventItem.Name,
-        Description = eventItem.Description,
-        Category = eventItem.Category,
-        LocationAddress = eventItem.LocationAddress,
-        Phones = eventItem.Phones,
-        FAQ = eventItem.FAQ,
-        Checking = eventItem.Checking,
-        Status = eventExists.Status,
-        Enterprise = eventExists.Enterprise
-      };
-
-      eventExists = updatedEvent;
-      eventExists.Id = id;
-
-      await _eventService.UpdateEventAsync(updatedEvent);
+      await _eventService.UpdateEventAsync(id, eventItem);
 
       return NoContent();
     }
 
+    [Authorize]
     [HttpDelete("DeleteEvent/{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
-      var eventItem = await _eventService.EventExists(id)!;
+      var eventItem = await _eventService.GetEventByIdAsync(id)!;
       if (eventItem == null)
       {
         return NotFound();
@@ -99,6 +77,29 @@ namespace Culturapp.Controllers
       return NoContent();
     }
 
+    [HttpGet("GetEventByName/{name}")]
+    public async Task<ActionResult> GetEventByName(string name)
+    {
+      var eventItem = await _eventService.GetEventByNameAsync(name);
+      if (eventItem == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(eventItem);
+    }
+
+    [HttpGet("GetEventByEnterprise/{enterpriseId}")]
+    public async Task<ActionResult> GetEventByEnterprise(int enterpriseId)
+    {
+      var eventItem = await _eventService.GetEventByEnterpriseIdAsync(enterpriseId);
+      if (eventItem == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(eventItem);
+    }
 
   }
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
+using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Culturapp.Services
@@ -10,13 +11,11 @@ namespace Culturapp.Services
   {
     private readonly CulturappDbContext _context;
     private readonly IMapper _mapper;
-    private readonly AuthService _authService;
 
-    public ClientUserService(CulturappDbContext context, IMapper mapper, AuthService authService)
+    public ClientUserService(CulturappDbContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;
-      _authService = authService;
     }
 
     public async Task<List<ClientUserResponse>> GetClientUsersAsync()
@@ -33,15 +32,16 @@ namespace Culturapp.Services
       return clientUserResponse;
     }
 
-    public async Task<ClientUser?> CreateClientUserAsync(ClientUserRequest clientUserRequest)
+    public async Task<ClientUserResponse?> CreateClientUserAsync(ApplicationUser user)
     {
-      var user = await _authService.FindUser(clientUserRequest.Email!);
 
-      var userClient = _mapper.Map<ClientUser>(clientUserRequest);
-
-      userClient.CPF = user!.CPF;
-      userClient.FullName = user.FullName;
-      userClient.UserName = user.UserName;
+      var userClient = new ClientUser
+      {
+        Email = user!.Email,
+        CPF = user.CPF,
+        FullName = user.FullName,
+        UserName = user.UserName
+      };
 
       var existingUser = await _context.ClientUsers.FirstOrDefaultAsync(u => u.CPF == userClient.CPF || u.Email == userClient.Email);
       if (existingUser != null)
@@ -52,7 +52,8 @@ namespace Culturapp.Services
       {
         _context.ClientUsers.Add(userClient);
         await _context.SaveChangesAsync();
-        return userClient;
+        var userClientResponse = _mapper.Map<ClientUserResponse>(userClient);
+        return userClientResponse;
       }
 
     }

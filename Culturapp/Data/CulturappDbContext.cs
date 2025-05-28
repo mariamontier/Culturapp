@@ -1,4 +1,3 @@
-
 using Culturapp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -55,13 +54,13 @@ namespace Culturapp.Data
 
       modelBuilder.Entity<Event>()
         .HasOne(e => e.Status)
-        .WithMany(s => s.Events)
+        .WithMany(s => s.Events!)
         .HasForeignKey(e => e.StatusId)
         .OnDelete(DeleteBehavior.SetNull);
 
       modelBuilder.Entity<Event>()
-        .HasOne(e => e.Enterprise)
-        .WithMany(ent => ent.Events)
+        .HasOne(e => e.EnterpriseUser)
+        .WithMany(ent => ent.Events!)
         .HasForeignKey(e => e.EnterpriseId)
         .OnDelete(DeleteBehavior.SetNull);
 
@@ -85,8 +84,14 @@ namespace Culturapp.Data
 
       modelBuilder.Entity<Checking>()
         .HasMany(u => u.ClientUsers)
-        .WithMany(c => c.Checks)
+        .WithMany(c => c.Checks!)
         .UsingEntity(i => i.ToTable("CheckingsUsers"));
+
+      modelBuilder.Entity<Status>()
+        .HasMany(s => s.Events)
+        .WithOne(e => e!.Status)
+        .HasForeignKey(e => e!.StatusId)
+        .OnDelete(DeleteBehavior.SetNull);
     }
 
   }

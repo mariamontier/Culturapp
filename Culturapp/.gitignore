@@ -215,7 +215,7 @@ $RECYCLE.BIN/
 *.swp
 
 # App settings
-appsettings.*.json
+appsettings.json
 
 # VS Code
 .vscode/*
@@ -228,7 +228,5 @@ appsettings.*.json
 .vscode-test/
 .vscode-server/
 .vscode-remote/
-
-appsettings.json
 
 .vscode

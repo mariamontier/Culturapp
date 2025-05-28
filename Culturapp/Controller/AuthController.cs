@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Culturapp.Models;
 using Culturapp.Services;
-using System.Threading.Tasks;
 using Culturapp.Models.Requests;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Culturapp.Controllers
 {
@@ -23,9 +19,9 @@ namespace Culturapp.Controllers
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
     {
       var result = await _authService.RegisterAsync(registerRequest);
-      if (result.Succeeded)
+      if (result!.Succeeded)
       {
-        return Ok(new { Message = "User created successfully" });
+        return Created();
       }
       return BadRequest(result.Errors);
     }
