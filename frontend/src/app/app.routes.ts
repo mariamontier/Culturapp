@@ -1,3 +1,4 @@
+import { HomeComponent } from './pages/home/home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
@@ -8,6 +9,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'eventpage', component: EventpageComponent },
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) }
+
   // { path: '**', redirectTo: 'login' },
 ];
 
