@@ -1,13 +1,82 @@
-<div class="container mt-5">
-  <h2>Cadastro</h2>
-  <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
-    <div class="mb-3">
-      <label>Nome Completo</label>
-      <input class="form-control" formControlName="userFullName">
+<div class="header">
+  <div class="logo">
+    <div class="logo-box me-2">C</div>
+    <span class="logo-text">CulturApp</span>
+  </div>
+  <nav class="nav">
+    <div>
+        <a class="nav-link d-inline px-2 fw-bold" href="#">Home</a>
+        <a class="nav-link d-inline px-2 fw-bold" href="#">Eventos</a>
+        <a class="nav-link d-inline px-2 fw-bold" href="#">Faq</a>
+        <a class="nav-link d-inline px-2 fw-bold" href="#">Sobre</a>
+      </div>
+  </nav>
+</div>
+
+<div class="cadastro-container">
+  <main class="cadastro-main">
+    <div class="cadastro-form-wrapper">
+      <h2>Crie sua conta</h2>
+      <p class="subtext">Acumule pontos.</p>
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+        <div class="form-group">
+          <input type="text" placeholder="Nome" formControlName="userFullName" />
+        </div>
+
+        <div class="form-group">
+          <select formControlName="accountType">
+            <option value="0">Conta Física (CPF)</option>
+            <option value="1">Conta Jurídica (CNPJ)</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="cadastroForm.value.accountType == 0">
+          <input type="text" placeholder="CPF" formControlName="cpf" />
+        </div>
+
+        <div class="form-group" *ngIf="cadastroForm.value.accountType == 1">
+          <input type="text" placeholder="CNPJ" formControlName="cnpj" />
+        </div>
+
+        <div class="form-group">
+          <input type="text" placeholder="Telefone" formControlName="telefone" />
+        </div>
+
+        <div class="form-group">
+          <input type="text" placeholder="Username" formControlName="userName" />
+        </div>
+
+        <div class="form-group">
+          <input type="email" placeholder="Email" formControlName="email" />
+        </div>
+
+        <div class="form-group password-field">
+          <input [type]="showPassword ? 'text' : 'password'" placeholder="Senha" formControlName="password" />
+          <span (click)="togglePasswordVisibility()" class="toggle-eye">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </span>
+        </div>
+
+        <div class="form-group password-field">
+          <input [type]="showConfirmPassword ? 'text' : 'password'" placeholder="Confirme a senha" formControlName="confirmPassword" />
+          <span (click)="toggleConfirmPasswordVisibility()" class="toggle-eye">
+            {{ showConfirmPassword ? '🙈' : '👁️' }}
+          </span>
+        </div>
+
+        <div *ngIf="senhaInvalida" class="error-message">
+          As senhas não coincidem.
+        </div>
+
+        <button type="submit" class="submit-button">Criar cadastro</button>
+      </form>
+
+      <p class="login-link">Já tem uma conta? <a routerLink="/login">Entre</a></p>
     </div>
-    <div class="mb-3">
-      <label>Nome de Usuário</label>
-      <input class="form-control" formControlName="userName">
+
+    <div class="cadastro-image-wrapper">
+      <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1000" alt="Show" />
     </div>
     <div class="mb-3">
       <label>E-mail</label>
@@ -32,3 +101,5 @@
         <option value="1">Pessoa Jurídica</option>
       </select>
     </div>
+  </main>
+</div>
