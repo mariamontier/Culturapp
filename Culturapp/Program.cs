@@ -48,7 +48,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthService>();
@@ -59,7 +58,7 @@ builder.Services.AddScoped<PhoneService>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<StatusService>();
-
+builder.Services.AddScoped<CheckingService>();
 
 builder.Services.AddAutoMapper(typeof(CulturappProfile).Assembly);
 builder.Services.AddControllers()

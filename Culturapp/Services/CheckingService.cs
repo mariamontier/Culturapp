@@ -50,7 +50,7 @@ namespace Culturapp.Services
       _mapper.Map(checking, existing);
       await _context.SaveChangesAsync();
       var mappedCheckingResponse = _mapper.Map<CheckingResponse>(existing);
-      return mappedCheckingResponse;
+      return mappedCheckingResponse!;
     }
 
     public async Task<bool> DeleteAsync(int id)
