@@ -84,12 +84,29 @@ namespace Culturapp.Services
         .Include(c => c.ClientUsers)
         .FirstOrDefaultAsync(c => c.Id == checkingId);
 
-      if (checking == null)
+      bool timeOut = checking!.CheckingDate == DateTime.Now;
+
+      if (timeOut)
+      {
+        return null; // Checking time has expired
+      }
+
+      var clientUser = await _context.ClientUsers
+        .FirstOrDefaultAsync(cu => cu.Id == clientUserId);
+
+      if (checking == null || clientUser == null)
       {
         return null;
       }
 
-      checking!.ClientUsers!.Add(await _context.ClientUsers.FindAsync(clientUserId));
+      if (checking.ClientUsers!.Contains(clientUser))
+      {
+        return null; // User already checked in
+      }
+      else
+      {
+        checking.ClientUsers!.Add(clientUser);
+      }
 
       _context.Checks.Add(checking);
       await _context.SaveChangesAsync();

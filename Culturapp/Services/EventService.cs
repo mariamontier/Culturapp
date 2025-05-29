@@ -232,7 +232,7 @@ namespace Culturapp.Services
 
       var checking = new Checking
       {
-        CheckInDate = eventGet.EndDate?.AddDays(1),
+        CheckingDate = eventGet.EndDate?.AddDays(1), // Assuming checking date is the day after the event ends
         Event = eventGet,
         ClientUsers = new List<ClientUser?>()
       };
