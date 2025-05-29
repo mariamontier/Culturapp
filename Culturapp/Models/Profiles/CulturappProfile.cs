@@ -33,7 +33,10 @@ namespace Culturapp.Models.Profiles
 
       // CheckIn
       CreateMap<Checking, CheckingRequest>().ReverseMap();
-      CreateMap<Checking, CheckingResponse>().ReverseMap();
+      CreateMap<Checking, CheckingResponse>()
+        .ForMember(dest => dest.ClientUserResponses, opt => opt.MapFrom(src => src.ClientUsers))
+        .ForMember(dest => dest.EventResponse, opt => opt.MapFrom(src => src.Event))
+        .ReverseMap();
 
       // Faq
       CreateMap<FAQ, FaqResponse>().ReverseMap();

@@ -32,13 +32,6 @@ namespace Culturapp.Controller
       return Ok(checkings);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Checking>> Create([FromBody] CheckingRequest checking)
-    {
-      var created = await _checkingService.CreateAsync(checking);
-      return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-    }
-
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] CheckingRequest checking)
     {

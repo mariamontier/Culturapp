@@ -32,15 +32,6 @@ namespace Culturapp.Services
       return mappedChecking!;
     }
 
-    public async Task<CheckingResponse> CreateAsync(CheckingRequest checking)
-    {
-      var mappedChecking = _mapper.Map<Checking>(checking);
-      _context.Checks.Add(mappedChecking);
-      await _context.SaveChangesAsync();
-      var mappedCheckingResponse = _mapper.Map<CheckingResponse>(mappedChecking);
-      return mappedCheckingResponse;
-    }
-
     public async Task<CheckingResponse?> UpdateAsync(int id, CheckingRequest checking)
     {
       var existing = await _context.Checks.FindAsync(id);

@@ -78,5 +78,25 @@ namespace Culturapp.Services
       return user;
     }
 
+    public async Task<CheckingRequest?> DoCheckingAsync(int checkingId, int clientUserId)
+    {
+
+      var checking = await _context.Checks
+        .Include(c => c.ClientUsers)
+        .FirstOrDefaultAsync(c => c.Id == checkingId);
+
+      if (checking == null)
+      {
+        return null;
+      }
+
+      checking!.ClientUsers!.Add(await _context.ClientUsers.FindAsync(clientUserId));
+
+      _context.Checks.Add(checking);
+      await _context.SaveChangesAsync();
+      var checkingRequest = _mapper.Map<CheckingRequest>(checking);
+      return checkingRequest;
+    }
+
   }
 }

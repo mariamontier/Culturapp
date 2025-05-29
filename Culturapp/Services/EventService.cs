@@ -4,6 +4,7 @@ using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Culturapp.Services
 {
@@ -221,6 +222,26 @@ namespace Culturapp.Services
 
       var eventResponse = _mapper.Map<List<EventResponse>>(eventGet);
       return eventResponse!;
+    }
+
+    public async Task<CheckingResponse?> CreateCheckingAsync(int eventId)
+    {
+      var eventGet = await _context.Events.FindAsync(eventId);
+
+      if (eventGet == null) return null;
+
+      var checking = new Checking
+      {
+        CheckInDate = eventGet.EndDate?.AddDays(1),
+        Event = eventGet,
+        ClientUsers = new List<ClientUser?>()
+      };
+
+      _context.Checks.Add(checking);
+      await _context.SaveChangesAsync();
+
+      var checkingResponse = _mapper.Map<CheckingResponse>(checking);
+      return checkingResponse;
     }
 
   }
