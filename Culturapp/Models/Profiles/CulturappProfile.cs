@@ -32,6 +32,7 @@ namespace Culturapp.Models.Profiles
       CreateMap<Category, CategoryRequest>().ReverseMap();
 
       // CheckIn
+      CreateMap<Checking, CheckingRequest>().ReverseMap();
       CreateMap<Checking, CheckingResponse>().ReverseMap();
 
       // Faq
