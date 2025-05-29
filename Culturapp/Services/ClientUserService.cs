@@ -80,7 +80,6 @@ namespace Culturapp.Services
 
     public async Task<CheckingRequest?> DoCheckingAsync(int checkingId, int clientUserId)
     {
-
       var checking = await _context.Checks
         .Include(c => c.ClientUsers)
         .FirstOrDefaultAsync(c => c.Id == checkingId);

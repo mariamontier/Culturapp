@@ -102,7 +102,7 @@ namespace Culturapp.Controllers
       return Ok(eventItem);
     }
 
-    [HttpPost("PostCheckingAsync/{eventId}")]
+    [HttpPost("PostChecking/{eventId}")]
     public async Task<ActionResult<CheckingResponse?>> PostCheckingAsync(int eventId)
     {
       if (eventId == null)

@@ -44,7 +44,7 @@ namespace Culturapp.Controller
       if (updatedUser == null)
         return NotFound();
 
-      return Ok(updatedUser);
+      return NoContent();
     }
 
     [HttpDelete("Delete/{id}")]
@@ -56,5 +56,19 @@ namespace Culturapp.Controller
 
       return NoContent();
     }
+
+    [HttpPut("DoChecking/{checkingId}/{clientUserId}")]
+    public async Task<IActionResult> DoChecking(int checkingId, int clientUserId)
+    {
+      if (checkingId <= 0 || clientUserId <= 0)
+        return BadRequest();
+
+      var result = await _clientUserService.DoCheckingAsync(checkingId, clientUserId);
+      if (result == null)
+        return NotFound();
+
+      return NoContent();
+    }
+
   }
 }
