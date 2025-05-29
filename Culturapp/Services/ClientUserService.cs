@@ -2,6 +2,7 @@ using AutoMapper;
 using Culturapp.Data;
 using Culturapp.Models;
 using Culturapp.Models.Requests;
+using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Culturapp.Services
@@ -75,6 +76,42 @@ namespace Culturapp.Services
       }
 
       return user;
+    }
+
+    public async Task<CheckingRequest?> DoCheckingAsync(int checkingId, int clientUserId)
+    {
+      var checking = await _context.Checks
+        .Include(c => c.ClientUsers)
+        .FirstOrDefaultAsync(c => c.Id == checkingId);
+
+      bool timeOut = checking!.CheckingDate == DateTime.Now;
+
+      if (timeOut)
+      {
+        return null; // Checking time has expired
+      }
+
+      var clientUser = await _context.ClientUsers
+        .FirstOrDefaultAsync(cu => cu.Id == clientUserId);
+
+      if (checking == null || clientUser == null)
+      {
+        return null;
+      }
+
+      if (checking.ClientUsers!.Contains(clientUser))
+      {
+        return null; // User already checked in
+      }
+      else
+      {
+        checking.ClientUsers!.Add(clientUser);
+      }
+
+      _context.Checks.Add(checking);
+      await _context.SaveChangesAsync();
+      var checkingRequest = _mapper.Map<CheckingRequest>(checking);
+      return checkingRequest;
     }
 
   }

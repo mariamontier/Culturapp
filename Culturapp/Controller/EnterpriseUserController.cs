@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Culturapp.Services;
-using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 
@@ -19,14 +17,14 @@ namespace Culturapp.Controller
       _enterpriseUserService = enterpriseUserService;
     }
 
-    [HttpGet]
+    [HttpGet("GetEnterpriseUsers")]
     public async Task<IActionResult> GetEnterpriseUsers()
     {
       var users = await _enterpriseUserService.GetEnterpriseUsersAsync();
       return Ok(users);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("GetEnterpriseUserById/{id}")]
     public async Task<IActionResult> GetEnterpriseUserById(int id)
     {
       var user = await _enterpriseUserService.GetEnterpriseUserByIdAsync(id);
@@ -37,8 +35,8 @@ namespace Culturapp.Controller
       return Ok(user);
     }
 
-    [HttpPut()]
-    public async Task<IActionResult> UpdateEnterpriseUser([FromBody] EnterpriseUserRequest enterpriseUserRequest)
+    [HttpPut("UpdateEnterpriseUser")]
+    public async Task<IActionResult> PutEnterpriseUser([FromBody] EnterpriseUserRequest enterpriseUserRequest)
     {
       if (!ModelState.IsValid)
       {
@@ -54,7 +52,7 @@ namespace Culturapp.Controller
       return Ok(updatedUser);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("DeleteEnterpriseUser/{id}")]
     public async Task<IActionResult> DeleteEnterpriseUser(int id)
     {
       var result = await _enterpriseUserService.DeleteEnterpriseUserAsync(id);

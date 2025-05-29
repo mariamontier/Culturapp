@@ -1,0 +1,219 @@
+/* GERAL */
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #d9d9d9;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #43254c;
+}
+
+/* COLUNAS */
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  flex: 1;
+}
+
+.center {
+  flex: 2;
+  justify-content: center;
+}
+
+.right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+}
+
+/* MENU */
+.nav-menu {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+/* BOTÃO DE PERFIL - ajustado para ter o mesmo tamanho do botão cancel */
+.profile-btn {
+  background-color: #ff7043;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: auto;
+}
+
+.profile-btn:hover {
+  background-color: #e85c32;
+}
+
+/* TÍTULO */
+.sobre-title {
+  position: relative;
+  min-height: 40px;
+  color: black;
+  padding: 4rem 0 2rem 20rem;
+}
+
+.linha-custom {
+  border-bottom: 2px solid #ff7043;
+  display: inline-block;
+  width: 120px;
+}
+
+/* SOBRE */
+.sobre-container {
+  margin: 0 auto;
+  background-color: #d9d9d9;
+  padding: 1rem 0 2rem 0;
+  width: 900px;
+  text-align: justify;
+  display: block;
+}
+
+.sobre-container span {
+  display: block;
+  text-align: justify;
+  margin: 1rem auto;
+  max-width: 800px;
+  color: black;
+  background-color: #d9d9d9;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.final {
+  font-weight: bold;
+}
+
+.linha-final {
+  margin: 1rem auto 0 auto;
+  width: auto;
+  height: 2px;
+  background-color: #ff7043; /* laranja */
+}
+
+/* Footer */
+.rodape {
+  color: black;
+  width: 100%;
+  font-size: 14px;
+  font-family: helvetica;
+}
+
+.rodape a {
+  text-decoration: none;
+  color: black;
+}
+
+.rodape p {
+  margin-bottom: 5px;
+}
+
+.rodape-div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 60px 10px 40px 10px;
+  gap: 40px;
+}
+
+.rodape-div-1,
+.rodape-div-2 {
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 15rem;
+}
+
+.rodape-coluna {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+}
+
+.logo span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: black;
+}
+
+.membro p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  margin: 8px 0;
+}
+
+.membro img {
+  width: 20px;
+  height: 20px;
+}
+
+.social-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.social-btns a img {
+  width: 20px;
+  height: 20px;
+}
+
+.rodape-direitos {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+}

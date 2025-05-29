@@ -189,7 +189,7 @@ namespace Culturapp.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CheckInDate")
+                    b.Property<DateTime?>("CheckingDate")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -599,7 +599,7 @@ namespace Culturapp.Migrations
                         .HasForeignKey("Culturapp.Models.Event", "CheckingId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Culturapp.Models.EnterpriseUser", "Enterprise")
+                    b.HasOne("Culturapp.Models.EnterpriseUser", "EnterpriseUser")
                         .WithMany("Events")
                         .HasForeignKey("EnterpriseId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -623,7 +623,7 @@ namespace Culturapp.Migrations
 
                     b.Navigation("Checking");
 
-                    b.Navigation("Enterprise");
+                    b.Navigation("EnterpriseUser");
 
                     b.Navigation("FAQ");
 

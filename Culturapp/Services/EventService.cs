@@ -4,6 +4,7 @@ using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Culturapp.Services
 {
@@ -19,22 +20,52 @@ namespace Culturapp.Services
 
     public async Task<ICollection<EventResponse>> GetAllEventsAsync()
     {
-      var events = await _context.Events.ToListAsync();
-      var eventResponse = _mapper.Map<ICollection<EventResponse>>(events);
+      var eventGet = await _context.Events
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .ToListAsync();
+      var eventResponse = _mapper.Map<ICollection<EventResponse>>(eventGet);
       return eventResponse;
     }
 
     public async Task<EventResponse?> GetEventByIdAsync(int id)
     {
-      var events = await _context.Events.FindAsync(id);
-      var eventResponse = _mapper.Map<EventResponse>(events);
+      var eventGet = await _context.Events
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .FirstOrDefaultAsync(e => e.Id == id);
+
+      if (eventGet == null)
+        return null;
+
+      var eventResponse = _mapper.Map<EventResponse>(eventGet);
       return eventResponse;
     }
+
 
     public async Task CreateEventAsync(EventRequest newEventRequest)
     {
       var eventNew = new Event();
       eventNew = await MakeEventRelationshipMapper(eventNew, newEventRequest);
+      eventNew.ScoreValue = eventNew.TicketPrice * 0.10;
       _context.Events.Add(eventNew);
       await _context.SaveChangesAsync();
     }
@@ -48,8 +79,14 @@ namespace Culturapp.Services
         return null;
       }
 
+      bool ticketPriceChanged = eventRequest.TicketPrice != eventUpdate.TicketPrice;
+
       eventUpdate = await MakeEventRelationshipMapper(eventUpdate, eventRequest);
 
+      if (ticketPriceChanged)
+      {
+        eventUpdate.ScoreValue = eventUpdate.TicketPrice * 0.10;
+      }
       _context.Events.Update(eventUpdate);
       await _context.SaveChangesAsync();
 
@@ -75,20 +112,19 @@ namespace Culturapp.Services
       bestEvent.StartDate = eventRequest.StartDate;
       bestEvent.EndDate = eventRequest.EndDate;
       bestEvent.Description = eventRequest.Description;
-
       bestEvent.LocationAddress = await _context.Addresses.FindAsync(eventRequest.LocationAddressId);
       bestEvent.Capacity = eventRequest.Capacity;
       bestEvent.TicketPrice = eventRequest.TicketPrice;
       bestEvent.SalesStartDate = eventRequest.SalesStartDate;
       bestEvent.SalesEndDate = eventRequest.SalesEndDate;
-      bestEvent.ScoreValue = eventRequest.ScoreValue;
       bestEvent.Status = await _context.Statuses.FindAsync(eventRequest.StatusId);
       bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
       bestEvent.FAQ = await _context.FAQs.FindAsync(eventRequest.FAQInt);
-      bestEvent.Enterprise = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
+      bestEvent.EnterpriseUser = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
       bestEvent.Category = await _context.Categories.FindAsync(eventRequest.CategoryId);
+      bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
 
-      // Phones
+      // Phones - substitui todos os anteriores
       if (eventRequest.PhonesId != null && eventRequest.PhonesId.Any())
       {
         var phones = new List<Phone>();
@@ -100,29 +136,113 @@ namespace Culturapp.Services
             phones.Add(phoneEntity);
           }
         }
-        bestEvent.Phones = phones;
+        bestEvent.Phones = phones!;
       }
 
-      // ClientUsers
       if (eventRequest.ClientUsersId != null && eventRequest.ClientUsersId.Any())
       {
-        var clientUsersList = new List<ClientUser>();
+        // Carrega o evento atual com os usuários
+        var currentEvent = await _context.Events
+            .Include(e => e.ClientUsers)
+            .FirstOrDefaultAsync(e => e.Id == bestEvent.Id);
+
+        var existingUserIds = currentEvent?.ClientUsers?.Select(u => u!.Id).ToHashSet() ?? new HashSet<int>();
+        var newClientUsers = new List<ClientUser>();
+
         foreach (var clientUserId in eventRequest.ClientUsersId)
         {
-          if (clientUserId == null) continue;
+          if (clientUserId == null || existingUserIds.Contains(clientUserId.Value))
+            continue;
 
           var clientUserEntity = await _context.ClientUsers.FindAsync(clientUserId);
           if (clientUserEntity != null)
           {
-            clientUsersList.Add(clientUserEntity);
+            newClientUsers.Add(clientUserEntity);
           }
         }
-        bestEvent.ClientUsers = clientUsersList;
+
+        if (bestEvent.ClientUsers == null || !bestEvent.ClientUsers.Any())
+        {
+          bestEvent.ClientUsers = newClientUsers!;
+        }
+        else
+        {
+          foreach (var client in newClientUsers)
+          {
+            bestEvent.ClientUsers.Add(client);
+          }
+        }
       }
 
       return bestEvent;
     }
 
+    public async Task<List<EventResponse>?> GetEventByNameAsync(string name)
+    {
+      var eventGet = await _context.Events
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .Where(e => EF.Functions.Like(e.Name, $"%{name}%"))
+          .OrderByDescending(e => e.StartDate)
+          .ToListAsync();
+      if (eventGet == null || !eventGet.Any())
+        return null;
+
+      var eventResponse = _mapper.Map<List<EventResponse>>(eventGet);
+      return eventResponse;
+    }
+
+    public async Task<List<EventResponse?>?> GetEventByEnterpriseIdAsync(int id)
+    {
+      var eventGet = await _context.Events
+          .Where(e => e.EnterpriseId == id)
+          .Include(e => e.LocationAddress)
+          .Include(e => e.Phones)
+          .Include(e => e.ClientUsers)
+          .Include(e => e.Checking)
+          .Include(e => e.FAQ)
+          .Include(e => e.Status)
+          .Include(e => e.Category)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Address)
+          .Include(e => e.EnterpriseUser)
+              .ThenInclude(ent => ent!.Phones)
+          .ToListAsync();
+      if (eventGet == null || !eventGet.Any())
+        return null;
+
+      var eventResponse = _mapper.Map<List<EventResponse>>(eventGet);
+      return eventResponse!;
+    }
+
+    public async Task<CheckingResponse?> CreateCheckingAsync(int eventId)
+    {
+      var eventGet = await _context.Events.FindAsync(eventId);
+
+      if (eventGet == null) return null;
+
+      var checking = new Checking
+      {
+        CheckingDate = eventGet.EndDate?.AddDays(1), // Assuming checking date is the day after the event ends
+        Event = eventGet,
+        ClientUsers = new List<ClientUser?>()
+      };
+
+      _context.Checks.Add(checking);
+      await _context.SaveChangesAsync();
+
+      var checkingResponse = _mapper.Map<CheckingResponse>(checking);
+      return checkingResponse;
+    }
 
   }
 }

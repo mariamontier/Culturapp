@@ -1,12 +1,12 @@
 using Culturapp.Models;
 using Culturapp.Models.Requests;
+using Culturapp.Models.Responses;
 using Culturapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Culturapp.Controllers
 {
-  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class EventController : ControllerBase
@@ -39,6 +39,7 @@ namespace Culturapp.Controllers
       return Ok(eventItem);
     }
 
+    [Authorize]
     [HttpPost("PostEvent")]
     public async Task<ActionResult<Event>> PostEvent(EventRequest eventItem)
     {
@@ -49,10 +50,11 @@ namespace Culturapp.Controllers
         return BadRequest();
       }
 
-      return NoContent();
+      return Created();
 
     }
 
+    [Authorize]
     [HttpPut("PutEvent/{id}")]
     public async Task<IActionResult> PutEvent(int id, EventRequest eventItem)
     {
@@ -61,6 +63,7 @@ namespace Culturapp.Controllers
       return NoContent();
     }
 
+    [Authorize]
     [HttpDelete("DeleteEvent/{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
@@ -75,6 +78,40 @@ namespace Culturapp.Controllers
       return NoContent();
     }
 
+    [HttpGet("GetEventByName/{name}")]
+    public async Task<ActionResult> GetEventByName(string name)
+    {
+      var eventItem = await _eventService.GetEventByNameAsync(name);
+      if (eventItem == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(eventItem);
+    }
+
+    [HttpGet("GetEventByEnterprise/{enterpriseId}")]
+    public async Task<ActionResult> GetEventByEnterprise(int enterpriseId)
+    {
+      var eventItem = await _eventService.GetEventByEnterpriseIdAsync(enterpriseId);
+      if (eventItem == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(eventItem);
+    }
+
+    [HttpPost("PostChecking/{eventId}")]
+    public async Task<ActionResult<CheckingResponse?>> PostCheckingAsync(int eventId)
+    {
+      if (eventId == null)
+      {
+        return BadRequest();
+      }
+
+      return Created();
+    }
 
   }
 }

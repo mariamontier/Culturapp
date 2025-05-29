@@ -1,0 +1,78 @@
+<!-- Banner principal -->
+<section class="banner">
+  <nav class="navbar">
+    <div class="d-flex align-items-center">
+      <div class="logo-box me-2">C</div>
+      <h3 class="mb-0">CulturApp</h3>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-active">Home</a></li>
+      <li><a href="#">Eventos</a></li>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Sobre</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <button class="signup">Signup</button>
+      <button class="login">Login</button>
+    </div>
+  </nav>
+  <div class="banner-content">
+    <div class="banner-text">
+      <h1>Seu próximo evento inesquecível começa aqui.</h1>
+    </div>
+  </div>
+</section>
+
+<!-- Filtro -->
+<section class="filtros">
+  <input type="text" placeholder="Pesquisar artista ou evento" />
+  <select>
+    <option>Todas categorias</option>
+    <option>Show</option>
+    <option>Teatro</option>
+    <option>Festival</option>
+  </select>
+  <button>Pesquisar</button>
+</section>
+
+<!-- Carrossel de eventos -->
+<section class="eventos">
+  <div class="event-card" *ngFor="let evento of eventos">
+    <img [src]="evento.imagem" alt="evento" />
+    <div class="event-info">
+      <h3>{{ evento.titulo }}</h3>
+      <p>{{ evento.local }}, {{ evento.data }}</p>
+      <p class="preco">A partir de {{ evento.preco }}</p>
+      <button class="detalhes">DETALHES</button>
+    </div>
+  </div>
+</section>
+
+<div class="ver-todos">
+  <button class="ver-todos-btn" (click)="verTodosEventos()">VER TODOS OS EVENTOS</button>
+</div>
+
+<!-- Rodapé -->
+<footer class="footer">
+  <div class="coluna">
+    <h4>Menu</h4>
+    <p>Home</p>
+    <p>Eventos</p>
+    <p>Sobre</p>
+    <p>Faq</p>
+  </div>
+  <div class="coluna">
+    <h4>Informação</h4>
+    <p>Sobre o CulturApp</p>
+    <p>Suporte</p>
+    <p>Termos e Condições</p>
+    <p>Privacy</p>
+  </div>
+  <div class="coluna">
+    <h4>Contato</h4>
+    <p>+11 9999-9999</p>
+    <p>São Paulo, Brasil</p>
+    <div class="social">
+    </div>
+  </div>
+</footer>

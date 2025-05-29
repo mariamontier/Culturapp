@@ -87,7 +87,10 @@ namespace Culturapp.Services
           return new LoginResponse
           {
             Token = token,
-            AccountType = user.AccountType.ToString()
+            AccountType = user.AccountType.ToString(),
+            UserName = user.UserName,
+            Email = user.Email,
+            UserId = user.Id
           };
         }
       }
