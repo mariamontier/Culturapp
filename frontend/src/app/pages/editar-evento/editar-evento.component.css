@@ -37,9 +37,25 @@
   gap: 10px;
 }
 
-.logo img {
-  width: 30px;
-  height: 30px;
+.logo-box {
+  background-color: #6c4acb;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #222;
+  letter-spacing: 0.5px;
 }
 
 /* MENU CENTRALIZADO */
@@ -59,7 +75,7 @@
   color: #5b21b6;
 }
 
-/* BOTÃO DE PERFIL - ajustado para ter o mesmo tamanho do botão cancel */
+/* BOTÃO DE PERFIL */
 .profile-btn {
   background-color: #ff7043;
   color: white;
@@ -93,12 +109,6 @@
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.event-container .header h1 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #5e2ca5;
 }
 
 .event-form fieldset {
@@ -156,3 +166,21 @@
   background-color: #31a336;
 }
 
+/* Responsividade */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .nav-menu {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .event-form .row {
+    flex-direction: column;
+  }
+}
