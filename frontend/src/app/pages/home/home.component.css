@@ -52,10 +52,39 @@
 }
 
 .nav-links a {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #FF7757;
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a.nav-active {
+  color: #FF7757;
   font-weight: bold;
-  font-size: 1rem;
+}
+
+.nav-links a.nav-active::after {
+  width: 100%;
+  background: #FF7757;
 }
 
 .auth-buttons button {
