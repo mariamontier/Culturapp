@@ -3,6 +3,38 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Left Side - Form */
+.form-section {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+/* Right Side - Image */
+.image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Logo Styles */
 .logo-box {
   background-color: #6c4acb;
   color: white;
@@ -18,7 +50,6 @@ body {
 
 .btn-login {
   background-color: #ff7a59;
-  color: white;
   font-weight: bold;
 }
 
@@ -36,4 +67,109 @@ body {
 
 .input-laranja-claro {
   background-color: #fadad2;
+.logo-text {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+/* Navigation */
+.nav-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-link {
+  color: #4b0082 !important;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  padding: 2px 0;
+  border-bottom: 2px solid transparent;
+  margin: 0 1rem;
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+  border-bottom: 2px solid #4b0082;
+}
+
+/* Form Styles */
+.form-wrapper {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 2rem;
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: #9146ff;
+  outline: none;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #ff7757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.btn-login:hover {
+  background-color: #e6694a;
+}
+
+.text-orange {
+  color: #ff7757;
+  font-weight: bold;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.create-account {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #666;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
 }

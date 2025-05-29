@@ -16,7 +16,8 @@ export const routes: Routes = [
   { path: 'editar-evento', component: EditarEventoComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'sobre', component: SobreComponent },
-  // { path: '**', redirectTo: 'login' },
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) }
+
 ];
 
 @NgModule({
