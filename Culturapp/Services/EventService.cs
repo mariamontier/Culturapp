@@ -61,13 +61,22 @@ namespace Culturapp.Services
     }
 
 
-    public async Task CreateEventAsync(EventRequest newEventRequest)
+    public async Task<string?> CreateEventAsync(EventRequest newEventRequest)
     {
       var eventNew = new Event();
       eventNew = await MakeEventRelationshipMapper(eventNew, newEventRequest);
-      eventNew.ScoreValue = eventNew.TicketPrice * 0.10;
+      eventNew!.ScoreValue = eventNew.TicketPrice * 0.10;
       _context.Events.Add(eventNew);
       await _context.SaveChangesAsync();
+      var checking = await CreateCheckingAsync(eventNew.Id);
+
+      if (checking == null)
+      {
+        return null;
+      }
+
+      return "Event created";
+
     }
 
     public async Task<Event?> UpdateEventAsync(int id, EventRequest? eventRequest)
@@ -104,9 +113,9 @@ namespace Culturapp.Services
       }
     }
 
-    public async Task<Event> MakeEventRelationshipMapper(Event? bestEvent, EventRequest? eventRequest)
+    public async Task<Event?> MakeEventRelationshipMapper(Event? bestEvent, EventRequest? eventRequest)
     {
-      if (bestEvent == null || eventRequest == null) return null!;
+      if (bestEvent == null || eventRequest == null) return null;
 
       bestEvent.Name = eventRequest.Name;
       bestEvent.StartDate = eventRequest.StartDate;
