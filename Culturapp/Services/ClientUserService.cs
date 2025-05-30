@@ -81,38 +81,35 @@ namespace Culturapp.Services
     public async Task<CheckingRequest?> DoCheckingAsync(int checkingId, int clientUserId)
     {
       var checking = await _context.Checks
-        .Include(c => c.ClientUsers)
-        .FirstOrDefaultAsync(c => c.Id == checkingId);
+          .Include(c => c.ClientUsers)
+          .FirstOrDefaultAsync(c => c.Id == checkingId);
 
-      bool timeOut = checking!.CheckingDate == DateTime.Now;
-
-      if (timeOut)
+      if (checking == null || checking.CheckingDate == DateTime.Now)
       {
-        return null; // Checking time has expired
+        return null; // Checking not found or time expired
       }
 
       var clientUser = await _context.ClientUsers
-        .FirstOrDefaultAsync(cu => cu.Id == clientUserId);
+          .FirstOrDefaultAsync(cu => cu.Id == clientUserId);
 
-      if (checking == null || clientUser == null)
+      if (clientUser == null)
       {
         return null;
       }
 
       if (checking.ClientUsers!.Contains(clientUser))
       {
-        return null; // User already checked in
-      }
-      else
-      {
-        checking.ClientUsers!.Add(clientUser);
+        return null; // Already checked in
       }
 
-      _context.Checks.Add(checking);
+      checking.ClientUsers!.Add(clientUser);
+
       await _context.SaveChangesAsync();
+
       var checkingRequest = _mapper.Map<CheckingRequest>(checking);
       return checkingRequest;
     }
+
 
   }
 }
