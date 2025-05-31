@@ -21,8 +21,8 @@ namespace Culturapp.Services
     public async Task<List<ClientUserResponse>> GetClientUsersAsync()
     {
       var clientList = await _context.ClientUsers.ToListAsync();
-      var clientUserResponseList = _mapper.Map<List<ClientUserResponse>>(clientList);
-      return clientUserResponseList;
+      var clientUserResponses = _mapper.Map<List<ClientUserResponse>>(clientList);
+      return clientUserResponses;
     }
 
     public async Task<ClientUserResponse?> GetClientUserByIdAsync(int id)
@@ -34,48 +34,52 @@ namespace Culturapp.Services
 
     public async Task<ClientUserResponse?> CreateClientUserAsync(ApplicationUser user)
     {
+      var exists = await _context.ClientUsers
+          .AnyAsync(u => u.CPF == user.CPF || u.Email == user.Email);
+
+      if (exists) return null;
 
       var userClient = new ClientUser
       {
-        Email = user!.Email,
+        Email = user.Email,
         CPF = user.CPF,
         FullName = user.FullName,
         UserName = user.UserName
       };
 
-      var existingUser = await _context.ClientUsers.FirstOrDefaultAsync(u => u.CPF == userClient.CPF || u.Email == userClient.Email);
-      if (existingUser != null)
-      {
-        return null;
-      }
-      else
-      {
-        _context.ClientUsers.Add(userClient);
-        await _context.SaveChangesAsync();
-        var userClientResponse = _mapper.Map<ClientUserResponse>(userClient);
-        return userClientResponse;
-      }
-
-    }
-
-    public async Task<ClientUser?> UpdateClientUserAsync(ClientUserRequest clientUserRequest)
-    {
-      var clientUser = _mapper.Map<ClientUser>(clientUserRequest);
-      _context.ClientUsers.Update(clientUser);
+      _context.ClientUsers.Add(userClient);
       await _context.SaveChangesAsync();
-      return clientUser;
+
+      var clientUserResponse = _mapper.Map<ClientUserResponse>(userClient);
+
+      return clientUserResponse;
     }
 
-    public async Task<ClientUser?> DeleteClientUserAsync(int id)
+    public async Task<ClientUserResponse?> UpdateClientUserAsync(int id, ClientUserRequest clientUserRequest)
+    {
+      var existing = await _context.ClientUsers.FindAsync(id);
+      if (existing == null) return null;
+
+      // Atualize apenas os campos que devem ser editáveis
+      existing.Email = clientUserRequest.Email;
+      existing.FullName = clientUserRequest.FullName;
+      existing.UserName = clientUserRequest.UserName;
+      existing.CPF = clientUserRequest.CPF;
+
+      await _context.SaveChangesAsync();
+      var updatedResponse = _mapper.Map<ClientUserResponse>(existing);
+      return updatedResponse;
+    }
+
+    public async Task<ClientUserResponse?> DeleteClientUserAsync(int id)
     {
       var user = await _context.ClientUsers.FindAsync(id);
-      if (user != null)
-      {
-        _context.ClientUsers.Remove(user);
-        await _context.SaveChangesAsync();
-      }
+      if (user == null) return null;
 
-      return user;
+      _context.ClientUsers.Remove(user);
+      await _context.SaveChangesAsync();
+      var deletedResponse = _mapper.Map<ClientUserResponse>(user);
+      return deletedResponse;
     }
 
     public async Task<CheckingRequest?> DoCheckingAsync(int checkingId, int clientUserId)
@@ -84,32 +88,20 @@ namespace Culturapp.Services
           .Include(c => c.ClientUsers)
           .FirstOrDefaultAsync(c => c.Id == checkingId);
 
-      if (checking == null || checking.CheckingDate == DateTime.Now)
-      {
-        return null; // Checking not found or time expired
-      }
+      if (checking == null || checking.CheckingDate < DateTime.Now)
+        return null; // Checking not found or time has passed
 
-      var clientUser = await _context.ClientUsers
-          .FirstOrDefaultAsync(cu => cu.Id == clientUserId);
-
+      var clientUser = await _context.ClientUsers.FindAsync(clientUserId);
       if (clientUser == null)
-      {
         return null;
-      }
 
-      if (checking.ClientUsers!.Contains(clientUser))
-      {
+      if (checking.ClientUsers?.Any(c => c.Id == clientUserId) == true)
         return null; // Already checked in
-      }
 
       checking.ClientUsers!.Add(clientUser);
-
       await _context.SaveChangesAsync();
 
-      var checkingRequest = _mapper.Map<CheckingRequest>(checking);
-      return checkingRequest;
+      return _mapper.Map<CheckingRequest>(checking);
     }
-
-
   }
 }
