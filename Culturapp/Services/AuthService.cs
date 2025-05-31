@@ -42,9 +42,15 @@ namespace Culturapp.Services
       var existingEmail = await _userManager.Users
         .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);
 
-      if (existingEmail != null)
+      var existingCpf = await _userManager.Users
+        .FirstOrDefaultAsync(u => u.CPF == registerRequest.CPF);
+
+      var existingCNPJ = await _userManager.Users
+        .FirstOrDefaultAsync(u => u.CNPJ == registerRequest.CNPJ);
+
+      if (existingEmail != null || existingCpf != null || existingCNPJ != null)
       {
-        return null; // Email already exists
+        return null; // Email, CPF or CNPJ already exists
       }
 
       var user = _mapper.Map<ApplicationUser>(registerRequest);
