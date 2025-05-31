@@ -42,20 +42,14 @@ namespace Culturapp.Services
       var existingEmail = await _userManager.Users
         .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);
 
-      var existingCpf = await _userManager.Users
-        .FirstOrDefaultAsync(u => u.CPF == registerRequest.CPF);
-
-      var existingCNPJ = await _userManager.Users
-        .FirstOrDefaultAsync(u => u.CNPJ == registerRequest.CNPJ);
-
-      if (existingEmail != null || existingCpf != null || existingCNPJ != null)
+      if (existingEmail != null)
       {
-        return null; // Email, CPF or CNPJ already exists
+        return null; // Email already exists
       }
 
       var user = _mapper.Map<ApplicationUser>(registerRequest);
 
-      var createUser = await _userManager.CreateAsync(user, registerRequest.Password!);
+      var createUser = new IdentityUser();
 
       var userClient = new ClientUserResponse();
       var userEnterprise = new EnterpriseUserResponse();
@@ -64,9 +58,19 @@ namespace Culturapp.Services
       {
         case 0:
           userClient = await _clientUserService.CreateClientUserAsync(user);
+          if (userClient == null)
+          {
+            return null; // Client user creation failed, possibly due to existing CPF or Email
+          }
+          await _userManager.CreateAsync(user, registerRequest.Password!);
           break;
         case (Models.Enum.AccountType)1:
           userEnterprise = await _enterpriseUserService.CreateEnterpriseUserAsync(user);
+          if (userEnterprise == null)
+          {
+            return null; // Enterprise user creation failed, possibly due to existing CNPJ or Email
+          }
+          await _userManager.CreateAsync(user, registerRequest.Password!);
           break;
         default:
           return null; // Invalid account type
