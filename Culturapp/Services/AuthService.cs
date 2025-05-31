@@ -36,8 +36,17 @@ namespace Culturapp.Services
       _enterpriseUserService = enterpriseUserService;
     }
 
-    public async Task<IdentityResult?> RegisterAsync(RegisterRequest registerRequest)
+    public async Task<object?> RegisterAsync(RegisterRequest registerRequest)
     {
+
+      var existingEmail = await _userManager.Users
+        .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);
+
+      if (existingEmail != null)
+      {
+        return null; // Email already exists
+      }
+
       var user = _mapper.Map<ApplicationUser>(registerRequest);
 
       var createUser = await _userManager.CreateAsync(user, registerRequest.Password!);
@@ -54,12 +63,12 @@ namespace Culturapp.Services
           userEnterprise = await _enterpriseUserService.CreateEnterpriseUserAsync(user);
           break;
         default:
-          throw new ArgumentException("Invalid AccountType.");
+          return null; // Invalid account type
       }
 
       if (userClient != null || userEnterprise != null)
       {
-        return createUser;
+        return "ok"; // User created successfully
       }
       else
       {
