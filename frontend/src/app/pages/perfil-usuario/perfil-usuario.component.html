@@ -1,0 +1,86 @@
+<div class="container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="header">
+      <div class="logo">C</div>
+      <div class="profile">
+        <img src="assets/img/usuario.png" alt="Foto do Usuário" />
+        <div class="info">
+          <strong>{{ usuario.nome }}</strong>
+          <span>{{ usuario.emailTruncado }}</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <h4>Área do Participante</h4>
+      <ul>
+        <li><i class="icon">🏠</i> Meus Dados</li>
+        <li class="active"><i class="icon">👤</i> Editar Dados</li>
+        <li><i class="icon">📅</i> Histórico de eventos</li>
+
+      </ul>
+    </nav>
+
+    <div class="logout">
+      <button (click)="sair()"><i>↩️</i> Sair</button>
+    </div>
+  </aside>
+
+  <!-- Conteúdo principal -->
+  <main class="content">
+    <header class="content-header">
+      <h2>Meus dados</h2>
+      <nav>
+        <span
+          class="aba"
+          [class.ativa]="abaDadosAtiva === 'perfil'"
+          (click)="mudarAbaDados('perfil')">Perfil</span>
+        <span
+          class="aba"
+          [class.ativa]="abaDadosAtiva === 'senha'"
+          (click)="mudarAbaDados('senha')">Senha</span>
+      </nav>
+    </header>
+
+    <!-- Aba Editar Perfil -->
+    <section *ngIf="abaDadosAtiva === 'perfil'" class="form-section">
+      <div class="profile-photo">
+        <img src="assets/img/usuario.png" alt="Foto do usuário" />
+
+      </div>
+
+      <form [formGroup]="formulario" (ngSubmit)="salvarDados()">
+        <div class="form-group">
+          <label>Nome</label>
+          <input formControlName="nome" type="text" />
+        </div>
+        <div class="form-group">
+          <label>UserName</label>
+          <input formControlName="userName" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input formControlName="email" type="email" />
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input formControlName="telefone" type="text" />
+        </div>
+        <div class="form-group">
+          <label>CPF</label>
+          <input formControlName="documento" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Data de nascimento</label>
+          <input formControlName="nascimento" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Endereço</label>
+          <input formControlName="endereco" type="text" />
+        </div>
+        <button class="btn-salvar" type="submit">Salvar</button>
+      </form>
+    </section>
+  </main>
+</div>
