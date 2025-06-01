@@ -73,7 +73,9 @@ namespace Culturapp.Services
 
       eventNew!.ScoreValue = eventNew.TicketPrice * 0.10;
       _context.Events.Add(eventNew);
-      var checking = await CreateCheckingAsync(eventNew.Id);
+      await _context.SaveChangesAsync();
+
+      var checking = await CreateCheckingAsync(eventNew);
       eventNew.Checking = checking;
 
       await _context.SaveChangesAsync();
@@ -235,16 +237,14 @@ namespace Culturapp.Services
       return eventResponse!;
     }
 
-    public async Task<Checking?> CreateCheckingAsync(int eventId)
+    public async Task<Checking?> CreateCheckingAsync(Event eventEntity)
     {
-      var eventGet = await _context.Events.FindAsync(eventId);
-
-      if (eventGet == null) return null;
+      if (eventEntity == null) return null;
 
       var checking = new Checking
       {
-        CheckingDate = eventGet.EndDate?.AddDays(1), // Assuming checking date is the day after the event ends
-        Event = eventGet,
+        CheckingDate = eventEntity.EndDate?.AddDays(1), // Assuming checking date is the day after the event ends
+        Event = eventEntity,
         ClientUsers = new List<ClientUser?>()
       };
 
