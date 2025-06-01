@@ -26,13 +26,13 @@
     <div class="profile">
       <img src="assets/img/usuario.png" alt="Foto do Usuário" />
       <div class="info">
-        <strong>{{ usuario.nome }}</strong>
-        <span>{{ usuario.emailTruncado }}</span>
+        <strong>{{ empresa.nome }}</strong>
+        <span>{{ empresa.emailTruncado }}</span>
       </div>
     </div>
 
     <nav class="menu">
-      <h4>Área do Cliente</h4>
+      <h4>Área da Empresa</h4>
       <ul>
         <li
           (click)="mudarAbaDados('perfil')"
@@ -47,13 +47,14 @@
           <i class="icon">👤</i> Editar Dados
         </li>
         <li
-          (click)="mudarAbaDados('historico')"
-          [class.active]="abaDadosAtiva === 'historico'"
+          (click)="mudarAbaDados('meusEventos')"
+          [class.active]="abaDadosAtiva === 'meusEventos'"
         >
-          <i class="icon">📅</i> Histórico de eventos
+          <i class="icon">📅</i> Meus eventos
         </li>
       </ul>
     </nav>
+
   </aside>
 
   <!-- Conteúdo principal -->
@@ -129,11 +130,22 @@
       </form>
     </section>
 
-    <!-- Aba Histórico de Eventos -->
-    <section *ngIf="abaDadosAtiva === 'historico'" class="form-section">
-      <h2>Histórico de Eventos</h2>
+    <!-- Aba Meus Eventos -->
+    <section *ngIf="abaDadosAtiva === 'meusEventos'" class="form-section">
+      <h2>Meus Eventos</h2>
+      <button
+        class="btn-criarEvento"
+        [routerLink]="['/criar-evento']"
+        type="button"
+      >
+        Criar novo evento
+      </button>
       <ul class="eventos-lista">
-        <li *ngFor="let evento of eventos" class="evento-item">
+        <li
+        *ngFor="let evento of eventos"
+        class="evento-item"
+        (click)="editarEvento(evento.id)"
+        >
           <h3>{{ evento.nome }}</h3>
           <p>{{ evento.descricao }}</p>
           <span class="status">{{ evento.status }}</span>
