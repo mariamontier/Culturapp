@@ -7,9 +7,9 @@
     <div
       class="w-100 mb-4 d-flex justify-content-between align-items-center mt-4"
     >
-      <div class="d-flex align-items-center">
-        <div class="logo-box me-2">C</div>
-        <h3 class="mb-0">CulturApp</h3>
+      <div class="logo">
+       <img src="./assets/img/logo.png" alt="logo CulturApp" />
+      <span>CulturApp</span>
       </div>
 
       <div>
@@ -34,16 +34,16 @@
         <h3 class="mb-4 text-center">Entre na sua conta</h3>
 
         <div class="mb-3">
-          
+
           <label class="form-label">Email</label>
-          
+
           <input
             class="form-control input-laranja-claro"
             type="email"
             formControlName="email"
             placeholder="Email"
           />
-          
+
         </div>
 
         <div class="mb-2 position-relative">
@@ -80,26 +80,3 @@
   </div>
 </div>
 
-<style>
-/* Barra animada embaixo dos itens da navbar */
-.nav-underline {
-  position: relative;
-  text-decoration: none;
-}
-
-.nav-underline::after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 2px;
-  background: #ff6600; /* cor laranja */
-  transition: width 0.3s;
-}
-
-.nav-underline:hover::after {
-  width: 100%;
-}
-</style>

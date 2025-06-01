@@ -14,4 +14,11 @@ export class EventpageComponent {
     // Lógica para comprar ingresso
     this.router.navigate(['/checkout']);
   }
+
+   verCadastro() {
+    this.router.navigate(['/cadastro']);
+  }
+    verLogin() {
+    this.router.navigate(['/login']);
+  }
 }
