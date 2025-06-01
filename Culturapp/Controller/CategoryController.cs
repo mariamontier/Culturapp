@@ -16,7 +16,7 @@ namespace Culturapp.Controllers
       _categoryService = categoryService;
     }
 
-    [HttpGet("GetCategories")]
+    [HttpGet("GetCategories")]//só traz as categorias sem os eventos
     public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
     {
       var categories = await _categoryService.GetAllAsync();
@@ -79,7 +79,7 @@ namespace Culturapp.Controllers
     public async Task<ActionResult<List<EventResponse>>> GetEventsByCategory(int? categoryId)
     {
       var events = await _categoryService.GetEventsByCategoryIdAsync(categoryId);
-      if (events == null)
+      if (events == null) 
       {
         return NotFound();
       }

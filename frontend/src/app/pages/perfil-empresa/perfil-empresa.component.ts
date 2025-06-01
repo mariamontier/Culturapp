@@ -7,16 +7,16 @@ import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
-  selector: 'app-perfil-usuario',
-  templateUrl: './perfil-usuario.component.html',
-  styleUrls: ['./perfil-usuario.component.css'],
+  selector: 'app-perfil-empresa',
+  templateUrl: './perfil-empresa.component.html',
+  styleUrls: ['./perfil-empresa.component.css'],
   imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
 })
-export class PerfilUsuarioComponent implements OnInit {
+export class PerfilEmpresaComponent implements OnInit {
   formulario: FormGroup;
   abaDadosAtiva: string = 'perfil';
 
-  usuario = {
+  empresa = {
     nome: 'Paula Fernandes Jacobina',
     userName: 'paulafernandes',
     email: 'paulafernandes@gmail.com',
@@ -30,13 +30,13 @@ export class PerfilUsuarioComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.formulario = this.fb.group({
-      nome: [this.usuario.nome],
-      userName: [this.usuario.userName],
-      email: [this.usuario.email],
-      telefone: [this.usuario.telefone],
-      documento: [this.usuario.documento],
-      nascimento: [this.usuario.nascimento],
-      endereco: [this.usuario.endereco],
+      nome: [this.empresa.nome],
+      userName: [this.empresa.userName],
+      email: [this.empresa.email],
+      telefone: [this.empresa.telefone],
+      documento: [this.empresa.documento],
+      nascimento: [this.empresa.nascimento],
+      endereco: [this.empresa.endereco],
     });
   }
 
@@ -49,27 +49,29 @@ export class PerfilUsuarioComponent implements OnInit {
   salvarDados(): void {
     if (this.formulario.valid) {
       console.log('Dados salvos:', this.formulario.value);
-      this.usuario = { ...this.usuario, ...this.formulario.value };
+      this.empresa = { ...this.empresa, ...this.formulario.value };
     }
   }
 
-  sair(): void {
-    console.log('Usuário saiu do sistema');
-    // Aqui você pode adicionar a lógica de logout
+  editarEvento(id: number) {
+    this.router.navigate(['/editar-evento'], { queryParams: { id } });
   }
 
   eventos = [
     {
+      id: 1,
       nome: 'Angular Conf 2024',
       descricao: 'Evento sobre Angular e boas práticas',
       status: 'Concluído',
     },
     {
+      id: 2,
       nome: 'Semana Dev Frontend',
       descricao: 'Palestras sobre UI/UX e tendências',
       status: 'Em andamento',
     },
     {
+      id: 3,
       nome: 'Hackathon SP',
       descricao: 'Maratona de programação de 48h',
       status: 'Inscrito',
