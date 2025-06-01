@@ -6,10 +6,9 @@
 }
 
 .header {
-
   background-color: transparent;
   color: #4b0082;
-  padding: 2rem 0 1.5rem 0;
+  padding: 2rem 0 1.5rem 2.5rem; /* aumente o padding-left para mover para direita */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -17,24 +16,16 @@
   position: relative;
 }
 
+/* Logo */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-left: 40px;
 }
 
-.logo-box {
-  background-color: #6c4acb;
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.logo img {
+  width: 30px;
+  height: 30px;
 }
 
 .nav {

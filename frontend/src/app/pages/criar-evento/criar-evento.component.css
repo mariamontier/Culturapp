@@ -37,25 +37,9 @@
   gap: 10px;
 }
 
-.logo-box {
-  background-color: #6c4acb;
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-text {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #222;
-  letter-spacing: 0.5px;
+.logo img {
+  width: 30px;
+  height: 30px;
 }
 
 /* MENU CENTRALIZADO */
@@ -181,13 +165,13 @@
     gap: 1rem;
     padding: 1rem;
   }
-  
+
   .nav-menu {
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   .event-form .row {
     flex-direction: column;
   }
