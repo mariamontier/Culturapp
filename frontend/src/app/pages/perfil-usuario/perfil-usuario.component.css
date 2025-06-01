@@ -1,0 +1,170 @@
+/* Layout principal */
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #f7f7f7;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
+.sidebar .header .logo {
+  background-color: purple;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.sidebar .profile {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.sidebar .profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.sidebar .profile .info {
+  margin-left: 10px;
+}
+
+.sidebar .profile .info strong {
+  display: block;
+}
+
+.sidebar .menu {
+  margin-top: 30px;
+}
+
+.sidebar .menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar .menu ul li {
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.sidebar .menu ul li:hover,
+.sidebar .menu ul .active {
+  background-color: #ffeceb;
+  color: #d35400;
+}
+
+.sidebar .menu h4 {
+  margin-bottom: 10px;
+}
+
+.sidebar .logout {
+  margin-top: auto;
+}
+
+.sidebar .logout button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+}
+
+/* Conteúdo */
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-header h2 {
+  margin: 0;
+}
+
+.content-header nav .aba {
+  margin-right: 20px;
+  cursor: pointer;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+}
+
+.content-header nav .aba.ativa {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+/* Formulário */
+.form-section {
+  display: flex;
+  gap: 50px;
+  margin-top: 30px;
+}
+
+.profile-photo {
+  text-align: center;
+}
+
+.profile-photo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.profile-photo .btn-upload {
+  display: block;
+  margin-top: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+form {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn-salvar {
+  background-color: #8000ff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+}

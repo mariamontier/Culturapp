@@ -7,6 +7,7 @@ import { CriarEventoComponent } from './pages/criar-evento/criar-evento.componen
 import { EditarEventoComponent } from './pages/editar-evento/editar-evento.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { SobreComponent } from './pages/sobre/sobre.component';
+import { PerfilUsuarioComponent } from './pages/perfil-usuario/perfil-usuario.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,7 +17,8 @@ export const routes: Routes = [
   { path: 'editar-evento', component: EditarEventoComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'sobre', component: SobreComponent },
-  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) }
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) },
+  { path: 'perfil-usuario', component: PerfilUsuarioComponent },
 
 ];
 
