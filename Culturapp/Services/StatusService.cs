@@ -38,11 +38,13 @@ public class StatusService
     {
       var defaultStatuses = new List<Status>
       {
-        new Status { StatusName = "Cancelled" },
-        new Status { StatusName = "Postponed" },
-        new Status { StatusName = "SoldOut" },
-        new Status { StatusName = "Finished" },
-        new Status { StatusName = "Preparing" }
+        new Status { StatusName = "Aberto" },
+        new Status { StatusName = "Ativo" },
+        new Status { StatusName = "Cancelado" },
+        new Status { StatusName = "Adiado" },
+        new Status { StatusName = "Esgotado" },
+        new Status { StatusName = "Finalizado" },
+        new Status { StatusName = "Em Preparação" },
       };
 
       _context.Statuses.AddRange(defaultStatuses);
