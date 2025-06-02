@@ -81,7 +81,6 @@ export class CadastroComponent implements OnInit {
   }
 
   cadastrar(): void {
-    debugger
     //(this.cadastroForm.errors?.['passwordMismatch']);
     this.senhaInvalida = this.cadastroForm.errors?.['passwordMismatch'];
 
