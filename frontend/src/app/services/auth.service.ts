@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { RegisterRequest } from '../models/register-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,9 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  cadastrar(dados: any): Observable<any> {
+  cadastrar(dados: RegisterRequest): Observable<RegisterRequest> {
+    debugger
+    console.log(dados);
     return this.http.post(`${this.apiUrl}/register`, dados);
   }
 

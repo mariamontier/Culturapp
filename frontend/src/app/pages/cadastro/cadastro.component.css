@@ -8,7 +8,7 @@
 .header {
   background-color: transparent;
   color: #4b0082;
-  padding: 2rem 0 1.5rem 2.5rem; /* aumente o padding-left para mover para direita */
+  padding: 2rem 0 1.5rem 2.5rem;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -118,6 +118,32 @@ form {
   border-color: #9146ff;
 }
 
+/* --- Novas Regras CSS para Validação --- */
+
+/* Estilo para campos inválidos */
+.form-group input.is-invalid,
+.form-group select.is-invalid {
+  border-color: #dc3545; /* Cor vermelha para indicar erro */
+}
+
+/* Estilo para a mensagem de erro */
+.error-message {
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.cadastro-form-wrapper .error-message {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+/* --- Fim das Novas Regras CSS --- */
+
+
 .password-field {
   display: flex;
   align-items: center;
@@ -146,6 +172,13 @@ form {
 
 .submit-button:hover {
   background-color: #e85c3f;
+}
+
+/* Estilo para botão desabilitado */
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .login-link {
@@ -181,12 +214,6 @@ form {
   border-radius: 12px;
   object-fit: cover;
   align-self: stretch;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.9rem;
-  text-align: center;
 }
 
 .logo-text, .header .logo-text, .header h3.mb-0 {
