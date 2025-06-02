@@ -47,6 +47,8 @@ export class CadastroComponent {
       this.senhaInvalida = false;
     }
 
+    console.log(this.cadastroForm.value);
+
     if (this.cadastroForm.valid) {
       this.authService.cadastrar(this.cadastroForm.value).subscribe(() => {
         alert('Cadastro realizado com sucesso!');
