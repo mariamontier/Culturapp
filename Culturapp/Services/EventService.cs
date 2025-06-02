@@ -4,7 +4,6 @@ using Culturapp.Models;
 using Culturapp.Models.Requests;
 using Culturapp.Models.Responses;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Culturapp.Services
 {
@@ -61,13 +60,28 @@ namespace Culturapp.Services
     }
 
 
-    public async Task CreateEventAsync(EventRequest newEventRequest)
+    public async Task<string?> CreateEventAsync(EventRequest newEventRequest)
     {
       var eventNew = new Event();
+
       eventNew = await MakeEventRelationshipMapper(eventNew, newEventRequest);
-      eventNew.ScoreValue = eventNew.TicketPrice * 0.10;
+
+      if (eventNew == null)
+      {
+        return null;
+      }
+
+      eventNew!.ScoreValue = eventNew.TicketPrice * 0.10;
       _context.Events.Add(eventNew);
       await _context.SaveChangesAsync();
+
+      var checking = await CreateCheckingAsync(eventNew);
+      eventNew.Checking = checking;
+
+      await _context.SaveChangesAsync();
+
+      return "Event created";
+
     }
 
     public async Task<Event?> UpdateEventAsync(int id, EventRequest? eventRequest)
@@ -85,9 +99,9 @@ namespace Culturapp.Services
 
       if (ticketPriceChanged)
       {
-        eventUpdate.ScoreValue = eventUpdate.TicketPrice * 0.10;
+        eventUpdate!.ScoreValue = eventUpdate.TicketPrice * 0.10;
       }
-      _context.Events.Update(eventUpdate);
+      _context.Events.Update(eventUpdate!);
       await _context.SaveChangesAsync();
 
       return eventUpdate;
@@ -104,9 +118,9 @@ namespace Culturapp.Services
       }
     }
 
-    public async Task<Event> MakeEventRelationshipMapper(Event? bestEvent, EventRequest? eventRequest)
+    public async Task<Event?> MakeEventRelationshipMapper(Event? bestEvent, EventRequest? eventRequest)
     {
-      if (bestEvent == null || eventRequest == null) return null!;
+      if (bestEvent == null || eventRequest == null) return null;
 
       bestEvent.Name = eventRequest.Name;
       bestEvent.StartDate = eventRequest.StartDate;
@@ -118,11 +132,10 @@ namespace Culturapp.Services
       bestEvent.SalesStartDate = eventRequest.SalesStartDate;
       bestEvent.SalesEndDate = eventRequest.SalesEndDate;
       bestEvent.Status = await _context.Statuses.FindAsync(eventRequest.StatusId);
-      bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
+      bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.Checking);
       bestEvent.FAQ = await _context.FAQs.FindAsync(eventRequest.FAQInt);
       bestEvent.EnterpriseUser = await _context.EnterpriseUsers.FindAsync(eventRequest.EnterpriseUserId);
       bestEvent.Category = await _context.Categories.FindAsync(eventRequest.CategoryId);
-      bestEvent.Checking = await _context.Checks.FindAsync(eventRequest.CheckingInt);
 
       // Phones - substitui todos os anteriores
       if (eventRequest.PhonesId != null && eventRequest.PhonesId.Any())
@@ -224,24 +237,21 @@ namespace Culturapp.Services
       return eventResponse!;
     }
 
-    public async Task<CheckingResponse?> CreateCheckingAsync(int eventId)
+    public async Task<Checking?> CreateCheckingAsync(Event eventEntity)
     {
-      var eventGet = await _context.Events.FindAsync(eventId);
-
-      if (eventGet == null) return null;
+      if (eventEntity == null) return null;
 
       var checking = new Checking
       {
-        CheckingDate = eventGet.EndDate?.AddDays(1), // Assuming checking date is the day after the event ends
-        Event = eventGet,
+        CheckingDate = eventEntity.EndDate?.AddDays(1), // Assuming checking date is the day after the event ends
+        Event = eventEntity,
         ClientUsers = new List<ClientUser?>()
       };
 
       _context.Checks.Add(checking);
       await _context.SaveChangesAsync();
 
-      var checkingResponse = _mapper.Map<CheckingResponse>(checking);
-      return checkingResponse;
+      return checking;
     }
 
   }

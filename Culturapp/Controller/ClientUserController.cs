@@ -40,7 +40,7 @@ namespace Culturapp.Controller
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var updatedUser = await _clientUserService.UpdateClientUserAsync(clientUserRequest);
+      var updatedUser = await _clientUserService.UpdateClientUserAsync(id, clientUserRequest);
       if (updatedUser == null)
         return NotFound();
 

@@ -19,7 +19,7 @@ namespace Culturapp.Services
 
     public async Task<IEnumerable<CheckingResponse>> GetAllAsync()
     {
-      var checks = await _context.Checks.ToListAsync();
+      var checks = await _context.Checks.Include(c => c.Event).Include(c => c.ClientUsers).ToListAsync();
       var mappedChecks = _mapper.Map<IEnumerable<Checking>>(checks);
       var mappedCheckingResponses = _mapper.Map<IEnumerable<CheckingResponse>>(mappedChecks);
       return mappedCheckingResponses;
@@ -27,14 +27,14 @@ namespace Culturapp.Services
 
     public async Task<Checking?> GetByIdAsync(int id)
     {
-      var checking = await _context.Checks.FindAsync(id);
+      var checking = await _context.Checks.Include(c => c.Event).Include(c => c.ClientUsers).FirstOrDefaultAsync(c => c.Id == id);
       var mappedChecking = _mapper.Map<Checking>(checking);
       return mappedChecking!;
     }
 
     public async Task<CheckingResponse?> UpdateAsync(int id, CheckingRequest checking)
     {
-      var existing = await _context.Checks.FindAsync(id);
+      var existing = await _context.Checks.FirstOrDefaultAsync(c => c.Id == id);
       if (existing == null)
         return null;
 

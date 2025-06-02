@@ -19,11 +19,14 @@ namespace Culturapp.Controllers
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
     {
       var result = await _authService.RegisterAsync(registerRequest);
-      if (result!.Succeeded)
+      if (result == null)
+      {
+        return BadRequest();
+      }
+      else
       {
         return Created();
       }
-      return BadRequest(result.Errors);
     }
 
     [HttpPost("login")]

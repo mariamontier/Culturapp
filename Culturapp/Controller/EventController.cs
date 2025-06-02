@@ -1,6 +1,5 @@
 using Culturapp.Models;
 using Culturapp.Models.Requests;
-using Culturapp.Models.Responses;
 using Culturapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,8 +43,14 @@ namespace Culturapp.Controllers
     public async Task<ActionResult<Event>> PostEvent(EventRequest eventItem)
     {
 
-      await _eventService.CreateEventAsync(eventItem);
       if (eventItem == null)
+      {
+        return BadRequest();
+      }
+
+      var eventCreate = await _eventService.CreateEventAsync(eventItem);
+
+      if (eventCreate == null)
       {
         return BadRequest();
       }
@@ -100,17 +105,6 @@ namespace Culturapp.Controllers
       }
 
       return Ok(eventItem);
-    }
-
-    [HttpPost("PostChecking/{eventId}")]
-    public async Task<ActionResult<CheckingResponse?>> PostCheckingAsync(int eventId)
-    {
-      if (eventId == null)
-      {
-        return BadRequest();
-      }
-
-      return Created();
     }
 
   }

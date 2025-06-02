@@ -1,19 +1,19 @@
 <!-- Banner principal -->
 <section class="banner">
   <nav class="navbar">
-    <div class="d-flex align-items-center">
-      <div class="logo-box me-2">C</div>
-      <h3 class="mb-0">CulturApp</h3>
+    <div class="logo">
+      <img src="./assets/img/logo.png" alt="logo CulturApp" />
+      <span>CulturApp</span>
     </div>
     <ul class="nav-links">
-      <li><a href="#" class="nav-active">Home</a></li>
-      <li><a href="#">Eventos</a></li>
-      <li><a href="#">FAQ</a></li>
-      <li><a href="#">Sobre</a></li>
+      <li><a routerLink="/home" class="nav-active">Home</a></li>
+      <li><a href="/eventpage" routerLink="/eventpage">Eventos</a></li>
+      <li><a href="/faq" routerLink="/faq">FAQ</a></li>
+      <li><a href="/sobre" routerLink="/sobre">Sobre</a></li>
     </ul>
     <div class="auth-buttons">
-      <button class="signup">Signup</button>
-      <button class="login">Login</button>
+      <button class="signup" (click)="verCadastro()">Signup</button>
+      <button class="login" (click)="verLogin()">Login</button>
     </div>
   </nav>
   <div class="banner-content">
@@ -25,25 +25,25 @@
 
 <!-- Filtro -->
 <section class="filtros">
-  <input type="text" placeholder="Pesquisar artista ou evento" />
-  <select>
+  <input type="text" placeholder="Pesquisar artista ou evento" [(ngModel)]="termoPesquisa" />
+  <select [(ngModel)]="categoriaSelecionada">
     <option>Todas categorias</option>
     <option>Show</option>
     <option>Teatro</option>
     <option>Festival</option>
   </select>
-  <button>Pesquisar</button>
+  <button (click)="filtrarEventos()">Pesquisar</button>
 </section>
 
 <!-- Carrossel de eventos -->
 <section class="eventos">
-  <div class="event-card" *ngFor="let evento of eventos">
+  <div class="event-card" *ngFor="let evento of eventosFiltrados; ">
     <img [src]="evento.imagem" alt="evento" />
     <div class="event-info">
       <h3>{{ evento.titulo }}</h3>
       <p>{{ evento.local }}, {{ evento.data }}</p>
       <p class="preco">A partir de {{ evento.preco }}</p>
-      <button class="detalhes">DETALHES</button>
+      <button class="detalhes" (click)="irParaDetalhes()">DETALHES</button>
     </div>
   </div>
 </section>

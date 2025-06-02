@@ -1,8 +1,8 @@
 <header class="header">
   <div class="left">
     <div class="logo">
-      <div class="logo-box">C</div>
-      <span class="logo-text">CulturApp</span>
+      <img src="./assets/img/logo.png" alt="logo CulturApp" />
+      <span>CulturApp</span>
     </div>
   </div>
 
@@ -16,7 +16,7 @@
   </div>
 
   <div class="right">
-    <button class="profile-btn">Perfil</button>
+    <a class="profile-btn" href="/perfil-empresa" style="text-decoration: none;">Perfil</a>
   </div>
 </header>
 
@@ -80,8 +80,8 @@
 
     <div class="buttons">
       <button class="btn save" type="submit">Salvar evento</button>
-      <button class="btn update" type="button">Atualizar evento</button>
-      <button class="btn cancel" type="button">Cancelar evento</button>
+      <button class="btn update" type="button" onclick="window.location.href='/editar-evento'">Atualizar evento</button>
+      <button class="btn cancel" type="button" onclick="window.location.href='/perfil-empresa'">Cancelar evento</button>
     </div>
   </form>
 </div>

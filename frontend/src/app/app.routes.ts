@@ -7,8 +7,13 @@ import { CriarEventoComponent } from './pages/criar-evento/criar-evento.componen
 import { EditarEventoComponent } from './pages/editar-evento/editar-evento.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { SobreComponent } from './pages/sobre/sobre.component';
+import { PerfilUsuarioComponent } from './pages/perfil-usuario/perfil-usuario.component';
+import { PerfilEmpresaComponent } from './pages/perfil-empresa/perfil-empresa.component';
 
 export const routes: Routes = [
+
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'eventpage', component: EventpageComponent },
@@ -16,12 +21,20 @@ export const routes: Routes = [
   { path: 'editar-evento', component: EditarEventoComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'sobre', component: SobreComponent },
-  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) }
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
+  },
+  { path: 'perfil-usuario', component: PerfilUsuarioComponent },
+  { path: 'perfil-empresa', component: PerfilEmpresaComponent },
 
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+
+export class AppRoutingModule { }
