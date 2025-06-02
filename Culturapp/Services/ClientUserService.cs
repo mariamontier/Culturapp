@@ -57,19 +57,45 @@ namespace Culturapp.Services
 
     public async Task<ClientUserResponse?> UpdateClientUserAsync(int id, ClientUserRequest clientUserRequest)
     {
-      var existing = await _context.ClientUsers.FindAsync(id);
+      var existing = await _context.ClientUsers
+        .Include(c => c.Events)
+        .Include(c => c.Checks)
+        .FirstOrDefaultAsync(c => c.Id == id);
+
       if (existing == null) return null;
 
-      // Atualize apenas os campos que devem ser editáveis
+
       existing.Email = clientUserRequest.Email;
       existing.FullName = clientUserRequest.FullName;
       existing.UserName = clientUserRequest.UserName;
       existing.CPF = clientUserRequest.CPF;
+      existing.Phone = clientUserRequest.PhoneId != null
+        ? await _context.Phones.FindAsync(clientUserRequest.PhoneId)
+        : null;
+
+      existing.Address = await _context.Addresses.FindAsync(clientUserRequest.AddressId);
+
+      if (clientUserRequest.EventId != null &&
+          !existing.Events!.Any(e => e!.Id == clientUserRequest.EventId))
+      {
+        var ev = await _context.Events.FindAsync(clientUserRequest.EventId);
+        if (ev != null)
+          existing.Events!.Add(ev);
+      }
+
+      if (clientUserRequest.CheckId != null &&
+          !existing.Checks!.Any(c => c!.Id == clientUserRequest.CheckId))
+      {
+        var check = await _context.Checks.FindAsync(clientUserRequest.CheckId);
+        if (check != null)
+          existing.Checks!.Add(check);
+      }
 
       await _context.SaveChangesAsync();
       var updatedResponse = _mapper.Map<ClientUserResponse>(existing);
       return updatedResponse;
     }
+
 
     public async Task<ClientUserResponse?> DeleteClientUserAsync(int id)
     {
