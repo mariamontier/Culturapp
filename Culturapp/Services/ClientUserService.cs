@@ -95,7 +95,7 @@ namespace Culturapp.Services
       if (clientUser == null)
         return null;
 
-      if (checking.ClientUsers?.Any(c => c.Id == clientUserId) == true)
+      if (checking.ClientUsers?.Any(c => c!.Id == clientUserId) == true)
         return null; // Already checked in
 
       checking.ClientUsers!.Add(clientUser);
