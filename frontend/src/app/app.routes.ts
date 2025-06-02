@@ -11,6 +11,9 @@ import { PerfilUsuarioComponent } from './pages/perfil-usuario/perfil-usuario.co
 import { PerfilEmpresaComponent } from './pages/perfil-empresa/perfil-empresa.component';
 
 export const routes: Routes = [
+
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'eventpage', component: EventpageComponent },
@@ -25,10 +28,13 @@ export const routes: Routes = [
   },
   { path: 'perfil-usuario', component: PerfilUsuarioComponent },
   { path: 'perfil-empresa', component: PerfilEmpresaComponent },
+
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+
+export class AppRoutingModule { }
