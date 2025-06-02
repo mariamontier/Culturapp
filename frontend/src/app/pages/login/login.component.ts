@@ -29,9 +29,6 @@ export class LoginComponent {
   login() {
     var credenciais = this.loginForm.value;
 
-
-    console.log(credenciais);
-
     this.authService.login(credenciais).subscribe(() => {
       this.router.navigate(['/eventpage']);
     });
