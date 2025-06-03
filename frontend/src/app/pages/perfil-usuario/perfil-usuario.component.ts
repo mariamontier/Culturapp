@@ -17,12 +17,12 @@ export class PerfilUsuarioComponent implements OnInit {
   abaDadosAtiva: string = 'perfil';
 
   usuario = {
-    nome: 'Paula Fernandes Jacobina',
-    userName: 'paulafernandes',
-    email: 'paulafernandes@gmail.com',
-    emailTruncado: 'paulafernandes@gm....',
+    nome: 'Igor de Andrade Tudisco',
+    userName: 'igor.tudisco',
+    email: 'igor.tudisco@gmail.com',
+    emailTruncado: 'igor.tudisco@gmail.com',
     telefone: '17 9999-9999',
-    documento: '0000',
+    documento: '654.321.987-00',
     nascimento: '28-01-1988',
     foto: 'assets/img/usuario.png',
     endereco: 'Rua das Flores, 123, São Paulo, SP',
@@ -40,7 +40,7 @@ export class PerfilUsuarioComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   mudarAbaDados(aba: string): void {
     this.abaDadosAtiva = aba;
