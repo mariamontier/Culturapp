@@ -14,5 +14,6 @@ namespace Culturapp.Models.Requests
     public string? CNPJ { get; set; }
 
     public int? PhoneId { get; set; }
+    public int? AddressId { get; set; }
   }
 }
