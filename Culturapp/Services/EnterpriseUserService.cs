@@ -60,7 +60,9 @@ namespace Culturapp.Services
 
     public async Task<EnterpriseUserResponse?> UpdateEnterpriseUserAsync(int id, EnterpriseUserRequest enterpriseUserRequest)
     {
-      var enterpriseUser = await _context.EnterpriseUsers.FindAsync(id);
+      var enterpriseUser = await _context.EnterpriseUsers
+        .Include(e => e.Phones)
+        .FirstOrDefaultAsync(e => e.Id == id);
       if (enterpriseUser == null)
         return null;
 
