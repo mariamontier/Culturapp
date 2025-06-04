@@ -64,8 +64,6 @@ namespace Culturapp.Services
 
       if (existing == null) return null;
 
-
-      existing.Email = clientUserRequest.Email;
       existing.FullName = clientUserRequest.FullName;
       existing.UserName = clientUserRequest.UserName;
       existing.CPF = clientUserRequest.CPF;

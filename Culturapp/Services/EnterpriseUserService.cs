@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using Culturapp.Data;
 using Culturapp.Models;
@@ -60,33 +59,32 @@ namespace Culturapp.Services
 
     public async Task<EnterpriseUserResponse?> UpdateEnterpriseUserAsync(int id, EnterpriseUserRequest enterpriseUserRequest)
     {
-      var enterpriseUser = await _context.EnterpriseUsers
+      var existingEnterpriseUser = await _context.EnterpriseUsers
         .Include(e => e.Phones)
         .FirstOrDefaultAsync(e => e.Id == id);
-      if (enterpriseUser == null)
+      if (existingEnterpriseUser == null)
         return null;
 
-      enterpriseUser.Email = enterpriseUserRequest.Email;
-      enterpriseUser.UserName = enterpriseUserRequest.UserName;
-      enterpriseUser.FullName = enterpriseUserRequest.FullName;
-      enterpriseUser.CNPJ = enterpriseUserRequest.CNPJ;
-      enterpriseUser.AddressId = enterpriseUserRequest.AddressId;
+      existingEnterpriseUser.UserName = enterpriseUserRequest.UserName;
+      existingEnterpriseUser.FullName = enterpriseUserRequest.FullName;
+      existingEnterpriseUser.CNPJ = enterpriseUserRequest.CNPJ;
+      existingEnterpriseUser.AddressId = enterpriseUserRequest.AddressId;
 
       var phone = await _context.Phones.FindAsync(enterpriseUserRequest.PhoneId);
       if (phone != null)
       {
-        if (!enterpriseUser.Phones!.Contains(phone))
+        if (!existingEnterpriseUser.Phones!.Contains(phone))
         {
           // If the phone is not already associated with the enterprise user, add it
-          enterpriseUser.Phones.Add(phone);
+          existingEnterpriseUser.Phones.Add(phone);
         }
       }
 
       await _context.SaveChangesAsync();
-      var enterpriseUserResponse = _mapper.Map<EnterpriseUserResponse>(enterpriseUser);
+      var enterpriseUserResponse = _mapper.Map<EnterpriseUserResponse>(existingEnterpriseUser);
+
       return enterpriseUserResponse;
     }
-
 
     public async Task<EnterpriseUser?> DeleteEnterpriseUserAsync(int id)
     {

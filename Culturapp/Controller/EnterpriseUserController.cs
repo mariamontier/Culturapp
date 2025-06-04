@@ -49,7 +49,7 @@ namespace Culturapp.Controller
         return NotFound();
       }
 
-      return Ok(updatedUser);
+      return NoContent();
     }
 
     [HttpDelete("DeleteEnterpriseUser/{id}")]
