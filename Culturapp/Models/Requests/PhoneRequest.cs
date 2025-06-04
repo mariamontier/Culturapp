@@ -9,7 +9,7 @@ namespace Culturapp.Models.Requests
 
     // [StringLength(11, MinimumLength = 11)]
     // [RegularExpression(@"^\(\d{2}\)\s?\d{4,5}-\d{4}$", ErrorMessage = "Formato de telefone inválido. Ex: (11) 98765-4321")]
-    [StringLength(11, MinimumLength = 11)]
+    [StringLength(8, MinimumLength = 8)]
     public string? PhoneNumber { get; set; }
 
   }
