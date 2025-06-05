@@ -26,30 +26,20 @@
     <div class="profile">
       <img src="assets/img/usuario.png" alt="Foto do Usuário" />
       <div class="info">
-        <strong>{{ usuario.nome }}</strong>
-        <span>{{ usuario.emailTruncado }}</span>
+        <strong>{{ usuario?.userName }}</strong>
       </div>
     </div>
 
     <nav class="menu">
       <h4>Área do Cliente</h4>
       <ul>
-        <li
-          (click)="mudarAbaDados('perfil')"
-          [class.active]="abaDadosAtiva === 'perfil'"
-        >
+        <li (click)="mudarAbaDados('perfil')" [class.active]="abaDadosAtiva === 'perfil'">
           <i class="icon">🏠</i> Meus Dados
         </li>
-        <li
-          (click)="mudarAbaDados('editarPerfil')"
-          [class.active]="abaDadosAtiva === 'editarPerfil'"
-        >
+        <li (click)="mudarAbaDados('editarPerfil')" [class.active]="abaDadosAtiva === 'editarPerfil'">
           <i class="icon">👤</i> Editar Dados
         </li>
-        <li
-          (click)="mudarAbaDados('historico')"
-          [class.active]="abaDadosAtiva === 'historico'"
-        >
+        <li (click)="mudarAbaDados('historico')" [class.active]="abaDadosAtiva === 'historico'">
           <i class="icon">📅</i> Histórico de eventos
         </li>
       </ul>
@@ -71,10 +61,10 @@
           <label>UserName</label>
           <input formControlName="userName" type="text" readonly />
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Email</label>
           <input formControlName="email" type="email" readonly />
-        </div>
+        </div> -->
         <div class="form-group">
           <label>Telefone</label>
           <input formControlName="telefone" type="text" readonly />
@@ -83,10 +73,10 @@
           <label>CPF</label>
           <input formControlName="documento" type="text" readonly />
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Data de nascimento</label>
           <input formControlName="nascimento" type="text" readonly />
-        </div>
+        </div> -->
         <div class="form-group">
           <label>Endereço</label>
           <input formControlName="endereco" type="text" readonly />
@@ -105,10 +95,10 @@
           <label>UserName</label>
           <input formControlName="userName" type="text" />
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Email</label>
           <input formControlName="email" type="email" />
-        </div>
+        </div> -->
         <div class="form-group">
           <label>Telefone</label>
           <input formControlName="telefone" type="text" />
@@ -117,10 +107,10 @@
           <label>CPF</label>
           <input formControlName="documento" type="text" />
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Data de nascimento</label>
           <input formControlName="nascimento" type="text" />
-        </div>
+        </div> -->
         <div class="form-group">
           <label>Endereço</label>
           <input formControlName="endereco" type="text" />
