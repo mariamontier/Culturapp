@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { ClientUserResponse } from '../../models/client-user-response.model';
+import { ClientUserService } from '../../services/client-user.service';
 
 @Component({
   standalone: true,
@@ -16,31 +18,41 @@ export class PerfilUsuarioComponent implements OnInit {
   formulario: FormGroup;
   abaDadosAtiva: string = 'perfil';
 
-  usuario = {
-    nome: 'Igor de Andrade Tudisco',
-    userName: 'igor.tudisco',
-    email: 'igor.tudisco@gmail.com',
-    emailTruncado: 'igor.tudisco@gmail.com',
-    telefone: '17 9999-9999',
-    documento: '654.321.987-00',
-    nascimento: '28-01-1988',
-    foto: 'assets/img/usuario.png',
-    endereco: 'Rua das Flores, 123, São Paulo, SP',
-  };
+  usuario?: ClientUserResponse;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private clientUserService: ClientUserService
+  ) {
     this.formulario = this.fb.group({
-      nome: [this.usuario.nome],
-      userName: [this.usuario.userName],
-      email: [this.usuario.email],
-      telefone: [this.usuario.telefone],
-      documento: [this.usuario.documento],
-      nascimento: [this.usuario.nascimento],
-      endereco: [this.usuario.endereco],
+      nome: [this.usuario?.fullName],
+      userName: [this.usuario?.userName],
+      telefone: [this.usuario?.phoneResponse],
+      documento: [this.usuario?.cpf],
+      endereco: [this.usuario?.addressResponse],
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const usuarioId = 10; // Substitua pelo ID do usuário logado
+    this.getUsuarioLogado(usuarioId);
+  }
+
+  getUsuarioLogado(id: number): void {
+    this.clientUserService.getClientUserById(id).subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+        this.formulario.patchValue({
+          nome: usuario.fullName,
+          userName: usuario.userName,
+          telefone: usuario.phoneResponse,
+          documento: usuario.cpf,
+          endereco: usuario.addressResponse,
+        });
+      }
+    });
+  }
 
   mudarAbaDados(aba: string): void {
     this.abaDadosAtiva = aba;
