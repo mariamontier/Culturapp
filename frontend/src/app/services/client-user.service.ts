@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ClientUserResponse } from '../models/client-user-response.model';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,30 @@ import { ClientUserResponse } from '../models/client-user-response.model';
 export class ClientUserService {
 
   private apiUrl = 'http://localhost:5115/api/ClientUser';
+  private headers = {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  };
 
   constructor(private http: HttpClient, private router: Router) { }
 
   getClientUsers(): Observable<ClientUserResponse[]> {
-    return this.http.get<ClientUserResponse[]>(`${this.apiUrl}/GetClientUsers`);
+    return this.http.get<ClientUserResponse[]>(`${this.apiUrl}/GetClientUsers`, {
+      headers: this.headers
+    }).pipe(
+      map((res: ClientUserResponse[]) => {
+        return res;
+      })
+    );
   }
 
   getClientUserById(id: number): Observable<ClientUserResponse> {
-    return this.http.get<ClientUserResponse>(`${this.apiUrl}/GetClientUserById/${id}`);
+    console.log(this.headers);
+    return this.http.get<ClientUserResponse>(`${this.apiUrl}/GetClientUserById/${id}`, {
+      headers: this.headers
+    }).pipe(
+      map((res: ClientUserResponse) => {
+        return res;
+      })
+    );
   }
 }

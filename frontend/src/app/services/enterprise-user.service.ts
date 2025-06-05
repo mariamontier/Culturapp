@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { EnterpriseUserResponse } from '../models/enterprise-user-response.model';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,33 @@ import { EnterpriseUserResponse } from '../models/enterprise-user-response.model
 export class EnterpriseUserService {
 
   private apiUrl = 'http://localhost:5115/api/EnterpriseUser';
+  private headers = {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  };
 
   constructor(private http: HttpClient, private router: Router) { }
 
   getEnterpriseUsers(): Observable<EnterpriseUserResponse[]> {
-    return this.http.get<EnterpriseUserResponse[]>(`${this.apiUrl}/GetEnterpriseUsers`);
+    return this.http.get<EnterpriseUserResponse[]>
+      (
+        `${this.apiUrl}/GetEnterpriseUsers`,
+        {
+          headers: this.headers
+        }
+      ).pipe(
+        map((res: EnterpriseUserResponse[]) => {
+          return res;
+        })
+      );
   }
 
   getEnterpriseUserById(id: number): Observable<EnterpriseUserResponse> {
-    return this.http.get<EnterpriseUserResponse>(`${this.apiUrl}/GetEnterpriseUserById/${id}`);
+    return this.http.get<EnterpriseUserResponse>(`${this.apiUrl}/GetEnterpriseUserById/${id}`, {
+      headers: this.headers
+    }).pipe(
+      map((res: EnterpriseUserResponse) => {
+        return res;
+      })
+    );
   }
 }

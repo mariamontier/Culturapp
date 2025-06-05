@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
-  token: '',
-  typeUser: 0,
+  production: false,
+  token: ''
 };
+
