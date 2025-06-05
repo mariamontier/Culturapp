@@ -14,7 +14,7 @@ namespace Culturapp.Models.Requests
     [StringLength(14, MinimumLength = 14)]
     public string? CNPJ { get; set; }
 
-    [StringLength(11, MinimumLength = 11)]
+    [StringLength(9, MinimumLength = 8)]
     public string? CPF { get; set; }
   }
 }
