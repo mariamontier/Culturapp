@@ -46,12 +46,14 @@ export class PerfilUsuarioComponent implements OnInit {
         this.formulario.patchValue({
           nome: usuario.fullName,
           userName: usuario.userName,
-          telefone: usuario.phoneResponse,
+          telefone: usuario.phoneResponse?.phoneNumber,
           documento: usuario.cpf,
-          endereco: usuario.addressResponse,
+          endereco: usuario.addressResponse?.street,
         });
       }
     });
+    console.log(this.usuario?.phoneResponse?.phoneNumber);
+    console.log(this.usuario?.addressResponse?.street);
   }
 
   mudarAbaDados(aba: string): void {
