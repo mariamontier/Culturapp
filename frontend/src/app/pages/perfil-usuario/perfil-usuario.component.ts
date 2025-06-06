@@ -35,7 +35,7 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const usuarioId = 10; // Substitua pelo ID do usuário logado
+    const usuarioId = 1; // Substitua pelo ID do usuário logado
     this.getUsuarioLogado(usuarioId);
   }
 

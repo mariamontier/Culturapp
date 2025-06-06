@@ -15,7 +15,7 @@ export class EventResponse {
   description?: string;
 
   locationAddressId?: number;
-  addressResponse?: AddressResponse;
+  address?: AddressResponse;
 
   capacity?: number;
   ticketPrice?: number;
@@ -26,20 +26,20 @@ export class EventResponse {
   scoreValue?: number;
 
   statusId?: number;
-  statusResponse?: StatusResponse;
+  status?: StatusResponse;
 
   checkingId?: number;
   checking?: CheckingResponse;
 
   faqId?: number;
-  faqResponse?: FaqResponse;
+  faq?: FaqResponse;
 
   enterpriseId?: number;
-  enterpriseUserResponse?: EnterpriseUserResponse;
+  enterpriseUser?: EnterpriseUserResponse;
 
   categoryId?: number;
-  categoryResponse?: CategoryResponse;
+  category?: CategoryResponse;
 
-  phoneResponses?: PhoneResponse[];
-  clientUserResponses?: ClientUserResponse[];
+  phones?: PhoneResponse[];
+  clientUsers?: ClientUserResponse[];
 }

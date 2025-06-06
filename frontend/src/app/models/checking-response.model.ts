@@ -4,6 +4,6 @@ import { ClientUserResponse } from './client-user-response.model';
 export interface CheckingResponse {
   id?: number;
   checkInDate?: Date;
-  eventResponse?: EventResponse;
-  clientUserResponses?: (ClientUserResponse | null)[];
+  event?: EventResponse;
+  clientUser?: (ClientUserResponse | null)[];
 }
