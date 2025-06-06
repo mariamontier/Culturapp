@@ -8,9 +8,9 @@ export interface ClientUserResponse {
   fullName?: string;
   cpf?: string;
 
-  phoneResponse?: PhoneResponse;
-  addressResponse?: AddressResponse;
+  phone?: PhoneResponse;
+  address?: AddressResponse;
 
-  eventResponse?: (EventResponse | null)[];
-  checkingResponse?: (CheckingResponse | null)[];
+  events?: (EventResponse | null)[];
+  checkings?: (CheckingResponse | null)[];
 }

@@ -28,9 +28,9 @@ export class PerfilUsuarioComponent implements OnInit {
     this.formulario = this.fb.group({
       nome: [this.usuario?.fullName],
       userName: [this.usuario?.userName],
-      telefone: [this.usuario?.phoneResponse],
+      telefone: [this.usuario?.phone?.phoneNumber],
       documento: [this.usuario?.cpf],
-      endereco: [this.usuario?.addressResponse],
+      endereco: [this.usuario?.address?.street],
     });
   }
 
@@ -46,14 +46,14 @@ export class PerfilUsuarioComponent implements OnInit {
         this.formulario.patchValue({
           nome: usuario.fullName,
           userName: usuario.userName,
-          telefone: usuario.phoneResponse?.phoneNumber,
+          telefone: usuario.phone?.phoneNumber,
           documento: usuario.cpf,
-          endereco: usuario.addressResponse?.street,
+          endereco: usuario.address?.street,
         });
       }
     });
-    console.log(this.usuario?.phoneResponse?.phoneNumber);
-    console.log(this.usuario?.addressResponse?.street);
+    console.log("=> this.usuario?.phone?.phoneNumber: " + this.usuario?.phone?.phoneNumber);
+    console.log("=> this.usuario?.address?.street: " + this.usuario?.address?.street);
   }
 
   mudarAbaDados(aba: string): void {
