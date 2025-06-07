@@ -32,6 +32,13 @@ namespace Culturapp.Services
       return clientUserResponse;
     }
 
+    public async Task<ClientUserResponse?> GetClientUserByEmailAsync(string email)
+    {
+      var clientUser = await _context.ClientUsers.Include(c => c.Phone).Include(c => c.Address).Include(c => c.Events).Include(c => c.Checks).FirstOrDefaultAsync(c => c.Email == email);
+      var clientUserResponse = _mapper.Map<ClientUserResponse>(clientUser);
+      return clientUserResponse;
+    }
+
     public async Task<ClientUserResponse?> CreateClientUserAsync(ApplicationUser user)
     {
       var exists = await _context.ClientUsers

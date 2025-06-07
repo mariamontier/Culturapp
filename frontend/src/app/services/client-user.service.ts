@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ClientUserResponse } from '../models/client-user-response.model';
 import { environment } from '../../environments/environment.development';
+import { ClientUserRequest } from '../models/client-user-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class ClientUserService {
 
   getClientUserById(id: number): Observable<ClientUserResponse> {
     console.log(this.headers);
+    console.log(`Fetching user with ID: ${environment.userId}`);
     return this.http.get<ClientUserResponse>(`${this.apiUrl}/GetClientUserById/${id}`, {
       headers: this.headers
     }).pipe(
@@ -37,4 +39,15 @@ export class ClientUserService {
       })
     );
   }
+
+  updateClientUser(id: number, clientUser: ClientUserResponse): Observable<ClientUserRequest> {
+    return this.http.put<ClientUserRequest>(`${this.apiUrl}/PutClientUser/${id}`, clientUser, {
+      headers: this.headers
+    }).pipe(
+      map((res: ClientUserRequest) => {
+        return res;
+      })
+    );
+  }
+
 }

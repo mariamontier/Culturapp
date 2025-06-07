@@ -64,7 +64,7 @@
       <form [formGroup]="formulario">
         <div class="form-group">
           <label>Nome</label>
-          <input formControlName="nome" type="text" readonly />
+          <input formControlName="fullName" type="text" readonly />
         </div>
         <div class="form-group">
           <label>UserName</label>
@@ -76,17 +76,18 @@
         </div> -->
         <div class="form-group">
           <label>Telefone</label>
-          <input formControlName="telefone" type="text" readonly />
+          <input formControlName="phoneNumber" type="text" readonly />
         </div>
         <div class="form-group">
           <label>CPF</label>
-          <input formControlName="documento" type="text" readonly />
+          <input formControlName="cpf" type="text" readonly />
         </div>
         <!-- <div class="form-group">
           <label>Data de nascimento</label>
           <input formControlName="nascimento" type="text" readonly />
         </div> -->
         <div class="form-group">
+
           <label>Rua</label>
           <input formControlName="street" type="text" placeholder="Rua" />
         </div>
@@ -132,16 +133,17 @@
             <label>Estado</label>
             <input formControlName="state" type="text" placeholder="Estado" />
           </div>
+
         </div>
       </form>
     </section>
 
     <!-- Aba Editar Perfil -->
     <section *ngIf="abaDadosAtiva === 'editarPerfil'" class="form-section">
-      <form [formGroup]="formulario" (ngSubmit)="salvarDados()">
+      <form [formGroup]="formularioUpdate" (ngSubmit)="salvarDados()">
         <div class="form-group">
           <label>Nome</label>
-          <input formControlName="nome" type="text" />
+          <input formControlName="fullName" type="text" />
         </div>
         <div class="form-group">
           <label>UserName</label>
@@ -153,17 +155,18 @@
         </div> -->
         <div class="form-group">
           <label>Telefone</label>
-          <input formControlName="telefone" type="text" />
+          <input formControlName="phoneNumber" type="text" />
         </div>
         <div class="form-group">
           <label>CPF</label>
-          <input formControlName="documento" type="text" />
+          <input formControlName="cpf" type="text" />
         </div>
         <!-- <div class="form-group">
           <label>Data de nascimento</label>
           <input formControlName="nascimento" type="text" />
         </div> -->
         <div class="form-group">
+
           <label>Rua</label>
           <input formControlName="rua" type="text" placeholder="Rua" />
         </div>
@@ -209,6 +212,7 @@
             <label>Estado</label>
             <input formControlName="state" type="text" placeholder="Estado" />
           </div>
+
         </div>
         <button class="btn-salvar" type="submit">Salvar</button>
       </form>
