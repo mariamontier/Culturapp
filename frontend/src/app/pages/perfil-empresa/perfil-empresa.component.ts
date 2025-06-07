@@ -21,11 +21,17 @@ export class PerfilEmpresaComponent implements OnInit {
     userName: 'empresaXYZ',
     email: 'contato@empresaxyz.com',
     emailTruncado: 'contato@empresaxyz.com',
-    telefone: '11 9259-6524',
+    DDD: '11',
+    telefone: '9259-6524',
     documento: '12.345.678/0001-00',
-    nascimento: '28-01-1988',
     foto: 'assets/img/usuario.png',
-    endereco: 'Rua das Flores, 123, São Paulo, SP',
+    rua: 'Rua das Flores',
+    numero: '123',
+    complemento: '5 andar',
+    bairro: 'Vila luz',
+    CEP: '09876-000',
+    cidade: 'São Paulo',
+    estado: 'SP',
   };
 
   constructor(private fb: FormBuilder, private router: Router) {
@@ -33,14 +39,20 @@ export class PerfilEmpresaComponent implements OnInit {
       nome: [this.empresa.nome],
       userName: [this.empresa.userName],
       email: [this.empresa.email],
+      DDD: [this.empresa.DDD],
       telefone: [this.empresa.telefone],
       documento: [this.empresa.documento],
-      nascimento: [this.empresa.nascimento],
-      endereco: [this.empresa.endereco],
+      rua: [this.empresa.rua],
+      numero: [this.empresa.numero],
+      complemento: [this.empresa.complemento],
+      bairro: [this.empresa.bairro],
+      CEP: [this.empresa.CEP],
+      cidade: [this.empresa.cidade],
+      estado: [this.empresa.estado],
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   mudarAbaDados(aba: string): void {
     this.abaDadosAtiva = aba;

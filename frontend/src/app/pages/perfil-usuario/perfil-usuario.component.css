@@ -90,7 +90,7 @@
 
 /* Sidebar */
 .sidebar {
-  width: 260px;
+  width: 280px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -241,6 +241,16 @@ form {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #ccc;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.form-row .form-group.half {
+  flex: 1;
 }
 
 input[readonly] {
