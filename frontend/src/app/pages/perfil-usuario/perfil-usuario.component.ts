@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ClientUserResponse } from '../../models/client-user-response.model';
 import { ClientUserService } from '../../services/client-user.service';
 import { environment } from '../../../environments/environment.development';
+import { ClientUserRequest } from '../../models/client-user-request.model';
 
 @Component({
   standalone: true,
@@ -17,9 +18,11 @@ import { environment } from '../../../environments/environment.development';
 })
 export class PerfilUsuarioComponent implements OnInit {
   formulario: FormGroup;
+  formularioUpdate: FormGroup;
   abaDadosAtiva: string = 'perfil';
 
   usuario?: ClientUserResponse;
+  usuarioUpdate?: ClientUserRequest;
 
   constructor(
     private fb: FormBuilder,
@@ -27,12 +30,13 @@ export class PerfilUsuarioComponent implements OnInit {
     private clientUserService: ClientUserService
   ) {
     this.formulario = this.fb.group({
-      nome: [this.usuario?.fullName],
+      fullName: [this.usuario?.fullName],
       userName: [this.usuario?.userName],
-      telefone: [this.usuario?.phone?.phoneNumber],
-      documento: [this.usuario?.cpf],
-      endereco: [this.usuario?.address?.street],
+      phoneNumber: [this.usuario?.phone?.phoneNumber],
+      cpf: [this.usuario?.cpf],
+      street: [this.usuario?.address?.street],
     });
+    this.formularioUpdate = this.formulario;
   }
 
   ngOnInit(): void {
@@ -50,16 +54,14 @@ export class PerfilUsuarioComponent implements OnInit {
       next: (usuario) => {
         this.usuario = usuario;
         this.formulario.patchValue({
-          nome: usuario.fullName,
+          fullName: usuario.fullName,
           userName: usuario.userName,
-          telefone: usuario.phone?.phoneNumber,
-          documento: usuario.cpf,
-          endereco: usuario.address?.street,
+          phoneNumber: usuario.phone?.phoneNumber,
+          cpf: usuario.cpf,
+          street: usuario.address?.street,
         });
       }
     });
-    console.log("=> this.usuario?.phone?.phoneNumber: " + this.usuario?.phone?.phoneNumber);
-    console.log("=> this.usuario?.address?.street: " + this.usuario?.address?.street);
   }
 
   mudarAbaDados(aba: string): void {
@@ -67,9 +69,21 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   salvarDados(): void {
-    if (this.formulario.valid) {
-      console.log('Dados salvos:', this.formulario.value);
-      this.usuario = { ...this.usuario, ...this.formulario.value };
+    if (this.formularioUpdate.valid) {
+      console.log('Dados salvos:', this.formularioUpdate.value);
+
+      this.usuarioUpdate = this.formularioUpdate.value;
+      var id = Number(localStorage.getItem('userId'));
+
+      this.clientUserService.updateClientUser(id, this.usuarioUpdate!).subscribe({
+        next: () => {
+          alert('Dados atualizados com sucesso!');
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar usuário:', error);
+          alert('Erro ao atualizar dados. Tente novamente mais tarde.');
+        }
+      });
     }
   }
 

@@ -55,7 +55,7 @@
       <form [formGroup]="formulario">
         <div class="form-group">
           <label>Nome</label>
-          <input formControlName="nome" type="text" readonly />
+          <input formControlName="fullName" type="text" readonly />
         </div>
         <div class="form-group">
           <label>UserName</label>
@@ -67,11 +67,11 @@
         </div> -->
         <div class="form-group">
           <label>Telefone</label>
-          <input formControlName="telefone" type="text" readonly />
+          <input formControlName="phoneNumber" type="text" readonly />
         </div>
         <div class="form-group">
           <label>CPF</label>
-          <input formControlName="documento" type="text" readonly />
+          <input formControlName="cpf" type="text" readonly />
         </div>
         <!-- <div class="form-group">
           <label>Data de nascimento</label>
@@ -79,17 +79,17 @@
         </div> -->
         <div class="form-group">
           <label>Endereço</label>
-          <input formControlName="endereco" type="text" readonly />
+          <input formControlName="street" type="text" readonly />
         </div>
       </form>
     </section>
 
     <!-- Aba Editar Perfil -->
     <section *ngIf="abaDadosAtiva === 'editarPerfil'" class="form-section">
-      <form [formGroup]="formulario" (ngSubmit)="salvarDados()">
+      <form [formGroup]="formularioUpdate" (ngSubmit)="salvarDados()">
         <div class="form-group">
           <label>Nome</label>
-          <input formControlName="nome" type="text" />
+          <input formControlName="fullName" type="text" />
         </div>
         <div class="form-group">
           <label>UserName</label>
@@ -101,11 +101,11 @@
         </div> -->
         <div class="form-group">
           <label>Telefone</label>
-          <input formControlName="telefone" type="text" />
+          <input formControlName="phoneNumber" type="text" />
         </div>
         <div class="form-group">
           <label>CPF</label>
-          <input formControlName="documento" type="text" />
+          <input formControlName="cpf" type="text" />
         </div>
         <!-- <div class="form-group">
           <label>Data de nascimento</label>
@@ -113,7 +113,7 @@
         </div> -->
         <div class="form-group">
           <label>Endereço</label>
-          <input formControlName="endereco" type="text" />
+          <input formControlName="street" type="text" />
         </div>
         <button class="btn-salvar" type="submit">Salvar</button>
       </form>
