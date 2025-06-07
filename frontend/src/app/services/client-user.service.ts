@@ -29,6 +29,7 @@ export class ClientUserService {
 
   getClientUserById(id: number): Observable<ClientUserResponse> {
     console.log(this.headers);
+    console.log(`Fetching user with ID: ${environment.userId}`);
     return this.http.get<ClientUserResponse>(`${this.apiUrl}/GetClientUserById/${id}`, {
       headers: this.headers
     }).pipe(
@@ -37,4 +38,15 @@ export class ClientUserService {
       })
     );
   }
+
+  updateClientUser(id: number, clientUser: ClientUserResponse): Observable<ClientUserResponse> {
+    return this.http.put<ClientUserResponse>(`${this.apiUrl}/PutClientUser/${id}`, clientUser, {
+      headers: this.headers
+    }).pipe(
+      map((res: ClientUserResponse) => {
+        return res;
+      })
+    );
+  }
+
 }

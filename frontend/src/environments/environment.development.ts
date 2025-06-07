@@ -1,5 +1,9 @@
 export const environment = {
   production: false,
-  token: ''
+  token: '',
+  accountType: '',
+  userName: '',
+  email: '',
+  userId: 0,
 };
 

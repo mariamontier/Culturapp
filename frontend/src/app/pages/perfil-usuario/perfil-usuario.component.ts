@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { ClientUserResponse } from '../../models/client-user-response.model';
 import { ClientUserService } from '../../services/client-user.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   standalone: true,
@@ -35,8 +36,13 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const usuarioId = 1; // Substitua pelo ID do usuário logado
-    this.getUsuarioLogado(usuarioId);
+    const usuarioId = localStorage.getItem('userId');
+    if (!usuarioId) {
+      this.router.navigate(['/home']);
+    } else {
+      console.log("ID do usuário logado: " + usuarioId);
+      this.getUsuarioLogado(Number(usuarioId));
+    }
   }
 
   getUsuarioLogado(id: number): void {
