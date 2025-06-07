@@ -33,6 +33,13 @@ namespace Culturapp.Services
       return enterpriseUserResponse;
     }
 
+    public async Task<EnterpriseUserResponse?> GetEnterpriseUserEmailAsync(string email)
+    {
+      var enterpriseUser = await _context.EnterpriseUsers.Include(e => e.Phones).Include(e => e.Address).FirstOrDefaultAsync(e => e.Email == email);
+      var enterpriseUserResponse = _mapper.Map<EnterpriseUserResponse>(enterpriseUser);
+      return enterpriseUserResponse;
+    }
+
     public async Task<EnterpriseUserResponse?> CreateEnterpriseUserAsync(ApplicationUser user)
     {
       var userEnterprise = new EnterpriseUser
