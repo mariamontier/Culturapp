@@ -1,13 +1,14 @@
 import { AddressResponse } from "./address-response.model";
+import { EventResponse } from "./event-response.model";
 import { PhoneResponse } from "./phone-response.model";
 
-export class EnterpriseUserResponse {
-  id?: number;
+export interface EnterpriseUserResponse {
+  id: number;
+  userName?: string;     // Nome fantasia
+  fullName?: string;     // Razão social
   cnpj?: string;
-  UserName?: string;
-  FullName?: string;
   email?: string;
-  faqId?: number;
+  events?: (EventResponse | null)[];
   phones?: (PhoneResponse | null)[];
   addressId?: number;
   address?: AddressResponse | null;

@@ -1,3 +1,4 @@
+import { EnterpriseUserService } from './../../services/enterprise-user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -19,10 +20,14 @@ export class PerfilEmpresaComponent implements OnInit {
 
   empresa?: EnterpriseUserResponse;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private enterpriseUserService: EnterpriseUserService
+  ) {
     this.formulario = this.fb.group({
-      userName: [this.empresa?.UserName],
-      fullName: [this.empresa?.FullName],
+      userName: [this.empresa?.userName],
+      fullName: [this.empresa?.fullName],
       email: [this.empresa?.email],
       areaCode: [this.empresa?.phones?.[0]?.areaCode],
       phoneNumber: [this.empresa?.phones?.[0]?.phoneNumber],
@@ -37,7 +42,40 @@ export class PerfilEmpresaComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const empresaId = localStorage.getItem('userId');
+    console.log('ID da empresa logada: ' + empresaId);
+    if (!empresaId) {
+      this.router.navigate(['/home']);
+    } else {
+      console.log('ID da empresa logada: ' + empresaId);
+      this.getEnterpriseLogado(Number(empresaId));
+    }
+  }
+
+  getEnterpriseLogado(id: number): void {
+    this.enterpriseUserService.getEnterpriseUserById(id).subscribe({
+      next: (empresa) => {
+        this.empresa = empresa;
+        this.formulario.patchValue({
+          fullName: empresa.fullName,
+          userName: empresa.userName,
+          email: empresa.email,
+          areaCode: empresa.phones?.[0]?.areaCode,
+          phoneNumber: empresa.phones?.[0]?.phoneNumber,
+          cnpj: empresa.cnpj,
+          street: empresa.address?.street,
+          number: empresa.address?.number,
+          neighborhood: empresa.address?.neighborhood,
+          complement: empresa.address?.complement,
+          city: empresa.address?.city,
+          state: empresa.address?.state,
+          zipCode: empresa.address?.zipCode,
+        });
+        console.log('Empresa logada:', this.empresa);
+      },
+    });
+  }
 
   mudarAbaDados(aba: string): void {
     this.abaDadosAtiva = aba;
