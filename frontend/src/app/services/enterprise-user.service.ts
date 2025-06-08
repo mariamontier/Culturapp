@@ -1,3 +1,4 @@
+import { EnterpriseUserRequest } from './../models/enterprise-user-request.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
@@ -33,6 +34,16 @@ export class EnterpriseUserService {
 
   getEnterpriseUserById(id: number): Observable<EnterpriseUserResponse> {
     return this.http.get<EnterpriseUserResponse>(`${this.apiUrl}/GetEnterpriseUserById/${id}`, {
+      headers: this.headers
+    }).pipe(
+      map((res: EnterpriseUserResponse) => {
+        return res;
+      })
+    );
+  }
+
+  updateEnterpriseUser(id: number, enterpriseUser: EnterpriseUserRequest): Observable<EnterpriseUserResponse> {
+    return this.http.put<EnterpriseUserResponse>(`${this.apiUrl}/UpdateEnterpriseUser/${id}`, enterpriseUser, {
       headers: this.headers
     }).pipe(
       map((res: EnterpriseUserResponse) => {

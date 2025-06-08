@@ -3,7 +3,7 @@ import { AddressResponse } from './address-response.model';
 import { EventResponse } from './event-response.model';
 import { CheckingResponse } from './checking-response.model';
 
-export interface ClientUserResponse {
+export class ClientUserResponse {
   userName?: string;
   fullName?: string;
   cpf?: string;

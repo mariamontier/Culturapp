@@ -1,3 +1,4 @@
+import { EnterpriseUserRequest } from './../../models/enterprise-user-request.model';
 import { EnterpriseUserService } from './../../services/enterprise-user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -6,7 +7,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { EnterpriseUserResponse } from '../../models/enterprise-user-response.model';
-
 @Component({
   standalone: true,
   selector: 'app-perfil-empresa',
@@ -16,9 +16,11 @@ import { EnterpriseUserResponse } from '../../models/enterprise-user-response.mo
 })
 export class PerfilEmpresaComponent implements OnInit {
   formulario: FormGroup;
+  formularioUpdate: FormGroup;
   abaDadosAtiva: string = 'perfil';
 
   empresa?: EnterpriseUserResponse;
+  UpdateEmpresa?: EnterpriseUserRequest;
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +42,7 @@ export class PerfilEmpresaComponent implements OnInit {
       city: [this.empresa?.address?.city],
       state: [this.empresa?.address?.state],
     });
+    this.formularioUpdate = this.formulario;
   }
 
   ngOnInit(): void {
@@ -82,9 +85,23 @@ export class PerfilEmpresaComponent implements OnInit {
   }
 
   salvarDados(): void {
-    if (this.formulario.valid) {
-      console.log('Dados salvos:', this.formulario.value);
-      this.empresa = { ...this.empresa, ...this.formulario.value };
+    if (this.formularioUpdate.valid) {
+      console.log('Dados salvos:', this.formularioUpdate.value);
+
+      this.UpdateEmpresa = this.formularioUpdate.value;
+      var id = Number(localStorage.getItem('userId'));
+
+      this.enterpriseUserService
+        .updateEnterpriseUser(id, this.UpdateEmpresa!)
+        .subscribe({
+          next: () => {
+            alert('Dados atualizados com sucesso!');
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar usuário:', error);
+            alert('Erro ao atualizar dados. Tente novamente mais tarde.');
+          },
+        });
     }
   }
 

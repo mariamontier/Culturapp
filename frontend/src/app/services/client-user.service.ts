@@ -1,10 +1,10 @@
+import { ClientUserRequest } from './../models/client-user-request.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ClientUserResponse } from '../models/client-user-response.model';
 import { environment } from '../../environments/environment.development';
-import { ClientUserRequest } from '../models/client-user-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,7 @@ export class ClientUserService {
     );
   }
 
-  updateClientUser(id: number, clientUser: ClientUserResponse): Observable<ClientUserRequest> {
+  updateClientUser(id: number, clientUser: ClientUserRequest): Observable<ClientUserRequest> {
     return this.http.put<ClientUserRequest>(`${this.apiUrl}/PutClientUser/${id}`, clientUser, {
       headers: this.headers
     }).pipe(
