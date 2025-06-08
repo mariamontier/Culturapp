@@ -26,30 +26,21 @@
     <div class="profile">
       <img src="assets/img/usuario.png" alt="Foto do Usuário" />
       <div class="info">
-        <strong>{{ empresa.nome }}</strong>
-        <span>{{ empresa.email }}</span>
+        <strong>{{ empresa?.UserName }}</strong>
+        <span>{{ empresa?.email }}</span>
       </div>
     </div>
 
     <nav class="menu">
       <h4>Área da Empresa</h4>
       <ul>
-        <li
-          (click)="mudarAbaDados('perfil')"
-          [class.active]="abaDadosAtiva === 'perfil'"
-        >
+        <li (click)="mudarAbaDados('perfil')" [class.active]="abaDadosAtiva === 'perfil'">
           <i class="icon">🏠</i> Meus Dados
         </li>
-        <li
-          (click)="mudarAbaDados('editarPerfil')"
-          [class.active]="abaDadosAtiva === 'editarPerfil'"
-        >
+        <li (click)="mudarAbaDados('editarPerfil')" [class.active]="abaDadosAtiva === 'editarPerfil'">
           <i class="icon">👤</i> Editar Dados
         </li>
-        <li
-          (click)="mudarAbaDados('meusEventos')"
-          [class.active]="abaDadosAtiva === 'meusEventos'"
-        >
+        <li (click)="mudarAbaDados('meusEventos')" [class.active]="abaDadosAtiva === 'meusEventos'">
           <i class="icon">📅</i> Meus eventos
         </li>
       </ul>
@@ -65,7 +56,7 @@
       <form [formGroup]="formulario">
         <div class="form-group">
           <label>Nome</label>
-          <input formControlName="nome" type="text" readonly />
+          <input formControlName="fullName" type="text" readonly />
         </div>
         <div class="form-group">
           <label>UserName</label>
@@ -78,23 +69,13 @@
         <div class="form-group">
           <label>Telefone</label>
           <div class="telefone-container">
-            <input
-              type="text"
-              formControlName="ddd"
-              placeholder="DDD"
-              class="ddd-input"
-            />
-            <input
-              type="text"
-              formControlName="telefone"
-              placeholder="Telefone"
-              class="telefone-input"
-            />
+            <input type="text" formControlName="areaCode" placeholder="areaCode" class="ddd-input" />
+            <input type="text" formControlName="phoneNumber" placeholder="phoneNumber" class="telefone-input" />
           </div>
         </div>
         <div class="form-group">
           <label>CNPJ</label>
-          <input formControlName="documento" type="text" readonly />
+          <input formControlName="cnpj" type="text" readonly />
         </div>
         <div class="form-group">
           <label>Rua</label>
@@ -104,29 +85,17 @@
         <div class="form-row">
           <div class="form-group half">
             <label>Número</label>
-            <input
-              formControlName="addressNumber"
-              type="text"
-              placeholder="Número"
-            />
+            <input formControlName="addressNumber" type="text" placeholder="Número" />
           </div>
           <div class="form-group half">
             <label>Complemento</label>
-            <input
-              formControlName="complement"
-              type="text"
-              placeholder="Complemento"
-            />
+            <input formControlName="complement" type="text" placeholder="Complemento" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group half">
             <label>Bairro</label>
-            <input
-              formControlName="neighborhood"
-              type="text"
-              placeholder="Bairro"
-            />
+            <input formControlName="neighborhood" type="text" placeholder="Bairro" />
           </div>
           <div class="form-group half">
             <label>CEP</label>
@@ -151,7 +120,7 @@
       <form [formGroup]="formulario" (ngSubmit)="salvarDados()">
         <div class="form-group">
           <label>Nome</label>
-          <input formControlName="nome" type="text" />
+          <input formControlName="fullName" type="text" />
         </div>
         <div class="form-group">
           <label>UserName</label>
@@ -160,23 +129,13 @@
         <div class="form-group">
           <label>Telefone</label>
           <div class="telefone-container">
-            <input
-              type="text"
-              formControlName="ddd"
-              placeholder="DDD"
-              class="ddd-input"
-            />
-            <input
-              type="text"
-              formControlName="telefone"
-              placeholder="Telefone"
-              class="telefone-input"
-            />
+            <input type="text" formControlName="areaCode" placeholder="DDD" class="ddd-input" />
+            <input type="text" formControlName="phoneNumber" placeholder="phoneNumber" class="telefone-input" />
           </div>
         </div>
         <div class="form-group">
           <label>CNPJ</label>
-          <input formControlName="documento" type="text" />
+          <input formControlName="cnpj" type="text" />
         </div>
 
         <div class="form-group">
@@ -187,29 +146,17 @@
         <div class="form-row">
           <div class="form-group half">
             <label>Número</label>
-            <input
-              formControlName="addressNumber"
-              type="text"
-              placeholder="Número"
-            />
+            <input formControlName="addressNumber" type="text" placeholder="Número" />
           </div>
           <div class="form-group half">
             <label>Complemento</label>
-            <input
-              formControlName="complement"
-              type="text"
-              placeholder="Complemento"
-            />
+            <input formControlName="complement" type="text" placeholder="Complemento" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group half">
             <label>Bairro</label>
-            <input
-              formControlName="neighborhood"
-              type="text"
-              placeholder="Bairro"
-            />
+            <input formControlName="neighborhood" type="text" placeholder="Bairro" />
           </div>
           <div class="form-group half">
             <label>CEP</label>
@@ -234,19 +181,11 @@
     <!-- Aba Meus Eventos -->
     <section *ngIf="abaDadosAtiva === 'meusEventos'" class="form-section">
       <h2>Meus Eventos</h2>
-      <button
-        class="btn-criarEvento"
-        [routerLink]="['/criar-evento']"
-        type="button"
-      >
+      <button class="btn-criarEvento" [routerLink]="['/criar-evento']" type="button">
         Criar novo evento
       </button>
       <ul class="eventos-lista">
-        <li
-          *ngFor="let evento of eventos"
-          class="evento-item"
-          (click)="editarEvento(evento.id)"
-        >
+        <li *ngFor="let evento of eventos" class="evento-item" (click)="editarEvento(evento.id)">
           <h3>{{ evento.nome }}</h3>
           <p>{{ evento.descricao }}</p>
           <span class="status">{{ evento.status }}</span>

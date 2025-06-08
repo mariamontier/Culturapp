@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { EnterpriseUserResponse } from '../../models/enterprise-user-response.model';
 
 @Component({
   standalone: true,
@@ -16,43 +17,27 @@ export class PerfilEmpresaComponent implements OnInit {
   formulario: FormGroup;
   abaDadosAtiva: string = 'perfil';
 
-  empresa = {
-    nome: 'Empresa XYZ',
-    userName: 'empresaXYZ',
-    email: 'contato@empresaxyz.com',
-    emailTruncado: 'contato@empresaxyz.com',
-    DDD: '11',
-    telefone: '9259-6524',
-    documento: '12.345.678/0001-00',
-    foto: 'assets/img/usuario.png',
-    rua: 'Rua das Flores',
-    numero: '123',
-    complemento: '5 andar',
-    bairro: 'Vila luz',
-    CEP: '09876-000',
-    cidade: 'São Paulo',
-    estado: 'SP',
-  };
+  empresa?: EnterpriseUserResponse;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.formulario = this.fb.group({
-      nome: [this.empresa.nome],
-      userName: [this.empresa.userName],
-      email: [this.empresa.email],
-      DDD: [this.empresa.DDD],
-      telefone: [this.empresa.telefone],
-      documento: [this.empresa.documento],
-      rua: [this.empresa.rua],
-      numero: [this.empresa.numero],
-      complemento: [this.empresa.complemento],
-      bairro: [this.empresa.bairro],
-      CEP: [this.empresa.CEP],
-      cidade: [this.empresa.cidade],
-      estado: [this.empresa.estado],
+      userName: [this.empresa?.UserName],
+      fullName: [this.empresa?.FullName],
+      email: [this.empresa?.email],
+      areaCode: [this.empresa?.phones?.[0]?.areaCode],
+      phoneNumber: [this.empresa?.phones?.[0]?.phoneNumber],
+      cnpj: [this.empresa?.cnpj],
+      street: [this.empresa?.address?.street],
+      number: [this.empresa?.address?.number],
+      complement: [this.empresa?.address?.complement],
+      neighborhood: [this.empresa?.address?.neighborhood],
+      zipCode: [this.empresa?.address?.zipCode],
+      city: [this.empresa?.address?.city],
+      state: [this.empresa?.address?.state],
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   mudarAbaDados(aba: string): void {
     this.abaDadosAtiva = aba;
