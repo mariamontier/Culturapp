@@ -4,7 +4,8 @@ namespace Culturapp.Models.Responses
   {
     public int? Id { get; set; }
     public string? CNPJ { get; set; }
-    public string? Name { get; set; }
+    public string? UserName { get; set; } // this is the fantasy name of the enterprise
+    public string? FullName { get; set; } // this is the name of the enterprise
     public string? Email { get; set; }
 
     public int? FAQId { get; set; }

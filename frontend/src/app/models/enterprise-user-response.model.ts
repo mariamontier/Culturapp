@@ -4,7 +4,8 @@ import { PhoneResponse } from "./phone-response.model";
 export class EnterpriseUserResponse {
   id?: number;
   cnpj?: string;
-  name?: string;
+  UserName?: string;
+  FullName?: string;
   email?: string;
   faqId?: number;
   phones?: (PhoneResponse | null)[];
