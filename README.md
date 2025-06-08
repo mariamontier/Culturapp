@@ -99,7 +99,7 @@ Culturapp/
 | Nome             | Função                               |
 | ---------------- | ------------------------------------ |
 | Igor Tudisco     | Líder técnico, back-end e integração |
-| \[Seu nome aqui] | Front-end / Design / Testes          |
+| Maria Fernanda e Crislaine | Front-end / Design / Testes          |
 | \[Outro nome]    | Banco de dados / Documentação        |
 | \[Outro nome]    | Apoio técnico / Pesquisa             |
 
