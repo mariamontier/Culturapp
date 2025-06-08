@@ -32,7 +32,7 @@ export class PerfilUsuarioComponent implements OnInit {
     this.formulario = this.fb.group({
       fullName: [this.usuario?.fullName],
       userName: [this.usuario?.userName],
-      ddd: [this.usuario?.phone?.areaCode],
+      areaCode: [this.usuario?.phone?.areaCode],
       phoneNumber: [this.usuario?.phone?.phoneNumber],
       cpf: [this.usuario?.cpf],
       street: [this.usuario?.address?.street],
@@ -63,7 +63,7 @@ export class PerfilUsuarioComponent implements OnInit {
         this.formulario.patchValue({
           fullName: usuario.fullName,
           userName: usuario.userName,
-          ddd: usuario.phone?.areaCode,
+          areaCode: usuario.phone?.areaCode,
           phoneNumber: usuario.phone?.phoneNumber,
           cpf: usuario.cpf,
           street: usuario.address?.street,
