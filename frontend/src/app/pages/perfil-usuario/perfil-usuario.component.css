@@ -253,6 +253,25 @@ form {
   flex: 1;
 }
 
+.telefone-container {
+  display: flex;
+  gap: 10px;
+}
+
+.telefone-container input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.ddd-input {
+  width: 25%;
+}
+
+.telefone-input {
+  width: 75%;
+}
+
 input[readonly] {
   pointer-events: none;
 }

@@ -32,9 +32,16 @@ export class PerfilUsuarioComponent implements OnInit {
     this.formulario = this.fb.group({
       fullName: [this.usuario?.fullName],
       userName: [this.usuario?.userName],
+      ddd: [this.usuario?.phone?.areaCode],
       phoneNumber: [this.usuario?.phone?.phoneNumber],
       cpf: [this.usuario?.cpf],
       street: [this.usuario?.address?.street],
+      number: [this.usuario?.address?.number],
+      neighborhood: [this.usuario?.address?.neighborhood],
+      complement: [this.usuario?.address?.complement],
+      city: [this.usuario?.address?.city],
+      state: [this.usuario?.address?.state],
+      zipCode: [this.usuario?.address?.zipCode],
     });
     this.formularioUpdate = this.formulario;
   }
@@ -44,7 +51,7 @@ export class PerfilUsuarioComponent implements OnInit {
     if (!usuarioId) {
       this.router.navigate(['/home']);
     } else {
-      console.log("ID do usuário logado: " + usuarioId);
+      console.log('ID do usuário logado: ' + usuarioId);
       this.getUsuarioLogado(Number(usuarioId));
     }
   }
@@ -56,11 +63,18 @@ export class PerfilUsuarioComponent implements OnInit {
         this.formulario.patchValue({
           fullName: usuario.fullName,
           userName: usuario.userName,
+          ddd: usuario.phone?.areaCode,
           phoneNumber: usuario.phone?.phoneNumber,
           cpf: usuario.cpf,
           street: usuario.address?.street,
+          number: usuario.address?.number,
+          neighborhood: usuario.address?.neighborhood,
+          complement: usuario.address?.complement,
+          city: usuario.address?.city,
+          state: usuario.address?.state,
+          zipCode: usuario.address?.zipCode,
         });
-      }
+      },
     });
   }
 
@@ -75,21 +89,22 @@ export class PerfilUsuarioComponent implements OnInit {
       this.usuarioUpdate = this.formularioUpdate.value;
       var id = Number(localStorage.getItem('userId'));
 
-      this.clientUserService.updateClientUser(id, this.usuarioUpdate!).subscribe({
-        next: () => {
-          alert('Dados atualizados com sucesso!');
-        },
-        error: (error) => {
-          console.error('Erro ao atualizar usuário:', error);
-          alert('Erro ao atualizar dados. Tente novamente mais tarde.');
-        }
-      });
+      this.clientUserService
+        .updateClientUser(id, this.usuarioUpdate!)
+        .subscribe({
+          next: () => {
+            alert('Dados atualizados com sucesso!');
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar usuário:', error);
+            alert('Erro ao atualizar dados. Tente novamente mais tarde.');
+          },
+        });
     }
   }
 
   sair(): void {
     console.log('Usuário saiu do sistema');
-    // Aqui você pode adicionar a lógica de logout
   }
 
   eventos = [
